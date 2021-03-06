@@ -1,0 +1,20 @@
+ {{!-- This file holds the header and footer that will be shown in all pages --}}
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+</head>
+
+<body>
+    <h2>This Is The Header</h2>
+    <h2>------------------</h2>
+     {{!-- {{{body}}} is where the other handlebars pages will be loaded --}}
+    {{{body}}}
+    <h2>------------------</h2>
+    <h2>This Is The Footer</h2>
+</body>
+</html>
