@@ -13,6 +13,25 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const handlebars = require('express-handlebars');
+var firebase = require("firebase/app");
+require("firebase/auth");
+//configure and start firebase 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+var firebaseConfig = {
+    apiKey: "AIzaSyAthaQNOszYAVRED_eFhAFH7j2V_hZDwr8",
+    authDomain: "ssw-project-one.firebaseapp.com",
+    projectId: "ssw-project-one",
+    storageBucket: "ssw-project-one.appspot.com",
+    messagingSenderId: "199485616924",
+    appId: "1:199485616924:web:05a7279da5c9c36f9040d9",
+    measurementId: "G-L5WC5C8CC4"
+    };
+// Initialize Firebase
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+};
+
 //set handelbars as view engine
 app.engine('handlebars', handlebars(({
     //set main as the header and footer for the site
@@ -36,6 +55,14 @@ app.get('/about', (req, res) => {
     res.render('about.handlebars', {
         title: 'About Page'
     });
+});
+app.get('/user/new', (req, res) => {
+    res.render('newuser.handlebars', {
+        title: 'Create Account'
+    })
+});
+app.get('/user/create', (req, res) => {
+    res.send('creating new account...');
 });
 
 //set the port to run the website on

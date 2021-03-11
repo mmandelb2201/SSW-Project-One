@@ -1,0 +1,32 @@
+
+<h1>newuser.handlebars</h1>
+<h2>Add info to create an account</h2>
+<input type="text" id='username' placeholder="Username"/>
+<input type="text" id='password' placeholder="Password"/>
+<input type="text" id='email' placeholder="Email"/>
+<button type="button" id="submit">Submit</button>
+<h2 id="errorLabel"></h2>
+<script>
+    var usernameInput = document.getElementById('username');
+    var passwordInput = document.getElementById('password');
+    var emailInput = document.getElementById('email');
+    var submitButton = document.getElementById('submit');
+    var errorLabel = document.getElementById('errorLabel');
+    submitButton.onclick = validateField;
+
+    function validateField() {
+           console.log(usernameInput.value);
+          console.log(passwordInput.value);
+            console.log(emailInput.value);
+        //check to see that all fields have been entered correctly
+        if (usernameInput.value.length == 0 && passwordInput.value.length == 0 && emailInput.value.length == 0) {
+            showError('Please Enter All Fields');
+        }else {
+        //if everything is ok, create account and redirect to account page
+            window.location.href = "/user/create";
+        }
+    }
+    function showError(error) {
+        errorLabel.innerHTML = error;
+    }
+</script>
