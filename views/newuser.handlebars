@@ -23,10 +23,24 @@
             showError('Please Enter All Fields');
         }else {
         //if everything is ok, create account and redirect to account page
-            window.location.href = "/user/create";
+            createUser(usernameInput.value, passwordInput.value, emailInput.value);
         }
     }
     function showError(error) {
         errorLabel.innerHTML = error;
+    }
+    function createUser(username, password, email){
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed in 
+                var user = userCredential.user;
+                // ...
+                window.alert('New User Created');
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                showError(errorMessage);
+            });
     }
 </script>
