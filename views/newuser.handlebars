@@ -7,6 +7,8 @@
 <button type="button" id="submit">Submit</button>
 <h2 id="errorLabel"></h2>
 <script>
+    let db = firebase.firestore();
+
     var usernameInput = document.getElementById('username');
     var passwordInput = document.getElementById('password');
     var emailInput = document.getElementById('email');
@@ -35,12 +37,34 @@
                 // Signed in 
                 var user = userCredential.user;
                 // ...
-                window.alert('New User Created');
+                addUserInformation(username, email);
             })
             .catch((error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 showError(errorMessage);
             });
+    }
+    function addUserInformation(username, email){
+        //add user data
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                user.updateProfile({
+                    username: username,
+                    email: email
+                }).then(function() {
+                    console.log('user info added succesffully');
+                    window.alert('New User Created');
+                }).catch(function(error) {
+                    //delete newly created user
+                    console.log('error adding user information');
+                    showError('Error Creating User');
+                })
+            } else {
+                //delete newly created user
+                console.log('could not find user');
+                showError('Error Creating User');
+            }
+        })
     }
 </script>
