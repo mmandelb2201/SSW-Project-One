@@ -42,6 +42,11 @@ app.get('/user/new', (req, res) => {
         title: 'Create Account'
     })
 });
+app.get('/question/new', (req, res) => {
+    res.render('newquestion.handlebars', {
+        title: 'New Question'
+    })
+});
 app.get('/user/create', (req, res) => {
     res.send('creating new account...');
 });

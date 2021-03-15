@@ -17,14 +17,11 @@
     submitButton.onclick = validateField;
 
     function validateField() {
-           console.log(usernameInput.value);
-          console.log(passwordInput.value);
-            console.log(emailInput.value);
-        //check to see that all fields have been entered correctly
+            //check to see that all fields have been entered correctly
         if (usernameInput.value.length == 0 && passwordInput.value.length == 0 && emailInput.value.length == 0) {
             showError('Please Enter All Fields');
         }else {
-        //if everything is ok, create account and redirect to account page
+            //if everything is ok, create account and redirect to account page
             createUser(usernameInput.value, passwordInput.value, emailInput.value);
         }
     }
@@ -45,26 +42,27 @@
                 showError(errorMessage);
             });
     }
-    function addUserInformation(username, email){
-        //add user data
+    function addUserInformation(username, email, uid){
+        //add user data to firebase
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
-                user.updateProfile({
+                db.collection('users').doc(user.uid).set({
                     username: username,
-                    email: email
-                }).then(function() {
-                    console.log('user info added succesffully');
-                    window.alert('New User Created');
-                }).catch(function(error) {
-                    //delete newly created user
-                    console.log('error adding user information');
-                    showError('Error Creating User');
+                    email: email,
+                    questions: []
+                }).then(() => {
+                    console.log('added user data correctly')
+                    window.alert('Added user successfully');
+                }).catch((error) => {
+                    console.error('Error Adding User Data: ', error);
+                    //todo: delete newly created user
                 })
             } else {
-                //delete newly created user
+                //todo: delete newly created user
                 console.log('could not find user');
                 showError('Error Creating User');
             }
         })
+
     }
 </script>
