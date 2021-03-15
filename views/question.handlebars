@@ -4,19 +4,35 @@
 <p id="questionDescription"></p>
 <h4>Asked By:</h4>
 <h4 id="asker"></h4>
+<div>
+    <h3>Add An Answer</h3>
+    <input type="text" id="answer" placeholder="Answer" height="300px" width="400px">
+    <button type="button" id="submitAnswer">Submit</button>
+    <h4 id="answerError"></h4>
+</div>
+<div id="answers">
+    <h3>Answers</h3>
+
+</div>
 
 <script>
     //get question id
     let qID = "{{question}}";
      //add firestore to file
     let db = firebase.firestore();
+    //current user username
+    var username ="";
+    
+    document.getElementById('submitAnswer').onclick = submitAnswer;
 
     db.collection('questions').doc(qID).get().then((doc) => {
         if (doc.exists) {
             //got document successfully
             showQuestionData(doc.data().question, doc.data().description, doc.data().subject);
-            //getAskerUsername
-            getAskerUsername(doc.data().asker);
+            //Get the username for the asker
+            getAskerUsername(doc.data().author);
+            //get the answers
+            showAnswers();
         } else {
             //could not find question, redirect user
             console.log("No such document!");
@@ -36,11 +52,64 @@
         db.collection('users').doc(id).get().then((userDoc) => {
             if (userDoc.exists) {
                 //got document, show username
+                username = userDoc.data().username;
                 document.getElementById('asker').innerHTML = userDoc.data().username;
             }else{
                 console.log('Error getting user data');
             }
         });
+    }
+
+    function submitAnswer(){
+        //check to see if user is signed in
+        firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    // User is signed in.
+                    let answer = document.getElementById('answer').value;
+                    db.collection('answers').add({
+                        answer: answer,
+                        author: username,
+                        authorID: user.uid,
+                        question: qID
+                    }).then(() => {
+                        //reload page after successfully added answer
+                        location.reload();
+                    }).catch((error) => {
+                        //display error adding answer
+                        document.getElementById('answerError').innerHTML = 'Error: ' + error;
+                    });
+                } else {
+                    // No user is signed in.
+                    document.getElementById('answerError').innerHTML = "Please sign in to answer this question";
+                 }
+             });
+    }
+    function showAnswers(){
+        var answerQuery = db.collection('answers').where('question', '==', qID).get().then((querySnapshot) =>{
+            querySnapshot.forEach((answerDoc) => {
+                //grabbed answers for this question from firebase
+                console.log(answerDoc.id, "=>", answerDoc.data());
+                //add answers to the html
+                var answerContainer = document.createElement('p');
+                var answerBody = document.createTextNode(answerDoc.data().answer);
+                answerContainer.appendChild(answerBody);
+
+                var authorContainer = document.createElement('h4');
+                var body = ' By, ' + answerDoc.data().author;
+                var authorBody = document.createTextNode(body);
+
+                var answerDiv = document.createElement('div');
+                answerDiv.setAttribute('class', 'answer');
+                answerDiv.appendChild(answerBody);
+                answerDiv.appendChild(authorBody);
+
+                var totalAnswerDiv = document.getElementById('answers');
+                totalAnswerDiv.appendChild(answerDiv);
+            })
+        }).catch((error) => {
+            console.log('Error getting answers: ', error);
+        });
+
     }
 
 </script>

@@ -2,7 +2,7 @@
 <h2>What Is Your Question?</h2>
 <input type="text" id="question" placeholder="Question" />
 <h2>Please describe your question</h2>
-<input type="text" id="description" />
+<input type="text" id="description" height="300px"width="400px"/>
 <h2>Which Subject Are You Asking About?</h2>
 <input type="text" id="subject" placeholder="Subject" />
 <button type="button" id="submit">Submit</button>
@@ -41,15 +41,17 @@
     }
     //add question to firestore
     function addQuestion(question, description, subject, uid){
-        db.collection('questions').doc().set({
+        db.collection('questions').add({
             question: question,
             description: description,
             subject: subject,
-            asker: uid,
+            author: uid,
             answers: []
         }).then(function(docRef) {
             //link to question page
-            window.location.href('/question/', docRef.id);
+            var newURL = '/question/'+docRef.id;
+            console.log(newURL);
+            window.location.href = newURL;
         }).catch((error) => {
             console.error('Error Adding Question: ', error);
             //todo: delete newly created question
