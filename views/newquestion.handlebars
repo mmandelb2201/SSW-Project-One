@@ -47,9 +47,9 @@
             subject: subject,
             asker: uid,
             answers: []
-        }).then(() => {
-            //todo: redirect to question
-             window.alert('Added question successfully');
+        }).then(function(docRef) {
+            //link to question page
+            window.location.href('/question/', docRef.id);
         }).catch((error) => {
             console.error('Error Adding Question: ', error);
             //todo: delete newly created question

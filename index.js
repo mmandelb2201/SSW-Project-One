@@ -47,6 +47,12 @@ app.get('/question/new', (req, res) => {
         title: 'New Question'
     })
 });
+app.get('/question/:id', (req, res) => {
+    res.render('question.handlebars', {
+        title: 'Question',
+        question: req.params.id
+    });
+});
 app.get('/user/create', (req, res) => {
     res.send('creating new account...');
 });
