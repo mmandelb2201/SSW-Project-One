@@ -1,0 +1,46 @@
+<h1>question.handlebars</h1>
+<h1 id="questionTitle"></h1>
+<h3 id = "questionSubject"></h3>
+<p id="questionDescription"></p>
+<h4>Asked By:</h4>
+<h4 id="asker"></h4>
+
+<script>
+    //get question id
+    let qID = "{{question}}";
+     //add firestore to file
+    let db = firebase.firestore();
+
+    db.collection('questions').doc(qID).get().then((doc) => {
+        if (doc.exists) {
+            //got document successfully
+            showQuestionData(doc.data().question, doc.data().description, doc.data().subject);
+            //getAskerUsername
+            getAskerUsername(doc.data().asker);
+        } else {
+            //could not find question, redirect user
+            console.log("No such document!");
+        }
+    }).catch((error) => {
+        console.log("Error getting document:", error);
+    });
+
+    function showQuestionData(question, description, subject){
+        document.getElementById('title').innerHTML = question;
+        document.getElementById('questionTitle').innerHTML = question;
+        document.getElementById('questionSubject').innerHTML = subject;
+        document.getElementById('questionDescription').innerHTML = description;
+    }
+
+    function getAskerUsername(id){
+        db.collection('users').doc(id).get().then((userDoc) => {
+            if (userDoc.exists) {
+                //got document, show username
+                document.getElementById('asker').innerHTML = userDoc.data().username;
+            }else{
+                console.log('Error getting user data');
+            }
+        });
+    }
+
+</script>
