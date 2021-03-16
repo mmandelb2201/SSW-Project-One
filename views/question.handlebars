@@ -10,6 +10,10 @@
     <button type="button" id="submitAnswer">Submit</button>
     <h4 id="answerError"></h4>
 </div>
+<div id="acceptedAnswer">
+    <p id="acceptedAnswerBody"></p>
+    <h4 id='acceptedAnswerAuthor'></h4>
+</div>
 <div id="answers">
     <h3>Answers</h3>
 
@@ -84,11 +88,11 @@
                  }
              });
     }
+    //this function grabs the answers from firestore and adds them to the html
     function showAnswers(){
         var answerQuery = db.collection('answers').where('question', '==', qID).get().then((querySnapshot) =>{
             querySnapshot.forEach((answerDoc) => {
                 //grabbed answers for this question from firebase
-                console.log(answerDoc.id, "=>", answerDoc.data());
                 //add answers to the html
                 var answerContainer = document.createElement('p');
                 var answerBody = document.createTextNode(answerDoc.data().answer);
@@ -98,10 +102,20 @@
                 var body = ' By, ' + answerDoc.data().author;
                 var authorBody = document.createTextNode(body);
 
+                var upvoteButton = document.createElement('Button');
+                upvoteButton.setAttribute('type', 'button');
+                //todo: change button image to look like up arrow
+                upvoteButton.isClciked = false;
+                upvoteButton.onclick = function(){ 
+                    upvoteQuestion(upvoteButton, answerDoc.id);
+                }
+                upvoteButton.innerHTML = 'Upvote';
+
                 var answerDiv = document.createElement('div');
                 answerDiv.setAttribute('class', 'answer');
                 answerDiv.appendChild(answerBody);
                 answerDiv.appendChild(authorBody);
+                answerDiv.appendChild(upvoteButton);
 
                 var totalAnswerDiv = document.getElementById('answers');
                 totalAnswerDiv.appendChild(answerDiv);
@@ -112,4 +126,34 @@
 
     }
 
+    function upvoteQuestion(button, id){
+        if (button.isClicked == false){
+            button.isClicked = true;
+            button.style.backgroundColor = '#FFFFFF';
+            //remove added upvote to the question
+            db.collection('answers').doc(id).update({
+                upvotes: firebase.firestore.FieldValue.increment(-1)
+            }).then(() => {
+                //todo: show user there was an error upvoting questions
+            })
+            .catch((error) => {
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });;
+        }else{
+            button.isClicked = false;
+            button.style.backgroundColor = '#FF0000';
+            //add upvote to the answer
+            db.collection('answers').doc(id).update({
+                upvotes: firebase.firestore.FieldValue.increment(1)
+            }).then(() => {
+                //todo: show user there was an error upvoting questions
+            })
+            .catch((error) => {
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });;
+        }
+    }
+    
 </script>
