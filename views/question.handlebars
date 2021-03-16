@@ -11,11 +11,12 @@
     <h4 id="answerError"></h4>
 </div>
 <div id="acceptedAnswer">
+    <h3 id='acceptedAnswerTitle'></h3>
     <p id="acceptedAnswerBody"></p>
     <h4 id='acceptedAnswerAuthor'></h4>
 </div>
 <div id="answers">
-    <h3>Answers</h3>
+    <h3>Other Answers</h3>
 
 </div>
 
@@ -98,6 +99,11 @@
                 var answerBody = document.createTextNode(answerDoc.data().answer);
                 answerContainer.appendChild(answerBody);
 
+                var upvoteContainer = document.createElement('h4');
+                var upvoteText = document.createTextNode(answerDoc.data().upvotes);
+                upvoteContainer.appendChild(upvoteText);
+                upvoteContainer.setAttribute('class', 'upvote');
+
                 var authorContainer = document.createElement('h4');
                 var body = ' By, ' + answerDoc.data().author;
                 var authorBody = document.createTextNode(body);
@@ -107,7 +113,7 @@
                 //todo: change button image to look like up arrow
                 upvoteButton.isClciked = false;
                 upvoteButton.onclick = function(){ 
-                    upvoteQuestion(upvoteButton, answerDoc.id);
+                    upvoteQuestion(upvoteButton, answerDoc.id, upvoteContainer);
                 }
                 upvoteButton.innerHTML = 'Upvote';
 
@@ -115,6 +121,7 @@
                 answerDiv.setAttribute('class', 'answer');
                 answerDiv.appendChild(answerBody);
                 answerDiv.appendChild(authorBody);
+                answerDiv.appendChild(upvoteContainer);
                 answerDiv.appendChild(upvoteButton);
 
                 var totalAnswerDiv = document.getElementById('answers');
@@ -125,8 +132,8 @@
         });
 
     }
-
-    function upvoteQuestion(button, id){
+    //add upvotes to firebase
+    function upvoteQuestion(button, id, upvote){
         if (button.isClicked == false){
             button.isClicked = true;
             button.style.backgroundColor = '#FFFFFF';
@@ -134,9 +141,12 @@
             db.collection('answers').doc(id).update({
                 upvotes: firebase.firestore.FieldValue.increment(-1)
             }).then(() => {
-                //todo: show user there was an error upvoting questions
+                //change number shown in html
+                var currentValue = upvote.innerHTML;
+                upvote.innerHTML = parseInt(currentValue) - 1;
             })
             .catch((error) => {
+                //todo: show user there was an error upvoting questions
                 // The document probably doesn't exist.
                 console.error("Error updating document: ", error);
             });;
@@ -147,10 +157,12 @@
             db.collection('answers').doc(id).update({
                 upvotes: firebase.firestore.FieldValue.increment(1)
             }).then(() => {
-                //todo: show user there was an error upvoting questions
+                //change number shown in html
+                 var currentValue = upvote.innerHTML;
+                upvote.innerHTML = parseInt(currentValue) + 1;
             })
             .catch((error) => {
-                // The document probably doesn't exist.
+                //todo: show user there was an error upvoting questions
                 console.error("Error updating document: ", error);
             });;
         }
