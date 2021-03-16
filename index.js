@@ -2,7 +2,7 @@
 ---------HOW TO TEST WEBSITE------------
 1) run 'npm run dev in terminal'
 2) start debugging in IDE or
-open chrome and go to localhost:5000
+open chrome and go to localhost:8080
 ---------HOW TO STOP TESTING SERVER-------
 1) in  terminal type control c
 2) type Y and press enter
@@ -13,7 +13,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const handlebars = require('express-handlebars');
-//set handelbars as view engine
+//set handlebars as view engine
 app.engine('handlebars', handlebars(({
     //set main as the header and footer for the site
     defaultLayout: 'main',
@@ -23,9 +23,11 @@ app.engine('handlebars', handlebars(({
 app.set('view engine', 'handlebars');
 //set /scripts as our folder for javascript files
 app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
-//create a route for each page, might change to a seperate js file later
+//Serves static files (we need it to import a css file)
+app.use(express.static('public'));
+//create a route for each page, might change to a separate js file later
 //app.get is a request for the page ending in "/" or "", 
-//res is the respone, we use res.render to respond with a static page file
+//res is the response, we use res.render to respond with a static page file
 //with variables
 app.get('/', (req, res) => {
     res.render('index.handlebars', {
@@ -58,6 +60,6 @@ app.get('/user/create', (req, res) => {
 });
 
 //set the port to run the website on
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 //run the website on PORT
 app.listen(PORT, () => console.log('server started on port ' + PORT));
