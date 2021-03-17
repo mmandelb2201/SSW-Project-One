@@ -44,21 +44,17 @@ app.get('/user/new', (req, res) => {
         title: 'Create Account'
     })
 });
-app.get('/question/new', (req, res) => {
-    res.render('newquestion.handlebars', {
-        title: 'New Question'
-    })
-});
 app.get('/question/:id', (req, res) => {
     res.render('question.handlebars', {
         title: 'Question',
         question: req.params.id
     });
 });
-app.get('/user/create', (req, res) => {
-    res.send('creating new account...');
+app.get('/account/sign-in', (req, res) =>{
+    res.render('signin.handlebars', {
+        title: 'Sign In'
+    });
 });
-
 //set the port to run the website on
 const PORT = process.env.PORT || 8080;
 //run the website on PORT

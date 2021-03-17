@@ -44,13 +44,29 @@
   <div class="topnav">
      <a href='/'>Home Page</a>
      <a href='/about'>About Page</a>
-     <a href='/user/new'>New User Page</a>
      <a href='/question/new'>New Question Page</a>
      <a href='/question/HKVlzIBrAsyjc4Qs7fIL'>Sample Question</a>
+     <a href='/account' id='accountTopNavButton'>Account</a>
   </div>
      {{!-- {{{body}}} is where the other handlebars pages will be loaded --}}
     {{{body}}}
     <h2>------------------</h2>
     <h2>This Is The Footer</h2>
+    <script>
+      //get account button to change its href
+      let accountButton = document.getElementById('accountTopNavButton');
+      //do a check to make sure user is signed in to change what account button does
+      firebase.auth().onAuthStateChanged(function(user) {
+        accountButton.removeAttribute('href');
+        if (user) {
+          // User is signed in.
+          //todo:go to account screen
+        } else {
+          // No user is signed in.
+          //go to sign up/sign in page
+          accountButton.setAttribute('href', '/account/sign-in');
+        }
+      });
+    </script>
 </body>
 </html>
