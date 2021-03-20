@@ -58,7 +58,7 @@
   .pageTitle{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 35px;
     color: blue;
   }
 
@@ -103,3 +103,41 @@
     background-color: blue;
     color: white;
   }
+
+  .switchSignUpAndIn{
+    background-color: transparent;
+    color: black;
+    border: 2px solid black;
+    transition-duration: 0.4s;
+    height: 45px;
+    width: 200px;
+    font-size: 13;
+    font-weight: bold;
+  }
+  .switchSignUpAndIn:hover{
+    background-color: black;
+    color: white;
+  }
+
+  .signTitle{
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  #userInput{
+    justify-content: center;
+    margin: 0 auto;
+    width: 300px;
+    border: 2px solid blue;
+  }
+
+  .signFormDiv{
+    text-align: center;
+    display: table;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+
+
