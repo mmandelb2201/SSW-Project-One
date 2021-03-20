@@ -1,20 +1,23 @@
-<h1 id="questionTitle"></h1>
-<h3 id = "questionSubject"></h3>
+<h1 id="questionTitle" class="pageTitle"></h1>
+<h3 id = "questionSubject" class="secondaryTitle" style="border-bottom: 1px solid gray;"></h3>
 <p id="questionDescription"></p>
-<input type="image" id="upvoteQuestion" height="25px" width="25px" src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowUnselected.png?alt=media&token=67e58f8e-5f78-4d2a-a3aa-530858b8ef66">
-<h4 id="questionUpvotes"></h4>
-<h4>Asked By:</h4>
-<h4 id="asker"></h4>
-<div>
+<div class="upvoteContainer">
+    <input type="image" id="upvoteQuestion" class="upvoteButton" height="25px" width="25px" src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowUnselected.png?alt=media&token=67e58f8e-5f78-4d2a-a3aa-530858b8ef66">
+    <h4 id="questionUpvotes" class="upvoteText"></h4>
+</div>
+<h4 id="asker" class='authorText'style="border-bottom: 1px solid gray;"></h4>
+<div style="border-bottom: 1px solid gray;" class="newAnswer">
     <h3>Add An Answer</h3>
-    <input type="text" id="answer" placeholder="Answer" height="300px" width="400px">
-    <button type="button" id="submitAnswer">Submit</button>
+    <textarea id="answer" placeholder="Answer" style="height: 150px; width: 500px; resize: none; font-size: 17px;font-family: Arial, Helvetica, sans-serif;"></textarea>
+    <div style='margin-top: 5px;'>
+        <button type="button" class='submitButton' id="submitAnswer">Submit</button>
+    </div>
     <h4 id="answerError"></h4>
 </div>
 <div id="acceptedAnswer">
     <h3 id='acceptedAnswerTitle'></h3>
     <p id="acceptedAnswerBody"></p>
-    <h4 id='acceptedAnswerAuthor'></h4>
+    <h4 id='acceptedAnswerAuthor' class='authorText'></h4>
 </div>
 <div id="answers">
     <h3>Other Answers</h3>
@@ -93,7 +96,7 @@
     function showQuestionData(question, description, subject, upvotes){
         document.getElementById('title').innerHTML = question;
         document.getElementById('questionTitle').innerHTML = question;
-        document.getElementById('questionSubject').innerHTML = subject;
+        document.getElementById('questionSubject').innerHTML = "Subject: "+subject;
         document.getElementById('questionDescription').innerHTML = description;
         document.getElementById('questionUpvotes').innerHTML = upvotes;
     }
@@ -103,7 +106,7 @@
             if (userDoc.exists) {
                 //got document, show username
                 username = userDoc.data().username;
-                document.getElementById('asker').innerHTML = userDoc.data().username;
+                document.getElementById('asker').innerHTML = "Asked By, " + userDoc.data().username;
             }else{
                 console.log('Error getting user data');
             }
@@ -140,21 +143,33 @@
             querySnapshot.forEach((answerDoc) => {
                 //grabbed answers for this question from firebase
                 //add answers to the html
+                var answerTextDiv = document.createElement('div');
+                answerTextDiv.setAttribute('class', 'answerTextDiv');
                 var answerContainer = document.createElement('p');
                 var answerBody = document.createTextNode(answerDoc.data().answer);
                 answerContainer.appendChild(answerBody);
+                answerTextDiv.appendChild(answerContainer);
+
+                var upvoteDiv = document.createElement('div');
+                upvoteDiv.setAttribute('class', 'upvoteContainer');
 
                 var upvoteContainer = document.createElement('h4');
                 var upvoteText = document.createTextNode(answerDoc.data().upvotes);
                 upvoteContainer.appendChild(upvoteText);
-                upvoteContainer.setAttribute('class', 'upvote');
+                upvoteContainer.setAttribute('class', 'upvoteText');
 
+                var authorDiv = document.createElement('div');
+                authorDiv.setAttribute('class', 'authorDiv');
                 var authorContainer = document.createElement('h4');
                 var body = ' By, ' + answerDoc.data().author;
                 var authorBody = document.createTextNode(body);
+                authorContainer.appendChild(authorBody);
+                authorContainer.setAttribute('class', 'authorText');
+                authorDiv.appendChild(authorContainer);
 
                 var upvoteButton = document.createElement('input');
                 upvoteButton.setAttribute('type', 'image');
+                upvoteButton.setAttribute('class', 'upvoteButton');
                 upvoteButton.setAttribute('src', whiteArrowUrl);
                 upvoteButton.setAttribute('height', '25px');
                 upvoteButton.setAttribute('width', '25px');
@@ -163,13 +178,15 @@
                     upvoteQuestion(upvoteButton, answerDoc.id, upvoteContainer);
                 }
                 upvoteButton.innerHTML = 'Upvote';
-
+                //add upvote text and button to div
+                upvoteDiv.appendChild(upvoteButton);
+                upvoteDiv.appendChild(upvoteContainer);
                 var answerDiv = document.createElement('div');
                 answerDiv.setAttribute('class', 'answer');
-                answerDiv.appendChild(answerBody);
-                answerDiv.appendChild(authorBody);
-                answerDiv.appendChild(upvoteContainer);
-                answerDiv.appendChild(upvoteButton);
+                answerDiv.appendChild(answerTextDiv);
+                answerDiv.appendChild(authorDiv);
+                answerDiv.appendChild(upvoteDiv);
+               
 
                 var totalAnswerDiv = document.getElementById('answers');
                 totalAnswerDiv.appendChild(answerDiv);

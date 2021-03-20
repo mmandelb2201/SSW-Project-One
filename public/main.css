@@ -45,6 +45,7 @@
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
     letter-spacing: -2px;
+    margin-bottom: 2px;
   }
   span.websiteTitle{
     font-family: Arial, Helvetica, sans-serif;
@@ -59,4 +60,46 @@
     font-weight: bold;
     font-size: 30px;
     color: blue;
+  }
+
+  .secondaryTitle{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    color: white;
+    -webkit-text-stroke-width: 0.6px;
+    -webkit-text-stroke-color: black;
+  }
+
+  .upvoteContainer{
+    display: flex;
+  }
+
+  .upvoteButton{
+    margin-top: 0px;
+  }
+
+  .upvoteText{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+
+  .authorText{
+    color: blue;
+  }
+
+  .submitButton{
+    background-color: transparent;
+    color: black;
+    border: 2px solid blue;
+    transition-duration: 0.4s;
+    height: 25px;
+    width: 70px;
+    font-size: 15;
+    font-weight: bold;
+  }
+  .submitButton:hover{
+    background-color: blue;
+    color: white;
   }
