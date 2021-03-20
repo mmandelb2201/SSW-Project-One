@@ -1,6 +1,10 @@
+/*change font for all text on study buddy */
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}
 /* Add a black background color to the top navigation */
 .topnav {
-    background-color: #333;
+    background-color: blue;
     overflow: hidden;
   }
   
@@ -12,6 +16,8 @@
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
   }
   
   /* Change the color of links on hover */
@@ -29,4 +35,28 @@
   #errorLabel{
     color: red;
     font-family: Arial, Helvetica, sans-serif;
+  }
+
+  h1.websiteTitle{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 60px;
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    letter-spacing: -2px;
+  }
+  span.websiteTitle{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 60px;
+    color: blue;
+    -webkit-text-stroke-width: 0px;
+  }
+  
+  .pageTitle{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: blue;
   }

@@ -1,7 +1,8 @@
-<h1>question.handlebars</h1>
 <h1 id="questionTitle"></h1>
 <h3 id = "questionSubject"></h3>
 <p id="questionDescription"></p>
+<input type="image" id="upvoteQuestion" height="25px" width="25px" src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowUnselected.png?alt=media&token=67e58f8e-5f78-4d2a-a3aa-530858b8ef66">
+<h4 id="questionUpvotes"></h4>
 <h4>Asked By:</h4>
 <h4 id="asker"></h4>
 <div>
@@ -25,15 +26,58 @@
     let qID = "{{question}}";
      //add firestore to file
     let db = firebase.firestore();
+    //button image urls
+    let whiteArrowUrl = 'https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowUnselected.png?alt=media&token=67e58f8e-5f78-4d2a-a3aa-530858b8ef66';
+    let redArrowUrl = 'https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowSelected.png?alt=media&token=2a97d394-8801-49fe-9a11-e9dcc4850e29';
     //current user username
     var username ="";
-    
+    var hasBeenUpvoted = false;
+    //add functionality to upvote question
+    var upvoteQuestionButton = document.getElementById('upvoteQuestion');
+    var questionUpvotesText = document.getElementById('questionUpvotes');
+    upvoteQuestionButton.onclick = function(){
+        if (hasBeenUpvoted == true){
+            db.collection('questions').doc(qID).update({
+                upvotes: firebase.firestore.FieldValue.increment(-1)
+            }).then(() => {
+                //change number shown in html, and button image
+                upvoteQuestionButton.src = whiteArrowUrl;
+                var currentValue = questionUpvotesText.innerHTML;
+                questionUpvotesText.innerHTML = parseInt(currentValue) - 1;
+                hasBeenUpvoted = false;
+            })
+            .catch((error) => {
+                //show there was an error upvoting
+                let temp = questionUpvotesText.innerHTML;
+                questionUpvotesText.innerHTML = "There was an error removing your upvote" + temp;
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });;
+        }else{
+             db.collection('questions').doc(qID).update({
+                upvotes: firebase.firestore.FieldValue.increment(1)
+            }).then(() => {
+                //change number shown in html, and button image
+                upvoteQuestionButton.src = redArrowUrl;
+                var currentValue = questionUpvotesText.innerHTML;
+                questionUpvotesText.innerHTML = parseInt(currentValue) + 1;
+                hasBeenUpvoted = true;
+            })
+            .catch((error) => {
+                //show there was an error upvoting
+                let temp = questionUpvotesText.innerHTML;
+                questionUpvotesText.innerHTML = "There was an error adding your upvote" + temp;
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });;
+        }
+    }
     document.getElementById('submitAnswer').onclick = submitAnswer;
 
     db.collection('questions').doc(qID).get().then((doc) => {
         if (doc.exists) {
             //got document successfully
-            showQuestionData(doc.data().question, doc.data().description, doc.data().subject);
+            showQuestionData(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes);
             //Get the username for the asker
             getAskerUsername(doc.data().author);
             //get the answers
@@ -46,11 +90,12 @@
         console.log("Error getting document:", error);
     });
 
-    function showQuestionData(question, description, subject){
+    function showQuestionData(question, description, subject, upvotes){
         document.getElementById('title').innerHTML = question;
         document.getElementById('questionTitle').innerHTML = question;
         document.getElementById('questionSubject').innerHTML = subject;
         document.getElementById('questionDescription').innerHTML = description;
+        document.getElementById('questionUpvotes').innerHTML = upvotes;
     }
 
     function getAskerUsername(id){
@@ -108,10 +153,12 @@
                 var body = ' By, ' + answerDoc.data().author;
                 var authorBody = document.createTextNode(body);
 
-                var upvoteButton = document.createElement('Button');
-                upvoteButton.setAttribute('type', 'button');
+                var upvoteButton = document.createElement('input');
+                upvoteButton.setAttribute('type', 'image');
+                upvoteButton.setAttribute('src', whiteArrowUrl);
+                upvoteButton.setAttribute('height', '25px');
+                upvoteButton.setAttribute('width', '25px');
                 //todo: change button image to look like up arrow
-                upvoteButton.isClciked = false;
                 upvoteButton.onclick = function(){ 
                     upvoteQuestion(upvoteButton, answerDoc.id, upvoteContainer);
                 }
@@ -134,14 +181,14 @@
     }
     //add upvotes to firebase
     function upvoteQuestion(button, id, upvote){
-        if (button.isClicked == false){
+        if (button.src == redArrowUrl){
             button.isClicked = true;
-            button.style.backgroundColor = '#FFFFFF';
             //remove added upvote to the question
             db.collection('answers').doc(id).update({
                 upvotes: firebase.firestore.FieldValue.increment(-1)
             }).then(() => {
-                //change number shown in html
+                //change number shown in html, change input image
+                button.src = whiteArrowUrl;
                 var currentValue = upvote.innerHTML;
                 upvote.innerHTML = parseInt(currentValue) - 1;
             })
@@ -152,13 +199,13 @@
             });;
         }else{
             button.isClicked = false;
-            button.style.backgroundColor = '#FF0000';
             //add upvote to the answer
             db.collection('answers').doc(id).update({
                 upvotes: firebase.firestore.FieldValue.increment(1)
             }).then(() => {
-                //change number shown in html
-                 var currentValue = upvote.innerHTML;
+                //change number shown in html, change input image
+                button.src = redArrowUrl;
+                var currentValue = upvote.innerHTML;
                 upvote.innerHTML = parseInt(currentValue) + 1;
             })
             .catch((error) => {
