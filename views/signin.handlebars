@@ -1,0 +1,142 @@
+<h2 id="signUpOrSignIn">Sign In</h2>
+<form id="userInput">
+    <div id="usernameDiv" class="signFormDiv">
+    </div>
+    <div id="emailDiv" class="signFormDiv">
+        <h4 class="signTitle">Email</h4>
+         <input type="text" id='email' placeholder="Email"/>
+    </div>
+    <div id="passwordDiv" class="signFormDiv">
+        <h4 class="signTitle">Password</h4>
+         <input type="text" id='password' placeholder="Password"/>
+    </div>
+    <button type="button" id="submit">Submit</button>
+    <h4 id="errorLabel"></h2>
+    <button class="switchSignUpAndIn" type="button" id="switchSignUpAndIn">Or Sign Up To Create An Account</button>
+</form>
+<script>
+    let db = firebase.firestore();
+
+    //boolean to check if user is signing up or signing in
+    var signIn = true;
+
+    var passwordInput = document.getElementById('password');
+    var emailInput = document.getElementById('email');
+    var submitButton = document.getElementById('submit');
+    var errorLabel = document.getElementById('errorLabel');
+    submitButton.onclick = validateField;
+
+    //switch signIn bool when switch button is pressed
+    document.getElementById('switchSignUpAndIn').onclick = switchSignUpAndIn;
+
+    function validateField() {
+        if (signIn == true){
+            //user is trying to sign in
+            //check to see that all fields have been entered correctly
+            if (passwordInput.value.length == 0 && emailInput.value.length == 0) {
+                showError('Please Enter All Fields');
+            }else {
+                //if everything is ok, create account and redirect to account page
+                signInUser(emailInput.value, passwordInput.value);
+            }
+        }else{
+            //user is trying to sign up
+            var usernameInput = document.getElementById('username');
+            //check to see that all fields have been entered correctly
+            if (usernameInput.value.length == 0 && passwordInput.value.length == 0 && emailInput.value.length == 0) {
+                showError('Please Enter All Fields');
+            }else {
+                //if everything is ok, create account and redirect to account page
+                createUser(usernameInput.value, passwordInput.value, emailInput.value);
+            }
+        }
+      
+    }
+    function showError(error) {
+        errorLabel.innerHTML = error;
+    }
+    function signInUser(email, password){
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed in, go to account page
+                var user = userCredential.user;
+                // ...
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                showError(errorMessage);
+            });
+    }
+    function createUser(username, password, email){
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed in 
+                var user = userCredential.user;
+                // ...
+                addUserInformation(username, email);
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                showError(errorMessage);
+            });
+    }
+    function addUserInformation(username, email, uid){
+        //add user data to firebase
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                db.collection('users').doc(user.uid).set({
+                    username: username,
+                    email: email,
+                    questions: []
+                }).then(() => {
+                    console.log('added user data correctly')
+                    window.alert('Added user successfully');
+                }).catch((error) => {
+                    console.error('Error Adding User Data: ', error);
+                    //todo: delete newly created user
+                })
+            } else {
+                //todo: delete newly created user
+                console.log('could not find user');
+                showError('Error Creating User');
+            }
+        })
+
+    }
+    function switchSignUpAndIn(){
+        if (signIn == true){
+            //add username field to html
+            var title = document.createElement('h4');
+            var titleText = document.createTextNode('Username');
+            title.setAttribute('class', 'signTitle');
+            title.setAttribute('id', 'usernameTitle');
+            title.appendChild(titleText);
+
+            var usernameInput = document.createElement('input');
+            usernameInput.setAttribute('type', 'text');
+            usernameInput.setAttribute('id', 'username');
+            usernameInput.setAttribute('placeholder', 'Username');
+
+            var form = document.getElementById('usernameDiv');
+            form.appendChild(title);
+            form.appendChild(usernameInput);
+
+            document.getElementById('switchSignUpAndIn').innerHTML = "Or Sign In";
+            document.getElementById('signUpOrSignIn').innerHTML = "Sign Up";
+
+            signIn = false;
+        }else{
+            var title = document.getElementById('usernameTitle');
+            var usernameInput = document.getElementById('username');
+            title.remove();
+            usernameInput.remove();
+            
+            document.getElementById('switchSignUpAndIn').innerHTML = 'Or Sign Up To Create An Account';
+            document.getElementById('signUpOrSignIn').innerHTML = "Sign In";
+
+            signIn = true;
+        }
+    }
+</script>

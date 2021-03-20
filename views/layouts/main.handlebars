@@ -3,23 +3,22 @@
 <head>
   <meta charset="utf-8">
   <title id="title">{{ title }}</title>
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <link rel="stylesheet" type="text/css" href="/main.css">
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+  https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-    https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
-    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
-
-    <!-- Add Firebase products that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-firestore.js"></script>
-    <script>
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-firestore.js"></script>
+  <script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
       var firebaseConfig = {
         apiKey: "AIzaSyAthaQNOszYAVRED_eFhAFH7j2V_hZDwr8",
         authDomain: "ssw-project-one.firebaseapp.com",
@@ -40,16 +39,32 @@
 </head>
 
 <body>
-    <h2>This Is The Header</h2>
-    <a href='/'>Home Page</a>
-    <a href='/about'>About Page</a>
-    <a href='/user/new'>New User Page</a>
-    <a href='/question/new'>New Question Page</a>
-    <a href='/question/HKVlzIBrAsyjc4Qs7fIL'>Sample Question</a>
-    <h2>------------------</h2>
+  <div class="topnav">
+     <a href='/'>Home Page</a>
+     <a href='/about'>About Page</a>
+     <a href='/question/new'>New Question Page</a>
+     <a href='/question/HKVlzIBrAsyjc4Qs7fIL'>Sample Question</a>
+     <a href='/account' id='accountTopNavButton'>Account</a>
+  </div>
      {{!-- {{{body}}} is where the other handlebars pages will be loaded --}}
     {{{body}}}
     <h2>------------------</h2>
     <h2>This Is The Footer</h2>
+    <script>
+      //get account button to change its href
+      let accountButton = document.getElementById('accountTopNavButton');
+      //do a check to make sure user is signed in to change what account button does
+      firebase.auth().onAuthStateChanged(function(user) {
+        accountButton.removeAttribute('href');
+        if (user) {
+          // User is signed in.
+          //todo:go to account screen
+        } else {
+          // No user is signed in.
+          //go to sign up/sign in page
+          accountButton.setAttribute('href', '/account/sign-in');
+        }
+      });
+    </script>
 </body>
 </html>
