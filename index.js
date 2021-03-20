@@ -44,10 +44,15 @@ app.get('/user/new', (req, res) => {
         title: 'Create Account'
     })
 });
-app.get('/question/:id', (req, res) => {
+app.get('/question/show/:id', (req, res) => {
     res.render('question.handlebars', {
         title: 'Question',
         question: req.params.id
+    });
+});
+app.get('/question/new', (req, res) =>{
+    res.render('newquestion.handlebars', {
+        title: 'New Question'
     });
 });
 app.get('/account/sign-in', (req, res) =>{

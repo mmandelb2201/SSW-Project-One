@@ -1,11 +1,10 @@
-<h1>newquestion.handlebars</h1>
-<h2>What Is Your Question?</h2>
+<h1 id="questionTitle" class="pageTitle">What Is Your Question?</h1>
 <input type="text" id="question" placeholder="Question" />
 <h2>Please describe your question</h2>
-<input type="text" id="description" height="300px"width="400px"/>
+<textarea id="description" placeholder="Answer" style="height: 150px; width: 500px; resize: none; font-size: 17px;font-family: Arial, Helvetica, sans-serif;"></textarea>
 <h2>Which Subject Are You Asking About?</h2>
 <input type="text" id="subject" placeholder="Subject" />
-<button type="button" id="submit">Submit</button>
+<button type="button"  class='submitButton' id="submit">Submit</button>
 <h2 id="errorLabel"></h2>
 
 <script>
@@ -51,7 +50,7 @@
             answers: []
         }).then(function(docRef) {
             //link to question page
-            var newURL = '/question/'+docRef.id;
+            var newURL = '/question/show/'+docRef.id;
             console.log(newURL);
             window.location.href = newURL;
         }).catch((error) => {

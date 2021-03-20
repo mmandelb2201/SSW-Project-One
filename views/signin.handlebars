@@ -1,4 +1,4 @@
-<h2 id="signUpOrSignIn">Sign In</h2>
+<h1 class='pageTitle' id="signUpOrSignIn">Sign In</h1>
 <form id="userInput">
     <div id="usernameDiv" class="signFormDiv">
     </div>
@@ -10,9 +10,15 @@
         <h4 class="signTitle">Password</h4>
          <input type="text" id='password' placeholder="Password"/>
     </div>
-    <button type="button" id="submit">Submit</button>
-    <h4 id="errorLabel"></h2>
-    <button class="switchSignUpAndIn" type="button" id="switchSignUpAndIn">Or Sign Up To Create An Account</button>
+    <div class="signFormDiv">
+        <button type="button" class='submitButton' id="submit">Submit</button>
+    </div>
+    <div class="signFormDiv">
+        <h4 id="errorLabel"></h2>
+    </div>
+    <div class="signFormDiv">
+        <button class="switchSignUpAndIn" type="button" id="switchSignUpAndIn">Or Sign Up To Create An Account</button>
+    </div>
 </form>
 <script>
     let db = firebase.firestore();
