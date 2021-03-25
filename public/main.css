@@ -184,4 +184,32 @@
     text-decoration: none;
   }
 
+  div.welcomeBanner{
+    width: 100vw;
+    position: relative;
+    margin-left: -50vw;
+    height: 100px;
+    margin-top: 100px;
+    left: 50%;
+  }
+
+  h1.welcomeBanner{
+    text-align: center;
+    color: rgb(153, 204, 255);
+    font-size: 45px;
+    
+  }
+
+  .questionWelcomeBanner{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    letter-spacing: 0px;
+    margin-bottom: 2px;
+    font-size: 40px;
+    text-align: center;
+  }
+
 

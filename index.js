@@ -31,7 +31,7 @@ app.use(express.static('public'));
 //with variables
 app.get('/', (req, res) => {
     res.render('index.handlebars', {
-        title: 'Home Page'
+        title: 'Study Buddy'
     });
 });
 app.get('/about', (req, res) => {

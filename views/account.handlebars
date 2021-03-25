@@ -39,7 +39,7 @@
         while (x < questions.length) {
             let tempQID = questions[x];
             //get question data from firebase
-            db.collection('questions').doc(tempQID).get().then((doc) => {
+            db.collection('questions').doc(tempQID).get().then((querySnapshot) => {
                 if (doc.exists) {
                     //got document successfully
                     //display question data
