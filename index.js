@@ -40,11 +40,6 @@ app.get('/about', (req, res) => {
     });
 });
 
-HEAD
-
-
-
-
 app.get('/user/new', (req, res) => {
     res.render('newuser.handlebars', {
         title: 'Create Account'
@@ -66,7 +61,6 @@ app.get('/account/sign-in', (req, res) => {
         title: 'Sign In'
     });
 });
-b007a49361039eabba8a6716bf27274aa91e110e
 app.get('/account/show/:id', (req, res) => {
     res.render('account.handlebars', {
         title: 'Account',
