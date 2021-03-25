@@ -19,7 +19,7 @@ app.engine('handlebars', handlebars(({
     defaultLayout: 'main',
     //set view/layouts as our static page files
     layoutsDir: path.join(__dirname, 'views/layouts')
-  })));
+})));
 app.set('view engine', 'handlebars');
 //set /scripts as our folder for javascript files
 app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
@@ -38,7 +38,11 @@ app.get('/about', (req, res) => {
     });
 });
 
+
+
 //set the port to run the website on
 const PORT = process.env.PORT || 5000;
 //run the website on PORT
 app.listen(PORT, () => console.log('server started on port ' + PORT));
+
+/* be n is */
