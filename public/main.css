@@ -1,15 +1,21 @@
 /*change font for all text on study buddy */
-*{
-  font-family: Arial, Helvetica, sans-serif;
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
 }
+
+
 /* Add a black background color to the top navigation */
+
 .topnav {
     background-color: blue;
     overflow: hidden;
-  }
-  
-  /* Style the links inside the navigation bar */
-  .topnav a {
+}
+
+
+/* Style the links inside the navigation bar */
+
+.topnav a {
     float: left;
     color: #f2f2f2;
     text-align: center;
@@ -18,26 +24,30 @@
     font-size: 17px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-  }
-  
-  /* Change the color of links on hover */
-  .topnav a:hover {
+}
+
+
+/* Change the color of links on hover */
+
+.topnav a:hover {
     background-color: #ddd;
     color: black;
-  }
-  
-  /* Add a color to the active/current link */
-  .topnav a.active {
+}
+
+
+/* Add a color to the active/current link */
+
+.topnav a.active {
     background-color: #4CAF50;
     color: white;
-  }
+}
 
-  #errorLabel{
+#errorLabel {
     color: red;
     font-family: Arial, Helvetica, sans-serif;
-  }
+}
 
-  h1.websiteTitle{
+h1.websiteTitle {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 60px;
@@ -46,50 +56,51 @@
     -webkit-text-stroke-color: black;
     letter-spacing: -2px;
     margin-bottom: 2px;
-  }
-  span.websiteTitle{
+}
+
+span.websiteTitle {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 60px;
     color: blue;
     -webkit-text-stroke-width: 0px;
-  }
-  
-  .pageTitle{
+}
+
+.pageTitle {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 35px;
     color: blue;
-  }
+}
 
-  .secondaryTitle{
+.secondaryTitle {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 25px;
     color: white;
     -webkit-text-stroke-width: 0.6px;
     -webkit-text-stroke-color: black;
-  }
+}
 
-  .upvoteContainer{
+.upvoteContainer {
     display: flex;
-  }
+}
 
-  .upvoteButton{
+.upvoteButton {
     margin-top: 0px;
-  }
+}
 
-  .upvoteText{
+.upvoteText {
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 15px;
-  }
+}
 
-  .authorText{
+.authorText {
     color: blue;
-  }
+}
 
-  .submitButton{
+button {
     background-color: transparent;
     color: black;
     border: 2px solid blue;
@@ -98,13 +109,25 @@
     width: 70px;
     font-size: 15;
     font-weight: bold;
-  }
-  .submitButton:hover{
+}
+
+.submitButton {
+    background-color: transparent;
+    color: black;
+    border: 2px solid blue;
+    transition-duration: 0.4s;
+    height: 25px;
+    width: 70px;
+    font-size: 15;
+    font-weight: bold;
+}
+
+.submitButton:hover {
     background-color: blue;
     color: white;
-  }
+}
 
-  .switchSignUpAndIn{
+.switchSignUpAndIn {
     background-color: transparent;
     color: black;
     border: 2px solid black;
@@ -113,31 +136,29 @@
     width: 200px;
     font-size: 13;
     font-weight: bold;
-  }
-  .switchSignUpAndIn:hover{
+}
+
+.switchSignUpAndIn:hover {
     background-color: black;
     color: white;
-  }
+}
 
-  .signTitle{
+.signTitle {
     font-weight: bold;
     font-size: 20px;
-  }
+}
 
-  #userInput{
+#userInput {
     justify-content: center;
     margin: 0 auto;
     width: 300px;
     border: 2px solid blue;
-  }
+}
 
-  .signFormDiv{
+.signFormDiv {
     text-align: center;
     display: table;
     margin: 0 auto;
     margin-top: 10px;
     margin-bottom: 10px;
-  }
-
-
-
+}
