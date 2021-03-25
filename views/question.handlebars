@@ -1,0 +1,235 @@
+<h1 id="questionTitle" class="pageTitle"></h1>
+<h3 id = "questionSubject" class="secondaryTitle" style="border-bottom: 1px solid gray;"></h3>
+<p id="questionDescription"></p>
+<div class="upvoteContainer">
+    <input type="image" id="upvoteQuestion" class="upvoteButton" height="25px" width="25px" src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowUnselected.png?alt=media&token=67e58f8e-5f78-4d2a-a3aa-530858b8ef66">
+    <h4 id="questionUpvotes" class="upvoteText"></h4>
+</div>
+<h4 id="asker" class='authorText'style="border-bottom: 1px solid gray;"></h4>
+<div style="border-bottom: 1px solid gray;" class="newAnswer">
+    <h3>Add An Answer</h3>
+    <textarea id="answer" placeholder="Answer" style="height: 150px; width: 500px; resize: none; font-size: 17px;font-family: Arial, Helvetica, sans-serif;"></textarea>
+    <div style='margin-top: 5px;'>
+        <button type="button" class='submitButton' id="submitAnswer">Submit</button>
+    </div>
+    <h4 id="answerError"></h4>
+</div>
+<div id="acceptedAnswer">
+    <h3 id='acceptedAnswerTitle'></h3>
+    <p id="acceptedAnswerBody"></p>
+    <h4 id='acceptedAnswerAuthor' class='authorText'></h4>
+</div>
+<div id="answers">
+    <h3>Other Answers</h3>
+
+</div>
+
+<script>
+    //get question id
+    let qID = "{{question}}";
+     //add firestore to file
+    let db = firebase.firestore();
+    //button image urls
+    let whiteArrowUrl = 'https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowUnselected.png?alt=media&token=67e58f8e-5f78-4d2a-a3aa-530858b8ef66';
+    let redArrowUrl = 'https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowSelected.png?alt=media&token=2a97d394-8801-49fe-9a11-e9dcc4850e29';
+    //current user username
+    var username ="";
+    var hasBeenUpvoted = false;
+    //add functionality to upvote question
+    var upvoteQuestionButton = document.getElementById('upvoteQuestion');
+    var questionUpvotesText = document.getElementById('questionUpvotes');
+    upvoteQuestionButton.onclick = function(){
+        if (hasBeenUpvoted == true){
+            db.collection('questions').doc(qID).update({
+                upvotes: firebase.firestore.FieldValue.increment(-1)
+            }).then(() => {
+                //change number shown in html, and button image
+                upvoteQuestionButton.src = whiteArrowUrl;
+                var currentValue = questionUpvotesText.innerHTML;
+                questionUpvotesText.innerHTML = parseInt(currentValue) - 1;
+                hasBeenUpvoted = false;
+            })
+            .catch((error) => {
+                //show there was an error upvoting
+                let temp = questionUpvotesText.innerHTML;
+                questionUpvotesText.innerHTML = "There was an error removing your upvote" + temp;
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });;
+        }else{
+             db.collection('questions').doc(qID).update({
+                upvotes: firebase.firestore.FieldValue.increment(1)
+            }).then(() => {
+                //change number shown in html, and button image
+                upvoteQuestionButton.src = redArrowUrl;
+                var currentValue = questionUpvotesText.innerHTML;
+                questionUpvotesText.innerHTML = parseInt(currentValue) + 1;
+                hasBeenUpvoted = true;
+            })
+            .catch((error) => {
+                //show there was an error upvoting
+                let temp = questionUpvotesText.innerHTML;
+                questionUpvotesText.innerHTML = "There was an error adding your upvote" + temp;
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });;
+        }
+    }
+    document.getElementById('submitAnswer').onclick = submitAnswer;
+
+    db.collection('questions').doc(qID).get().then((doc) => {
+        if (doc.exists) {
+            //got document successfully
+            showQuestionData(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes);
+            //Get the username for the asker
+            getAskerUsername(doc.data().author);
+            //get the answers
+            showAnswers();
+        } else {
+            //could not find question, redirect user
+            console.log("No such document!");
+        }
+    }).catch((error) => {
+        console.log("Error getting document:", error);
+    });
+
+    function showQuestionData(question, description, subject, upvotes){
+        document.getElementById('title').innerHTML = question;
+        document.getElementById('questionTitle').innerHTML = question;
+        document.getElementById('questionSubject').innerHTML = "Subject: "+subject;
+        document.getElementById('questionDescription').innerHTML = description;
+        document.getElementById('questionUpvotes').innerHTML = upvotes;
+    }
+
+    function getAskerUsername(id){
+        db.collection('users').doc(id).get().then((userDoc) => {
+            if (userDoc.exists) {
+                //got document, show username
+                username = userDoc.data().username;
+                document.getElementById('asker').innerHTML = "Asked By, " + userDoc.data().username;
+            }else{
+                console.log('Error getting user data');
+            }
+        });
+    }
+
+    function submitAnswer(){
+        //check to see if user is signed in
+        firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    // User is signed in.
+                    let answer = document.getElementById('answer').value;
+                    db.collection('answers').add({
+                        answer: answer,
+                        author: username,
+                        authorID: user.uid,
+                        question: qID
+                    }).then(() => {
+                        //reload page after successfully added answer
+                        location.reload();
+                    }).catch((error) => {
+                        //display error adding answer
+                        document.getElementById('answerError').innerHTML = 'Error: ' + error;
+                    });
+                } else {
+                    // No user is signed in.
+                    document.getElementById('answerError').innerHTML = "Please sign in to answer this question";
+                 }
+             });
+    }
+    //this function grabs the answers from firestore and adds them to the html
+    function showAnswers(){
+        var answerQuery = db.collection('answers').where('question', '==', qID).get().then((querySnapshot) =>{
+            querySnapshot.forEach((answerDoc) => {
+                //grabbed answers for this question from firebase
+                //add answers to the html
+                var answerTextDiv = document.createElement('div');
+                answerTextDiv.setAttribute('class', 'answerTextDiv');
+                var answerContainer = document.createElement('p');
+                var answerBody = document.createTextNode(answerDoc.data().answer);
+                answerContainer.appendChild(answerBody);
+                answerTextDiv.appendChild(answerContainer);
+
+                var upvoteDiv = document.createElement('div');
+                upvoteDiv.setAttribute('class', 'upvoteContainer');
+
+                var upvoteContainer = document.createElement('h4');
+                var upvoteText = document.createTextNode(answerDoc.data().upvotes);
+                upvoteContainer.appendChild(upvoteText);
+                upvoteContainer.setAttribute('class', 'upvoteText');
+
+                var authorDiv = document.createElement('div');
+                authorDiv.setAttribute('class', 'authorDiv');
+                var authorContainer = document.createElement('h4');
+                var body = ' By, ' + answerDoc.data().author;
+                var authorBody = document.createTextNode(body);
+                authorContainer.appendChild(authorBody);
+                authorContainer.setAttribute('class', 'authorText');
+                authorDiv.appendChild(authorContainer);
+
+                var upvoteButton = document.createElement('input');
+                upvoteButton.setAttribute('type', 'image');
+                upvoteButton.setAttribute('class', 'upvoteButton');
+                upvoteButton.setAttribute('src', whiteArrowUrl);
+                upvoteButton.setAttribute('height', '25px');
+                upvoteButton.setAttribute('width', '25px');
+                //todo: change button image to look like up arrow
+                upvoteButton.onclick = function(){ 
+                    upvoteQuestion(upvoteButton, answerDoc.id, upvoteContainer);
+                }
+                upvoteButton.innerHTML = 'Upvote';
+                //add upvote text and button to div
+                upvoteDiv.appendChild(upvoteButton);
+                upvoteDiv.appendChild(upvoteContainer);
+                var answerDiv = document.createElement('div');
+                answerDiv.setAttribute('class', 'answer');
+                answerDiv.appendChild(answerTextDiv);
+                answerDiv.appendChild(authorDiv);
+                answerDiv.appendChild(upvoteDiv);
+               
+
+                var totalAnswerDiv = document.getElementById('answers');
+                totalAnswerDiv.appendChild(answerDiv);
+            })
+        }).catch((error) => {
+            console.log('Error getting answers: ', error);
+        });
+
+    }
+    //add upvotes to firebase
+    function upvoteQuestion(button, id, upvote){
+        if (button.src == redArrowUrl){
+            button.isClicked = true;
+            //remove added upvote to the question
+            db.collection('answers').doc(id).update({
+                upvotes: firebase.firestore.FieldValue.increment(-1)
+            }).then(() => {
+                //change number shown in html, change input image
+                button.src = whiteArrowUrl;
+                var currentValue = upvote.innerHTML;
+                upvote.innerHTML = parseInt(currentValue) - 1;
+            })
+            .catch((error) => {
+                //todo: show user there was an error upvoting questions
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });;
+        }else{
+            button.isClicked = false;
+            //add upvote to the answer
+            db.collection('answers').doc(id).update({
+                upvotes: firebase.firestore.FieldValue.increment(1)
+            }).then(() => {
+                //change number shown in html, change input image
+                button.src = redArrowUrl;
+                var currentValue = upvote.innerHTML;
+                upvote.innerHTML = parseInt(currentValue) + 1;
+            })
+            .catch((error) => {
+                //todo: show user there was an error upvoting questions
+                console.error("Error updating document: ", error);
+            });;
+        }
+    }
+    
+</script>
