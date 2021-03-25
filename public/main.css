@@ -34,7 +34,10 @@
 
   #errorLabel{
     color: red;
-    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .errorLabel{
+    color: red;
   }
 
   h1.websiteTitle{
@@ -55,6 +58,16 @@
     -webkit-text-stroke-width: 0px;
   }
   
+  .outlineTitle{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    letter-spacing: 0px;
+    margin-bottom: 2px;
+  }
+
   .pageTitle{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
@@ -104,6 +117,21 @@
     color: white;
   }
 
+  .signOutButton{
+    background-color: transparent;
+    color: black;
+    border: 2px solid blue;
+    transition-duration: 0.4s;
+    height: 25px;
+    width: 150px;
+    font-size: 15;
+    font-weight: bold;
+  }
+  .signOutButton:hover{
+    background-color: blue;
+    color: white;
+  }
+
   .switchSignUpAndIn{
     background-color: transparent;
     color: black;
@@ -139,5 +167,21 @@
     margin-bottom: 10px;
   }
 
+  .questionPreviewDiv{
+    outline: 2px solid blue;
+  }
+
+  .questionPreviewTitle{
+    color: blue;
+  }
+
+  .questionPreviewDescription{
+    font-weight: normal;
+
+  }
+
+  .questionPreviewA{
+    text-decoration: none;
+  }
 
 

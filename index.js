@@ -60,6 +60,12 @@ app.get('/account/sign-in', (req, res) =>{
         title: 'Sign In'
     });
 });
+app.get('/account/show/:id', (req, res) =>{
+    res.render('account.handlebars',{
+        title: 'Account',
+        userID: req.params.id
+    });
+});
 //set the port to run the website on
 const PORT = process.env.PORT || 8080;
 //run the website on PORT
