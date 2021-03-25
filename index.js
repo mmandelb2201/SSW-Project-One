@@ -31,7 +31,7 @@ app.use(express.static('public'));
 //with variables
 app.get('/', (req, res) => {
     res.render('index.handlebars', {
-        title: 'Home Page'
+        title: 'Study Buddy'
     });
 });
 app.get('/about', (req, res) => {
@@ -66,7 +66,16 @@ app.get('/account/sign-in', (req, res) => {
         title: 'Sign In'
     });
 });
+<<<<<<< HEAD
 b007a49361039eabba8a6716bf27274aa91e110e
+=======
+app.get('/account/show/:id', (req, res) =>{
+    res.render('account.handlebars',{
+        title: 'Account',
+        userID: req.params.id
+    });
+});
+>>>>>>> 1a56f61eb3fdbbd49a057cb1f3fb5d679caa4fe7
 //set the port to run the website on
 const PORT = process.env.PORT || 8080;
 //run the website on PORT

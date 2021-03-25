@@ -8,7 +8,7 @@
     </div>
     <div id="passwordDiv" class="signFormDiv">
         <h4 class="signTitle">Password</h4>
-         <input type="text" id='password' placeholder="Password"/>
+         <input type="password" id='password' placeholder="Password"/>
     </div>
     <div class="signFormDiv">
         <button type="button" class='submitButton' id="submit">Submit</button>
@@ -66,7 +66,7 @@
             .then((userCredential) => {
                 // Signed in, go to account page
                 var user = userCredential.user;
-                // ...
+                window.location.href = '/account/show/' + user.uid;
             })
             .catch((error) => {
                 var errorCode = error.code;
@@ -97,8 +97,8 @@
                     email: email,
                     questions: []
                 }).then(() => {
-                    console.log('added user data correctly')
-                    window.alert('Added user successfully');
+                    console.log('added user data correctly');
+                    window.location.href = '/account/show/' + user.uid;
                 }).catch((error) => {
                     console.error('Error Adding User Data: ', error);
                     //todo: delete newly created user

@@ -1,10 +1,74 @@
+<<<<<<< HEAD
 <html>
 
 <h1>index.handlebars</h1>
+=======
+<<<<<<< HEAD
+
+<div class='welcomeBanner'  style="border-bottom: 1px solid gray;">
+    <h1 class='welcomeBanner'>The Best Way To Study</h2>
+</div>
+<h2 class='questionWelcomeBanner'> Questions </h2>
+<div id='questions'></div>
+
+<script>
+    let db = firebase.firestore();
+
+    db.collection('questions').orderBy('upvotes').limit(3).get().then((documents) => {
+        documents.forEach((doc) => {
+            if (doc.exists) {
+                //got document successfully
+                //display question data
+                 displayQuestion(doc.data().question, doc.data().description, doc.id);
+            } else {
+                 //could not find question, skip and go on to next one
+                 if (amountOfQuestions == 0 && x + 1 == questions.length){
+                    //none of the questions found could be downloaded, 
+                    //change account screen as if no questions found
+                }
+            }
+        })  
+    });
+
+    function displayQuestion(question, description, questionID){
+        //create a to allow user to click to question
+        var questionA = document.createElement('a');
+        questionA.setAttribute('class', 'questionPreviewA');
+        questionA.setAttribute('href', '/question/show/'+questionID);
+        //create question div
+        var questionDiv = document.createElement('div');
+        questionDiv.setAttribute('class', 'questionPreviewDiv');
+        //create question title
+        var questionTitle = document.createElement('h2');
+        questionTitle.setAttribute('class', 'questionPreviewTitle');
+        var questionText = document.createTextNode(question);
+        questionTitle.appendChild(questionText);
+        //create question description
+        var questionDescription = document.createElement('h4');
+        questionDescription.setAttribute('class', 'questionPreviewDescription');
+        var questionDescriptionText = document.createTextNode(description);
+        questionDescription.appendChild(questionDescriptionText);
+        //add title and body to div
+        questionDiv.appendChild(questionTitle);
+        questionDiv.appendChild(questionDescription);
+        //add div to a
+        questionA.appendChild(questionDiv);
+        //add div to div already in html
+        document.getElementById('questions').appendChild(questionA);
+    }
+</script>
+=======
+<html>
+
+<h1>index.handlebars</h1>
+<<<<<<< HEAD
+=======
+>>>>>>> 1a56f61eb3fdbbd49a057cb1f3fb5d679caa4fe7
 <p> Study Buddy Index
     <hr>
     <br>
     
+<<<<<<< HEAD
     <button><a ref="signin.handlebars">Go To The Sign In Page</a>
     </button>
     <br>
@@ -19,3 +83,24 @@
 </p>
 
 </html>
+=======
+    <button href="signin.handlebars">Go To The Sign In Page
+    </button>
+    <br>
+
+    <button href="about.handlebars">Go To The About Page
+    </button>
+    <br>
+
+    <button href="flashcards.handlebars">Go To The Flashcard Generator Page
+    </button>
+    <br>
+</p>
+
+
+
+>>>>>>> 
+
+</html>
+>>>>>>> c779cd0fbd5c3ba4a2db1eab951ddb968a08ebbe
+>>>>>>> 1a56f61eb3fdbbd49a057cb1f3fb5d679caa4fe7

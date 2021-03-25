@@ -15,7 +15,8 @@
     var submitButton = document.getElementById('submit');
 
     submitButton.onclick = validateField;
-
+    //save user id
+    var userID = "";
     //check to see all fields are filled
     function validateField(){
         let question = document.getElementById('question').value;
@@ -26,6 +27,8 @@
             //do a check to make sure user is signed in
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
+                    //Save user id
+                    userID = user.uid;
                     // User is signed in.
                     addQuestion(question, description, subject, user.uid);
                 } else {
@@ -49,6 +52,13 @@
             upvotes: 0,
             answers: []
         }).then(function(docRef) {
+            //add questionID to user information
+            db.collection('users').doc(userID).update({
+                questions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+            }).catch((error) => {
+                console.error('Error Adding Question: ', error);
+                //todo: delete newly created question
+            })
             //link to question page
             var newURL = '/question/show/'+docRef.id;
             console.log(newURL);
