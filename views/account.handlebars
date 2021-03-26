@@ -1,86 +1,86 @@
 <h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
-<h4 class='errorLabel' id='errorLabel'></h4>
-<h1 class='outlineTitle'>Questions</h2>
-<div id='questions'></div>
-<button type="button" class='signOutButton' id="signOutButton">Sign Out</button>
-<script>
-    let id = "{{userID}}";
+<h4 class="errorLabel" id="errorLabel"></h4>
+<h1 class="outlineTitle">Questions</h2>
+    <div id="questions"></div>
+    <button type="button" class="signOutButton" id="signOutButton">Sign Out</button>
+    <script>
+        let id = "{{userID}}"
 
-    let db = firebase.firestore();
-    let errorLabel = document.getElementById('errorLabel');
+        let db = firebase.firestore()
+        let errorLabel = document.getElementById("errorLabel")
 
-    document.getElementById('signOutButton').onclick = function(){
-        firebase.auth().signOut().then(function() {
-            //redirect user to sign in/sign up page
-            window.location.href = '/account/sign-in';
-        }, function(error) {
-            //display error signing out
-            errorLabel.innerHTML = 'Error Signing Out, Please Try Again Later or Contact Support';
-        });
-    }
-
-    db.collection('users').doc(id).get().then((doc) => {
-          if (doc.exists) {
-            //got document successfully
-            //display user data
-            displayUserData(doc.data().username, doc.data().questions);
-        } else {
-            //could not find question, redirect user
-            document.getElementById('errorLabel').innerHTML = 'Error Getting User Data, Please Try Again Late or Contact Support';
-            console.log("No such document!");
+        document.getElementById("signOutButton").onclick = function () {
+            firebase.auth().signOut().then(function () {
+                //redirect user to sign in/sign up page
+                window.location.href = "/account/sign-in"
+            }, function (error) {
+                //display error signing out
+                errorLabel.innerHTML = "Error Signing Out, Please Try Again Later or Contact Support"
+            })
         }
-    })
-    //get html elements and display firbase data in it
-    function displayUserData(username, questions){
-        document.getElementById('accountTitle').innerHTML = "Welcome, " + username;
-        //run through questions array and display each one
-        var x = 0;
-        var amountOfQuestions = 0;
-        while (x < questions.length) {
-            let tempQID = questions[x];
-            //get question data from firebase
-            db.collection('questions').doc(tempQID).get().then((querySnapshot) => {
-                if (doc.exists) {
-                    //got document successfully
-                    //display question data
-                    displayQuestion(doc.data().question, doc.data().description, doc.id);
-                } else {
-                    //could not find question, skip and go on to next one
-                    if (amountOfQuestions == 0 && x + 1 == questions.length){
-                        //none of the questions found could be downloaded, 
-                        //change account screen as if no questions found
+
+        db.collection("users").doc(id).get().then((doc) => {
+            if (doc.exists) {
+                //got document successfully
+                //display user data
+                displayUserData(doc.data().username, doc.data().questions)
+            } else {
+                //could not find question, redirect user
+                document.getElementById("errorLabel").innerHTML = "Error Getting User Data, Please Try Again Late or Contact Support"
+                console.log("No such document!")
+            }
+        })
+        //get html elements and display firbase data in it
+        function displayUserData(username, questions) {
+            document.getElementById("accountTitle").innerHTML = "Welcome, " + username
+            //run through questions array and display each one
+            var x = 0
+            var amountOfQuestions = 0
+            while (x < questions.length) {
+                let tempQID = questions[x]
+                //get question data from firebase
+                db.collection("questions").doc(tempQID).get().then((doc) => {
+                    if (doc.exists) {
+                        //got document successfully
+                        //display question data
+                        displayQuestion(doc.data().question, doc.data().description, doc.id)
+                    } else {
+                        //could not find question, skip and go on to next one
+                        if (amountOfQuestions == 0 && x + 1 == questions.length) {
+                            //none of the questions found could be downloaded, 
+                            //change account screen as if no questions found
+                        }
                     }
-                 }
-            });
-            x = x + 1;
+                })
+                x = x + 1
+            }
         }
-    }
 
-    function displayQuestion(question, description, questionID){
-        //create a to allow user to click to question
-        var questionA = document.createElement('a');
-        questionA.setAttribute('class', 'questionPreviewA');
-        questionA.setAttribute('href', '/question/show/'+questionID);
-        //create question div
-        var questionDiv = document.createElement('div');
-        questionDiv.setAttribute('class', 'questionPreviewDiv');
-        //create question title
-        var questionTitle = document.createElement('h2');
-        questionTitle.setAttribute('class', 'questionPreviewTitle');
-        var questionText = document.createTextNode(question);
-        questionTitle.appendChild(questionText);
-        //create question description
-        var questionDescription = document.createElement('h4');
-        questionDescription.setAttribute('class', 'questionPreviewDescription');
-        var questionDescriptionText = document.createTextNode(description);
-        questionDescription.appendChild(questionDescriptionText);
-        //add title and body to div
-        questionDiv.appendChild(questionTitle);
-        questionDiv.appendChild(questionDescription);
-        //add div to a
-        questionA.appendChild(questionDiv);
-        //add div to div already in html
-        document.getElementById('questions').appendChild(questionA);
-    }
+        function displayQuestion(question, description, questionID) {
+            //create a to allow user to click to question
+            var questionA = document.createElement("a")
+            questionA.setAttribute("class", "questionPreviewA")
+            questionA.setAttribute("href", "/question/show/" + questionID)
+            //create question div
+            var questionDiv = document.createElement("div")
+            questionDiv.setAttribute("class", "questionPreviewDiv")
+            //create question title
+            var questionTitle = document.createElement("h2")
+            questionTitle.setAttribute("class", "questionPreviewTitle")
+            var questionText = document.createTextNode(question)
+            questionTitle.appendChild(questionText)
+            //create question description
+            var questionDescription = document.createElement("h4")
+            questionDescription.setAttribute("class", "questionPreviewDescription")
+            var questionDescriptionText = document.createTextNode(description)
+            questionDescription.appendChild(questionDescriptionText)
+            //add title and body to div
+            questionDiv.appendChild(questionTitle)
+            questionDiv.appendChild(questionDescription)
+            //add div to a
+            questionA.appendChild(questionDiv)
+            //add div to div already in html
+            document.getElementById("questions").appendChild(questionA)
+        }
 
-</script>
+    </script>
