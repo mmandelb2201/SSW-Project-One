@@ -13,13 +13,17 @@ const express = require("express")
 const path = require("path")
 const app = express()
 const handlebars = require("express-handlebars")
-    //set handlebars as view engine
+var favicon = require('serve-favicon');
+
+//set handlebars as view engine
 app.engine("handlebars", handlebars(({
     //set main as the header and footer for the site
     defaultLayout: "main",
     //set view/layouts as our static page files
     layoutsDir: path.join(__dirname, "views/layouts")
 })))
+//set website favicon
+app.use(favicon(__dirname + '/public/images/studyBuddyFaviconSmall.png'));
 app.set("view engine", "handlebars")
     //set /scripts as our folder for javascript files
 app.use("/scripts", express.static(path.join(__dirname, "scripts")))
