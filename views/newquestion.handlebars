@@ -1,49 +1,50 @@
 <h1 id="questionTitle" class="pageTitle">What Is Your Question?</h1>
 <input type="text" id="question" placeholder="Question" />
 <h2>Please describe your question</h2>
-<textarea id="description" placeholder="Answer" style="height: 150px; width: 500px; resize: none; font-size: 17px;font-family: Arial, Helvetica, sans-serif;"></textarea>
+<textarea id="description" placeholder="Answer"
+    style="height: 150px;  width: 500px;  resize: none;  font-size: 17px; font-family: Arial, Helvetica, sans-serif; "></textarea>
 <h2>Which Subject Are You Asking About?</h2>
 <input type="text" id="subject" placeholder="Subject" />
-<button type="button"  class='submitButton' id="submit">Submit</button>
+<button type="button" class="submitButton" id="submit">Submit</button>
 <h2 id="errorLabel"></h2>
 
 <script>
     //add firestore to file
-    let db = firebase.firestore();
+    let db = firebase.firestore()
 
-    var errorLabel = document.getElementById('errorLabel');
-    var submitButton = document.getElementById('submit');
+    var errorLabel = document.getElementById("errorLabel")
+    var submitButton = document.getElementById("submit")
 
-    submitButton.onclick = validateField;
+    submitButton.onclick = validateField
     //save user id
-    var userID = "";
+    var userID = ""
     //check to see all fields are filled
-    function validateField(){
-        let question = document.getElementById('question').value;
-        let description = document.getElementById('description').value;
-        let subject = document.getElementById('subject').value;
-        if (question.length != 0 && description.length != 0 && subject.length != 0){
+    function validateField() {
+        let question = document.getElementById("question").value
+        let description = document.getElementById("description").value
+        let subject = document.getElementById("subject").value
+        if (question.length != 0 && description.length != 0 && subject.length != 0) {
             //all fields are filled so they can be added to firestore
             //do a check to make sure user is signed in
-            firebase.auth().onAuthStateChanged(function(user) {
+            firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
                     //Save user id
-                    userID = user.uid;
+                    userID = user.uid
                     // User is signed in.
-                    addQuestion(question, description, subject, user.uid);
+                    addQuestion(question, description, subject, user.uid)
                 } else {
                     // No user is signed in.
-                    showError('You must be signed in to ask a quesiton');
-                 }
-             });
-        }else{
+                    showError("You must be signed in to ask a quesiton")
+                }
+            })
+        } else {
             //user needs to add all required information
-            showError('Please fill in all fields');
+            showError("Please fill in all fields")
         }
     }
     //add question to firestore
-    function addQuestion(question, description, subject, uid){
-        db.collection('questions').add({
+    function addQuestion(question, description, subject, uid) {
+        db.collection("questions").add({
             question: question,
             description: description,
             subject: subject,
@@ -51,26 +52,26 @@
             acceptedAnswer: "",
             upvotes: 0,
             answers: []
-        }).then(function(docRef) {
+        }).then(function (docRef) {
             //add questionID to user information
-            db.collection('users').doc(userID).update({
+            db.collection("users").doc(userID).update({
                 questions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
             }).catch((error) => {
-                console.error('Error Adding Question: ', error);
+                console.error("Error Adding Question: ", error)
                 //todo: delete newly created question
             })
             //link to question page
-            var newURL = '/question/show/'+docRef.id;
-            console.log(newURL);
-            window.location.href = newURL;
+            var newURL = "/question/show/" + docRef.id
+            console.log(newURL)
+            window.location.href = newURL
         }).catch((error) => {
-            console.error('Error Adding Question: ', error);
+            console.error("Error Adding Question: ", error)
             //todo: delete newly created question
         })
     }
     //display error to user
     function showError(error) {
-        errorLabel.innerHTML = error;
+        errorLabel.innerHTML = error
     }
 
 </script>

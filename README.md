@@ -8,7 +8,12 @@
 4. After Node JS packages are finished installing, run 'npm run dev' to start testing server
 5. Open prefferred web browser and go to localhost:8080
 ### Coding Convention
-###### Study buddy uses standard naming convention for each language. Each function as a comment above giving a brief description on what it is used for
+###### Javascript:
+* Use double quotes for string
+* Use camelcase
+* 1 tab indentation for inner body of an object (functions are first-class objects)
+* Do not use semicolons
+* Use meaningfdul variable names and functions. For variable names, the names should be more descriptive the more steps you make inside the function body. For functions, it's vice-versa
 ### Contact Information
 ##### Below are the email addresses for the main developers of Study Buddy
 1. mmandelb@stevens.edu
