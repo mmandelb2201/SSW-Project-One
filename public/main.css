@@ -4,6 +4,11 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+#websiteTitleLogo{
+    width: 275px; /* width of container */
+    height: 80px; /* height of container */
+    object-fit: cover;
+}
 
 /* Add a black background color to the top navigation */
 
@@ -202,8 +207,20 @@ span.websiteTitle {
     margin-bottom: 10px;
 }
 
-.questionPreviewDiv {
-    outline: 2px solid rgb(0, 166, 255);;
+.questionPreviewDiv{
+    background-color: (255, 255, 255);
+    margin: 3px;
+    padding: 1px;
+}
+
+.questionPreviewUpvotes{
+    font-weight: bold;
+    font-size: 15px;
+    color: black;
+}
+
+.questionPreviewDiv:hover {
+    background-color: rgb(220, 245, 252);
 }
 
 .questionPreviewTitle {
@@ -212,6 +229,7 @@ span.websiteTitle {
 
 .questionPreviewDescription {
     font-weight: normal;
+    color:black
 }
 
 .questionPreviewA {
@@ -223,7 +241,7 @@ div.welcomeBanner {
     position: relative;
     margin-left: -50vw;
     height: 100px;
-    margin-top: 100px;
+    margin-top: 50px;
     left: 50%;
 }
 
@@ -242,5 +260,5 @@ h1.welcomeBanner {
     letter-spacing: 0px;
     margin-bottom: 2px;
     font-size: 40px;
-    text-align: center;
+    text-align: left;
 }

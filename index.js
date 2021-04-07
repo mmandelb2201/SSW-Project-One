@@ -75,7 +75,14 @@ app.get("/account/show/:id", (req, res) => {
             title: "Account",
             userID: req.params.id
         })
+})
+app.get("/search/questions/:subject/:sort", (req, res) => {
+    res.render("searchquestions.handlebars", {
+        title: "Question Search",
+        subject: req.params.subject,
+        sort: req.params.sort
     })
+})
     //set the port to run the website on
 const PORT = process.env.PORT || 8080
     //run the website on PORT
