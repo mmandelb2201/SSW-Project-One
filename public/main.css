@@ -129,7 +129,6 @@ span.websiteTitle {
     border: 2px solid rgb(0, 166, 255);;
     transition-duration: 0.4s;
     height: 25px;
-    width: 70px;
     font-size: 15;
     font-weight: bold;
 }
@@ -224,7 +223,7 @@ span.websiteTitle {
 }
 
 .questionPreviewTitle {
-    color: rgb(0, 166, 255);;
+    color: rgb(0, 166, 255);
 }
 
 .questionPreviewDescription {
@@ -261,4 +260,33 @@ h1.welcomeBanner {
     margin-bottom: 2px;
     font-size: 40px;
     text-align: left;
+}
+
+.parametersDiv{
+    margin-top: 15px;
+    font-weight: bold;
+}
+.parametersDiv select{
+    all: unset; 
+    padding-right: 15px;
+    border-bottom: 1.5px solid;
+    color: rgb(0, 166, 255);
+    font-weight: normal;
+    background: url("https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FblueDownArrow.png?alt=media&token=0c94df40-1252-4747-8f9d-5c33b4cd717c") no-repeat right;
+    background-size: 16px;
+}
+
+div.fourZeroFour{
+    display: flex;
+    left: 50%;
+    top: 40%;
+    position: fixed;
+    transform: translate(-50%, -50%)
+}
+
+div.fourZeroFour h3{
+    font-size: 20px;
+    width: 250px;
+    text-align: center;
+    
 }

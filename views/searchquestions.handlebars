@@ -1,8 +1,12 @@
-<h1 class="pageTitle">Find A Question</h1>
+<div class="pageHeader">
+    <h1 class="pageTitle">Find A Question</h1>
+    <button type="button" class="submitButton" id="askQuestion">Ask A New Question</button>
+</div>
 <div class="parametersDiv">
     <label for="subject">Choose a subject:</label>
 
     <select name="subject" id="subject">
+        <option value="home">Subject</option>
         <option value="Math">Math</option>
         <option value="Science">Science</option>
         <option value="English">English</option>
@@ -12,6 +16,7 @@
     <label for="sort">Sort By:</label>
 
     <select name="sort" id="sort">
+        <option value="none">Sort</option>
         <option value="upvotesHighToLow">Upvotes: High to Low</option>
         <option value="upvotesLowToHigh">Upvotes: Low to High</option>
         <option value="alphabetical">Alphabetical</option>
@@ -20,9 +25,14 @@
 </div>
 <h2 class="secondaryTitle" style="border-bottom: 1px solid gray;">Results</h2>
 <div id="questions"></div>
+<h4 id="errorLabel">
 <script>
     let sort = "{{sort}}"
     let subject = "{{subject}}"
+    //add link to ask question button
+    document.getElementById("askQuestion").onclick = function () {
+        window.location.href = "/question/new"
+    }
     //reload page to find new seach results based on user inputs
     var subjectMenu = document.getElementById("subject")
     subjectMenu.onchange = function () {
@@ -54,7 +64,7 @@
             })
         }).catch((error) => {
             //error getting questions, show error to user
-            console.log("error getting data", error)
+            showError("Error finding questions, please try another search or try again in a few minutes")
         })
     } else if (sort.toLowerCase() == "upvoteslowtohigh") {
         //user wants to sort questions by lowest upvote count to highest
@@ -65,7 +75,7 @@
             })
         }).catch((error) => {
             //error getting questions, show error to user
-            console.log("error getting data", error)
+            showError("Error finding questions, please try another search or try again in a few minutes")
         })
     } else if (sort.toLowerCase() == "alphabetical") {
         //user wants to sort questions alphabetically
@@ -76,7 +86,7 @@
             })
         }).catch((error) => {
             //error getting questions, show error to user
-            console.log("error getting data", error)
+            showError("Error finding questions, please try another search or try again in a few minutes")
         })
     } else if (sort.toLowerCase() == "reversealphabetical") {
         //user wants to sort questions reverse alphabetically
@@ -87,7 +97,7 @@
             })
         }).catch((error) => {
             //error getting questions, show error to user
-            console.log("error getting data", error)
+            showError("Error finding questions, please try another search or try again in a few minutes")
         })
     } else if (sort == "none" && subject == "home"){
         //no parameters entered, default to sort by high to low upvotes
@@ -98,12 +108,15 @@
             })
         }).catch((error) => {
             //error getting questions, show error to user
-            console.log("error getting data", error)
+            showError("Error finding questions, please try another search or try again in a few minutes")
         })
     }
      else {
         //sort parameter does not exist, display 404 error
-
+        showError("Error finding questions, please try another search or try again in a few minutes")
+    }
+    function showError(error) {
+        document.getElementById("errorLabel").innerHTML = error
     }
 
     function addQuestion(question, description, questionSubject, upvotes, questionID, upvoteCount) {
