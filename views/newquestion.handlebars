@@ -1,12 +1,27 @@
 <div class="centerContent">
-    <h1 id="questionTitle" class="pageTitle">What Is Your Question?</h1>
-    <input type="text" id="question" placeholder="Question" />
-    <h2>Please describe your question</h2>
-    <textarea id="description" placeholder="Answer"
-        style="height: 150px;  width: 500px;  resize: none;  font-size: 17px; font-family: Arial, Helvetica, sans-serif; "></textarea>
-    <h2>Which Subject Are You Asking About?</h2>
-    <input type="text" id="subject" placeholder="Subject" />
-    <button type="button" class="submitButton" id="submit">Submit</button>
+    <div class="middleContent">
+        <h1 id="questionTitle" class="pageTitle">What Is Your Question?</h1>
+        <input type="text" id="question" placeholder="Question" class="largeInput" />
+    </div>
+    <div class="middleContent">
+        <h2>Please describe your question</h2>
+        <textarea id="description" placeholder="Answer"
+            style="height: 150px;  width: 500px;  resize: none;  font-size: 17px; font-family: Arial, Helvetica, sans-serif; "></textarea>
+    </div>
+    <div class="middleContent">
+        <h2>Which Subject Are You Asking About?</h2>
+        <select name="subject" id="subject" class="mainSelect">
+            <option value="none">Subject</option>
+            <option value="Math">Math</option>
+            <option value="Science">Science</option>
+            <option value="English">English</option>
+            <option value="History">History</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+    <div>
+        <button type="button" class="submitButton" id="submit">Submit</button>
+    </div>
     <h2 id="errorLabel"></h2>
 
     <script>
@@ -24,20 +39,26 @@
             let question = document.getElementById("question").value
             let description = document.getElementById("description").value
             let subject = document.getElementById("subject").value
-            if (question.length != 0 && description.length != 0 && subject.length != 0) {
-                //all fields are filled so they can be added to firestore
-                //do a check to make sure user is signed in
-                firebase.auth().onAuthStateChanged(function (user) {
-                    if (user) {
-                        //Save user id
-                        userID = user.uid
-                        // User is signed in.
-                        addQuestion(question, description, subject, user.uid)
-                    } else {
-                        // No user is signed in.
-                        showError("You must be signed in to ask a quesiton")
-                    }
-                })
+            if (question.length != 0 && description.length != 0) {
+                //all fields are filled 
+                if (subject != "none") {
+                    //subject has been selected so question can be added to firestore
+                    //do a check to make sure user is signed in
+                    firebase.auth().onAuthStateChanged(function (user) {
+                        if (user) {
+                            //Save user id
+                            userID = user.uid
+                            // User is signed in.
+                            addQuestion(question, description, subject, user.uid)
+                        } else {
+                            // No user is signed in.
+                            showError("You must be signed in to ask a quesiton")
+                        }
+                    })
+                } else {
+                    //user needs to add a subject
+                    showError("Please select a subject for your question")
+                }
             } else {
                 //user needs to add all required information
                 showError("Please fill in all fields")
