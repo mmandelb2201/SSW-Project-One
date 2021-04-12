@@ -75,8 +75,21 @@ app.get("/account/show/:id", (req, res) => {
             title: "Account",
             userID: req.params.id
         })
+})
+app.get("/search/questions/:subject/:sort", (req, res) => {
+    res.render("searchquestions.handlebars", {
+        title: "Question Search",
+        subject: req.params.subject,
+        sort: req.params.sort
     })
-    //set the port to run the website on
+})
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', function(req, res){
+    res.render("pagenotfound.handlebars", {
+        title: "Page Not Found"
+    })
+  });
+//set the port to run the website on
 const PORT = process.env.PORT || 8080
     //run the website on PORT
 app.listen(PORT, () => console.log("server started on port " + PORT))

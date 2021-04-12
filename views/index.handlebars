@@ -2,12 +2,12 @@
     <h1 class="welcomeBanner">The Best Way To Study</h2>
 </div>
 <h2 class="questionWelcomeBanner"> Questions </h2>
-<div id="questions"></div>
+<div id="questions" style="text-align: left;"></div>
 
 <script>
     let db = firebase.firestore()
 
-    db.collection("questions").orderBy("upvotes").limit(3).get().then((documents) => {
+    db.collection("questions").orderBy("upvotes").limit(5).get().then((documents) => {
         documents.forEach((doc) => {
             if (doc.exists) {
                 //got document successfully
