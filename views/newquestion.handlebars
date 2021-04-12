@@ -19,6 +19,12 @@
             <option value="Other">Other</option>
         </select>
     </div>
+    <div class="middleContent">
+        <h2>Add An Image To Show Extra Work or Details</h2>
+        <input type="file" id="imageUpload" class="file-select" accept="image/*" hidden />
+        <label for="imageUpload" class="imageSelectLabel" style="margin-bottom:10px">Choose file</label>
+        <span id="file-chosen">No file chosen</span>
+    </div>
     <div>
         <button type="button" class="submitButton" id="submit">Submit</button>
     </div>
@@ -27,10 +33,15 @@
     <script>
         //add firestore to file
         let db = firebase.firestore()
-
+        //show which file the user has selected if they have chosen a file
+        const actualBtn = document.getElementById('imageUpload');
+        const fileChosen = document.getElementById('file-chosen');
+        actualBtn.addEventListener('change', function () {
+            //grab file name and change span text to show file name
+            fileChosen.textContent = this.files[0].name
+        })
         var errorLabel = document.getElementById("errorLabel")
         var submitButton = document.getElementById("submit")
-
         submitButton.onclick = validateField
         //save user id
         var userID = ""
@@ -66,30 +77,81 @@
         }
         //add question to firestore
         function addQuestion(question, description, subject, uid) {
-            db.collection("questions").add({
-                question: question,
-                description: description,
-                subject: subject,
-                author: uid,
-                acceptedAnswer: "",
-                upvotes: 0,
-                answers: []
-            }).then(function (docRef) {
-                //add questionID to user information
-                db.collection("users").doc(userID).update({
-                    questions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+            var image = document.getElementById("imageUpload").files[0]
+            if (image != null) {
+                //user has uploaded an image along with the question, add image to firestore first to get image url
+                //create storage reference to image
+                const ref = firebase.storage().ref().child("question_images/" + image.name)
+                //put the image into firestore
+                ref.put(image).then((snapshot) => {
+                    //get url for newly uploaded image
+                    snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        console.log('File available at', downloadURL);
+                        //url gotten successfully, add question to firestore
+                        db.collection("questions").add({
+                            question: question,
+                            description: description,
+                            subject: subject,
+                            author: uid,
+                            acceptedAnswer: "",
+                            upvotes: 0,
+                            answers: [],
+                            hasImage: true,
+                            imageURL: downloadURL
+                        }).then(function (docRef) {
+                            //add questionID to user information
+                            db.collection("users").doc(userID).update({
+                                questions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                            }).catch((error) => {
+                                console.error("Error Adding Question: ", error)
+                                //todo: delete newly created question
+                            })
+                            //link to question page
+                            var newURL = "/question/show/" + docRef.id
+                            console.log(newURL)
+                            window.location.href = newURL
+                        }).catch((error) => {
+                            console.error("Error Adding Question: ", error)
+                            //todo: delete newly created question
+                        })
+                    }).catch((error) => {
+                        //error uploading image display error to user
+                        showError("Error uploading image, please try again later or contact support")
+                    })
+                }).catch((error) => {
+                    //error uploading image display error to user
+                    showError("Error uploading image, please try again later or contact support")
+                })
+            } else {
+                //user has not uploaded an image, just upload question
+                db.collection("questions").add({
+                    question: question,
+                    description: description,
+                    subject: subject,
+                    author: uid,
+                    acceptedAnswer: "",
+                    upvotes: 0,
+                    answers: [],
+                    hasImage: false,
+                    imageURL: ""
+                }).then(function (docRef) {
+                    //add questionID to user information
+                    db.collection("users").doc(userID).update({
+                        questions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                    }).catch((error) => {
+                        console.error("Error Adding Question: ", error)
+                        //todo: delete newly created question
+                    })
+                    //link to question page
+                    var newURL = "/question/show/" + docRef.id
+                    console.log(newURL)
+                    window.location.href = newURL
                 }).catch((error) => {
                     console.error("Error Adding Question: ", error)
                     //todo: delete newly created question
                 })
-                //link to question page
-                var newURL = "/question/show/" + docRef.id
-                console.log(newURL)
-                window.location.href = newURL
-            }).catch((error) => {
-                console.error("Error Adding Question: ", error)
-                //todo: delete newly created question
-            })
+            }
+
         }
         //display error to user
         function showError(error) {
