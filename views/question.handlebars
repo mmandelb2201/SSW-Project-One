@@ -165,7 +165,8 @@
                                 question: qID,
                                 hasImage: true,
                                 imageURL: downloadURL,
-                                upvotes: 0
+                                upvotes: 0,
+                                created: firebase.firestore.Timestamp.now()
                             }).then(function (docRef) {
                                 location.reload()
                             }).catch((error) => {
@@ -189,7 +190,8 @@
                         question: qID,
                         hasImage: false,
                         imageURL: "",
-                        upvotes: 0
+                        upvotes: 0,
+                        created: firebase.firestore.Timestamp.now()
                     }).then(function (docRef) {
                         location.reload()
                     }).catch((error) => {

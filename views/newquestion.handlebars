@@ -97,13 +97,14 @@
                             upvotes: 0,
                             answers: [],
                             hasImage: true,
-                            imageURL: downloadURL
+                            imageURL: downloadURL,
+                            created: firebase.firestore.Timestamp.now()
                         }).then(function (docRef) {
                             //add questionID to user information
                             db.collection("users").doc(userID).update({
                                 questions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                             }).catch((error) => {
-                                console.error("Error Adding Question: ", error)
+                                console.error("Error Adding Question To User Data: ", error)
                                 //todo: delete newly created question
                             })
                             //link to question page
@@ -111,7 +112,7 @@
                             console.log(newURL)
                             window.location.href = newURL
                         }).catch((error) => {
-                            console.error("Error Adding Question: ", error)
+                            console.error("Error Adding Question Data: ", error)
                             //todo: delete newly created question
                         })
                     }).catch((error) => {
@@ -133,7 +134,8 @@
                     upvotes: 0,
                     answers: [],
                     hasImage: false,
-                    imageURL: ""
+                    imageURL: "",
+                    created: firebase.firestore.Timestamp.now()
                 }).then(function (docRef) {
                     //add questionID to user information
                     db.collection("users").doc(userID).update({

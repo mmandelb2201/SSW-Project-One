@@ -96,7 +96,8 @@
                 db.collection("users").doc(user.uid).set({
                     username: username,
                     email: email,
-                    questions: []
+                    questions: [],
+                    created: firebase.firestore.Timestamp.now()
                 }).then(() => {
                     console.log("added user data correctly")
                     window.location.href = "/account/show/" + user.uid
