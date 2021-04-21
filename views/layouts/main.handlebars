@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title id="title">{{ title }}</title>
-  <link rel="stylesheet" type="text/css" href="/main.css"> 
+  <link rel="stylesheet" type="text/css" href="/main.css">
   <!--<The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
 
@@ -41,7 +41,8 @@
 </head>
 
 <body>
-  <input type="image" height="145px" width="305px" id="websiteTitleLogo" src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FlogoVersionOne.png?alt=media&token=0174e326-4b37-4caa-8f1f-fe283082efda" />
+  <input type="image" height="145px" width="305px" id="websiteTitleLogo"
+    src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FlogoVersionOne.png?alt=media&token=0174e326-4b37-4caa-8f1f-fe283082efda" />
   <div class="topnav">
     <a href="/">Home Page</a>
     <a href="/search/questions/home/none">Questions</a>
@@ -50,12 +51,44 @@
   </div>
   {{!-- {{{body}}} is where the other handlebars pages will be loaded --}}
   {{{body}}}
+<<<<<<< HEAD
   <div>
     
+=======
+  <div class="footer">
+    <div class="center">
+      <input type="image" height="67.5px" id="websiteFooterLogo" width="180px"
+        src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FlogoVersionOne.png?alt=media&token=0174e326-4b37-4caa-8f1f-fe283082efda" />
+    </div>
+    <div class="center">
+      <h4>Contact Us</h4>
+      <div class="footerDiv">
+        <image height="25px" width="30px"
+          src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FstudyBuddyEmailIcon.png?alt=media&token=63a5aaf0-0675-4b3f-ad90-782cae40aaf6">
+          <p>support@studybuddy.com</p>
+      </div>
+      <div class="footerDiv">
+        <image height="25px" width="30px"
+          src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FstudyBuddyPhoneIcon.png?alt=media&token=bd4646a6-b089-4fc1-a890-3752ef09adb9">
+          <p>(555)-654-3456</p>
+      </div>
+    </div>
+    <div class="center">
+      <h4>Study Buddy Products and Services</h4>
+      <a href="/search/questions/home/none">Questions and Answers</a>
+      <a href="/flashcards">Flashcards</a>
+      <a href="">Messenger</a>
+      <a href="https://www.linkedin.com/">Study Buddy Careers</a>
+      <a href="/inter-ships">Internships</a>
+    </div>
+>>>>>>> mmandelb
   </div>
   <script>
     //make website logo link to home page
     document.getElementById("websiteTitleLogo").onclick = function () {
+      window.location.href = "/"
+    }
+    document.getElementById("websiteFooterLogo").onclick = function () {
       window.location.href = "/"
     }
     //get account button to change its href
