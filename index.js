@@ -83,6 +83,9 @@ app.get("/search/questions/:subject/:sort", (req, res) => {
         sort: req.params.sort
     })
 })
+app.get("/inter-ships", (req, res) => {
+    res.send("i would also like an internship")
+})
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
     res.render("pagenotfound.handlebars", {

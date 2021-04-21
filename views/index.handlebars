@@ -1,18 +1,41 @@
 <div class="welcomeBanner" style="border-bottom: 1px solid gray;">
     <h1 class="welcomeBanner">The Best Way To Study</h2>
 </div>
-<h2 class="questionWelcomeBanner"> Questions </h2>
-<div id="questions" style="text-align: left;"></div>
+<div class="row">
+    <div class="column">
+        <h2 class="questionWelcomeBanner"> Top Questions </h2>
+        <div id="questions" style="text-align: left;"></div>
+    </div>
+    <div class="column">
+        <h2 class="questionWelcomeBanner"> Top Flashcards </h2>
+        <div id="flashcards" style="text-align: left;"></div>
+    </div>
+</div>
 
 <script>
     let db = firebase.firestore()
 
-    db.collection("questions").orderBy("upvotes").limit(5).get().then((documents) => {
+    db.collection("questions").orderBy("upvotes", "desc").limit(5).get().then((documents) => {
         documents.forEach((doc) => {
             if (doc.exists) {
                 //got document successfully
                 //display question data
-                displayQuestion(doc.data().question, doc.data().description, doc.id)
+                displayQuestion(doc.data().question, doc.data().description, doc.id, doc.data().upvotes)
+            } else {
+                //could not find question, skip and go on to next one
+                if (amountOfQuestions == 0 && x + 1 == questions.length) {
+                    //none of the questions found could be downloaded, 
+                    //change account screen as if no questions found
+                }
+            }
+        })
+    })
+    db.collection("flashcards").orderBy("upvotes", "desc").limit(5).get().then((documents) => {
+        documents.forEach((doc) => {
+            if (doc.exists) {
+                //got document successfully
+                //display question data
+                displayFlashcards(doc.data().subject, doc.data().description, doc.id, doc.data().upvotes)
             } else {
                 //could not find question, skip and go on to next one
                 if (amountOfQuestions == 0 && x + 1 == questions.length) {
@@ -23,7 +46,7 @@
         })
     })
 
-    function displayQuestion(question, description, questionID) {
+    function displayQuestion(question, description, questionID, upvoteCount) {
         //create a to allow user to click to question
         var questionA = document.createElement("a")
         questionA.setAttribute("class", "questionPreviewA")
@@ -36,6 +59,11 @@
         questionTitle.setAttribute("class", "questionPreviewTitle")
         var questionText = document.createTextNode(question)
         questionTitle.appendChild(questionText)
+        //create question upvotes text
+        var upvotes = document.createElement("h4")
+        upvotes.setAttribute("class", "questionPreviewUpvotes")
+        var upvotesText = document.createTextNode("Upvotes: " + upvoteCount)
+        upvotes.appendChild(upvotesText)
         //create question description
         var questionDescription = document.createElement("h4")
         questionDescription.setAttribute("class", "questionPreviewDescription")
@@ -44,9 +72,44 @@
         //add title and body to div
         questionDiv.appendChild(questionTitle)
         questionDiv.appendChild(questionDescription)
+        questionDiv.appendChild(upvotes)
         //add div to a
         questionA.appendChild(questionDiv)
         //add div to div already in html
         document.getElementById("questions").appendChild(questionA)
     }
+    //REMOVE AFTER PRESENTATION
+    function displayFlashcards(question, description, questionID, upvoteCount) {
+        //create a to allow user to click to question
+        var questionA = document.createElement("a")
+        questionA.setAttribute("class", "questionPreviewA")
+        questionA.setAttribute("href", "/question/show/" + questionID)
+        //create question div
+        var questionDiv = document.createElement("div")
+        questionDiv.setAttribute("class", "questionPreviewDiv")
+        //create question title
+        var questionTitle = document.createElement("h2")
+        questionTitle.setAttribute("class", "questionPreviewTitle")
+        var questionText = document.createTextNode(question)
+        questionTitle.appendChild(questionText)
+        //create question upvotes text
+        var upvotes = document.createElement("h4")
+        upvotes.setAttribute("class", "questionPreviewUpvotes")
+        var upvotesText = document.createTextNode("Upvotes: " + upvoteCount)
+        upvotes.appendChild(upvotesText)
+        //create question description
+        var questionDescription = document.createElement("h4")
+        questionDescription.setAttribute("class", "questionPreviewDescription")
+        var questionDescriptionText = document.createTextNode(description)
+        questionDescription.appendChild(questionDescriptionText)
+        //add title and body to div
+        questionDiv.appendChild(questionTitle)
+        questionDiv.appendChild(questionDescription)
+        questionDiv.appendChild(upvotes)
+        //add div to a
+        questionA.appendChild(questionDiv)
+        //add div to div already in html
+        document.getElementById("flashcards").appendChild(questionA)
+    }
+    //REMOVE TO HERE 
 </script>
