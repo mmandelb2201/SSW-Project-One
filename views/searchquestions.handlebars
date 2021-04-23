@@ -1,0 +1,181 @@
+<div class="pageHeader">
+    <h1 class="pageTitle">Find A Question</h1>
+    <button type="button" class="submitButton" id="askQuestion">Ask A New Question</button>
+</div>
+<div class="parametersDiv">
+    <label for="subject">Choose a subject:</label>
+
+    <select name="subject" id="subject">
+        <option value="home">Subject</option>
+        <option value="Math">Math</option>
+        <option value="Science">Science</option>
+        <option value="English">English</option>
+        <option value="History">History</option>
+    </select>
+
+    <label for="sort">Sort By:</label>
+
+    <select name="sort" id="sort">
+        <option value="none">Sort</option>
+        <option value="upvotes-high-to-low">Upvotes: High to Low</option>
+        <option value="upvotes-low-to-high">Upvotes: Low to High</option>
+        <option value="alphabetical">Alphabetical</option>
+        <option value="reverse-alphabetical">Reverse Alphabetical</option>
+        <option value="newest-question">Time Asked: Newest</option>
+        <option value="oldest-question">Time Asked: Oldest</option>
+    </select>
+</div>
+<h2 class="secondaryTitle" style="border-bottom: 1px solid gray;">Results</h2>
+<div id="questions"></div>
+<h4 id="errorLabel">
+    <script>
+        let sort = "{{sort}}"
+        let subject = "{{subject}}"
+        //add link to ask question button
+        document.getElementById("askQuestion").onclick = function () {
+            window.location.href = "/question/new"
+        }
+        //reload page to find new seach results based on user inputs
+        var subjectMenu = document.getElementById("subject")
+        subjectMenu.onchange = function () {
+            window.location.href = "/search/questions/" + subjectMenu.value + "/" + sort
+        }
+
+        var sortMenu = document.getElementById("sort")
+        sortMenu.onchange = function () {
+            window.location.href = "/search/questions/" + subject + "/" + sortMenu.value
+        }
+        //change drop down menu value based on search parameters
+        subjectMenu.value = subject
+        sortMenu.value = sort
+        //add firestore to file
+        let db = firebase.firestore()
+        //get questions by user defined subject if subject is defined
+        var questionsBySubject = db.collection("questions").where("subject", "==", subject)
+        if (subject == "home") {
+            questionsBySubject = db.collection("questions")
+        }
+        //check to see how user wants to sort data, perform query based on that
+        if (sort.toLowerCase() == "upvotes-high-to-low" || sort == "none" && subject != "home") {
+            //user wants to sort questions by highest upvote count to lowest
+            //or no sort selected, so default to highest upvote count to lowest
+            questionsBySubject.orderBy("upvotes", "desc").limit(5).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    //succesfully got questions, display to user
+                    addQuestion(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes, doc.id, doc.data().upvotes)
+                })
+            }).catch((error) => {
+                //error getting questions, show error to user
+                showError("Error finding questions, please try another search or try again in a few minutes")
+            })
+        } else if (sort.toLowerCase() == "upvotes-low-to-high") {
+            //user wants to sort questions by lowest upvote count to highest
+            questionsBySubject.orderBy("upvotes").limit(5).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    //succesfully got questions, display to user
+                    addQuestion(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes, doc.id, doc.data().upvotes)
+                })
+            }).catch((error) => {
+                //error getting questions, show error to user
+                showError("Error finding questions, please try another search or try again in a few minutes")
+            })
+        } else if (sort.toLowerCase() == "alphabetical") {
+            //user wants to sort questions alphabetically
+            questionsBySubject.orderBy("question").limit(5).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    //succesfully got questions, display to user
+                    addQuestion(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes, doc.id, doc.data().upvotes)
+                })
+            }).catch((error) => {
+                //error getting questions, show error to user
+                showError("Error finding questions, please try another search or try again in a few minutes")
+            })
+        } else if (sort.toLowerCase() == "reverse-alphabetical") {
+            //user wants to sort questions reverse alphabetically
+            questionsBySubject.orderBy("question", "desc").limit(5).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    //succesfully got questions, display to user
+                    addQuestion(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes, doc.id, doc.data().upvotes)
+                })
+            }).catch((error) => {
+                //error getting questions, show error to user
+                showError("Error finding questions, please try another search or try again in a few minutes")
+            })
+        } else if (sort.toLocaleLowerCase() == "newest-question") {
+            //user wants to sort by newest question
+            questionsBySubject.orderBy("created", "desc").limit(5).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    //succesfully got questions, display to user
+                    addQuestion(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes, doc.id, doc.data().upvotes)
+                })
+            }).catch((error) => {
+                //error getting questions, show error to user
+                showError("Error finding questions, please try another search or try again in a few minutes")
+            })
+        } else if (sort.toLocaleLowerCase() == "oldest-question") {
+            //user wants to find oldest questions first
+            questionsBySubject.orderBy("created").limit(5).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    //succesfully got questions, display to user
+                    addQuestion(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes, doc.id, doc.data().upvotes)
+                })
+            }).catch((error) => {
+                //error getting questions, show error to user
+                showError("Error finding questions, please try another search or try again in a few minutes")
+            })
+
+        } else if (sort == "none" && subject == "home") {
+            //no parameters entered, default to sort by high to low upvotes
+            db.collection("questions").orderBy("upvotes", "desc").limit(5).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    //succesfully got questions, display to user
+                    addQuestion(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes, doc.id, doc.data().upvotes)
+                })
+            }).catch((error) => {
+                //error getting questions, show error to user
+                showError("Error finding questions, please try another search or try again in a few minutes")
+            })
+        }
+        else {
+            //sort parameter does not exist, display 404 error
+            showError("Error finding questions, please try another search or try again in a few minutes")
+        }
+        function showError(error) {
+            document.getElementById("errorLabel").innerHTML = error
+        }
+
+        function addQuestion(question, description, questionSubject, upvotes, questionID, upvoteCount) {
+            //add question to question div
+            //create a to allow user to click to question
+            var questionA = document.createElement("a")
+            questionA.setAttribute("class", "questionPreviewA")
+            questionA.setAttribute("href", "/question/show/" + questionID)
+            //create question div
+            var questionDiv = document.createElement("div")
+            questionDiv.setAttribute("class", "questionPreviewDiv")
+            //create question title
+            var questionTitle = document.createElement("h2")
+            questionTitle.setAttribute("class", "questionPreviewTitle")
+            var questionText = document.createTextNode(question)
+            questionTitle.appendChild(questionText)
+            //create question description
+            var questionDescription = document.createElement("h4")
+            questionDescription.setAttribute("class", "questionPreviewDescription")
+            var questionDescriptionText = document.createTextNode(description)
+            questionDescription.appendChild(questionDescriptionText)
+            //create question upvotes text
+            var upvotes = document.createElement("h4")
+            upvotes.setAttribute("class", "questionPreviewUpvotes")
+            var upvotesText = document.createTextNode("Upvotes: " + upvoteCount)
+            upvotes.appendChild(upvotesText)
+            //add title, upvotes and body to div
+            questionDiv.appendChild(questionTitle)
+            questionDiv.appendChild(questionDescription)
+            questionDiv.appendChild(upvotes)
+            //add div to a
+            questionA.appendChild(questionDiv)
+            //add div to div already in html
+            document.getElementById("questions").appendChild(questionA)
+        }
+
+    </script>

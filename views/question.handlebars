@@ -1,29 +1,37 @@
-<h1 id="questionTitle" class="pageTitle"></h1>
-<h3 id="questionSubject" class="secondaryTitle" style="border-bottom: 1px solid gray;"></h3>
-<p id="questionDescription"></p>
-<div class="upvoteContainer">
-    <input type="image" id="upvoteQuestion" class="upvoteButton" height="25px" width="25px"
-        src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowUnselected.png?alt=media&token=67e58f8e-5f78-4d2a-a3aa-530858b8ef66">
-    <h4 id="questionUpvotes" class="upvoteText"></h4>
-</div>
-<h4 id="asker" class="authorText" style="border-bottom: 1px solid gray;"></h4>
-<div style="border-bottom: 1px solid gray;" class="newAnswer">
-    <h3>Add An Answer</h3>
-    <textarea id="answer" placeholder="Answer"
-        style="height: 150px;  width: 500px;  resize: none;  font-size: 17px; font-family: Arial, Helvetica, sans-serif;"></textarea>
-    <div style="margin-top: 5px;">
-        <button type="button" class="submitButton" id="submitAnswer">Submit</button>
+<div class="centerContent">
+    <div id="questionDiv">
+        <h1 id="questionTitle" style="margin-top: 5px;" class="pageTitle"></h1>
+        <h3 id="questionSubject" class="secondaryTitle" style="margin-top: 5px;border-bottom: 1px solid gray;"></h3>
+        <p id="questionDescription" style="margin-top: 5px;width: 650px;margin-left:auto;margin-right:auto;"></p>
     </div>
-    <h4 id="answerError"></h4>
-</div>
-<div id="acceptedAnswer">
-    <h3 id="acceptedAnswerTitle"></h3>
-    <p id="acceptedAnswerBody"></p>
-    <h4 id="acceptedAnswerAuthor" class="authorText"></h4>
-</div>
-<div id="answers">
-    <h3>Other Answers</h3>
+    <div class="upvoteContainer" style="margin-top: 5px;">
+        <input type="image" id="upvoteQuestion" class="upvoteButton" height="25px" width="25px"
+            src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowUnselected.png?alt=media&token=67e58f8e-5f78-4d2a-a3aa-530858b8ef66">
+        <h4 id="questionUpvotes" class="upvoteText"></h4>
+    </div>
+    <h4 id="asker" class="authorText" style="border-bottom: 1px solid gray;"></h4>
+    <div style="border-bottom: 1px solid gray;" class="newAnswer">
+        <h3>Add An Answer</h3>
+        <textarea id="answer" placeholder="Answer"
+            style="height: 150px;  width: 500px;  resize: none;  font-size: 17px; font-family: Arial, Helvetica, sans-serif;"></textarea>
+        <h4>Add An Image To Show Extra Work or Details</h4>
+        <input type="file" id="imageUpload" class="file-select" accept="image/*" hidden/>
+        <label for="imageUpload" class="imageSelectLabel" style="margin-bottom:10px">Choose file</label>
+        <span id="file-chosen">No file chosen</span>
+        <div style="margin-top: 5px;">
+            <button type="button" class="submitButton" id="submitAnswer">Submit</button>
+        </div>
+        <h4 id="answerError"></h4>
+    </div>
+    <div id="acceptedAnswer">
+        <h3 id="acceptedAnswerTitle"></h3>
+        <p id="acceptedAnswerBody"></p>
+        <h4 id="acceptedAnswerAuthor" class="authorText"></h4>
+    </div>
+    <div id="answers">
+        <h3>Other Answers</h3>
 
+    </div>
 </div>
 
 <script>
@@ -34,6 +42,13 @@
     //button image urls
     let whiteArrowUrl = "https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowUnselected.png?alt=media&token=67e58f8e-5f78-4d2a-a3aa-530858b8ef66"
     let redArrowUrl = "https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FupvoteArrowSelected.png?alt=media&token=2a97d394-8801-49fe-9a11-e9dcc4850e29"
+    //show which file the user has selected if they have chosen a file
+    const actualBtn = document.getElementById('imageUpload');
+    const fileChosen = document.getElementById('file-chosen');
+    actualBtn.addEventListener('change', function(){
+        //grab file name and change span text to show file name
+        fileChosen.textContent = this.files[0].name
+    })
     //current user username
     var username = ""
     var hasBeenUpvoted = false
@@ -82,7 +97,7 @@
     db.collection("questions").doc(qID).get().then((doc) => {
         if (doc.exists) {
             //got document successfully
-            showQuestionData(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes)
+            showQuestionData(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes, doc.data().hasImage, doc.data().imageURL)
             //Get the username for the asker
             getAskerUsername(doc.data().author)
             //get the answers
@@ -95,12 +110,22 @@
         console.log("Error getting document:", error)
     })
 
-    function showQuestionData(question, description, subject, upvotes) {
+    function showQuestionData(question, description, subject, upvotes, hasImage, imageURL) {
+        //add question data to HTML
         document.getElementById("title").innerHTML = question
         document.getElementById("questionTitle").innerHTML = question
         document.getElementById("questionSubject").innerHTML = "Subject: " + subject
         document.getElementById("questionDescription").innerHTML = description
         document.getElementById("questionUpvotes").innerHTML = upvotes
+        //check to see if question has an image
+        if (hasImage == true) {
+            //question has an image, add image element to HTML page
+            var image = document.createElement("img")
+            image.setAttribute("src", imageURL)
+            image.setAttribute("style", "object-fit: cover;max-width:500px;")
+            //add image to div
+            document.getElementById("questionDiv").appendChild(image)
+        }
     }
 
     function getAskerUsername(id) {
@@ -121,18 +146,59 @@
             if (user) {
                 // User is signed in.
                 let answer = document.getElementById("answer").value
-                db.collection("answers").add({
-                    answer: answer,
-                    author: username,
-                    authorID: user.uid,
-                    question: qID
-                }).then(() => {
-                    //reload page after successfully added answer
-                    location.reload()
-                }).catch((error) => {
-                    //display error adding answer
-                    document.getElementById("answerError").innerHTML = "Error: " + error
-                })
+                //check to see if user uploaded an image of their work
+                var image = document.getElementById("imageUpload").files[0]
+                if (image != null) {
+                    //user has uploaded an image along with the question, add image to firestore first to get image url
+                    //create storage reference to image
+                    const ref = firebase.storage().ref().child("answer_images/" + image.name)
+                    //put the image into firestore
+                    ref.put(image).then((snapshot) => {
+                        //get url for newly uploaded image
+                        snapshot.ref.getDownloadURL().then((downloadURL) => {
+                            console.log('File available at', downloadURL);
+                            //url gotten successfully, add answer to firestore
+                            db.collection("answers").add({
+                                answer: answer,
+                                author: username,
+                                authorID: user.uid,
+                                question: qID,
+                                hasImage: true,
+                                imageURL: downloadURL,
+                                upvotes: 0,
+                                created: firebase.firestore.Timestamp.now()
+                            }).then(function (docRef) {
+                                location.reload()
+                            }).catch((error) => {
+                                console.error("Error Adding Answer: ", error)
+                                //todo: delete newly created question
+                            })
+                        }).catch((error) => {
+                            //error uploading image display error to user
+                            document.getElementById("answerError").innerHTML("Error uploading image, please try again later or contact support")
+                        })
+                    }).catch((error) => {
+                        //error uploading image display error to user
+                        document.getElementById("answerError").innerHTML("Error uploading image, please try again later or contact support")
+                    })
+                } else {
+                    //no image uploaded, add question to firebase without question
+                    db.collection("answers").add({
+                        answer: answer,
+                        author: username,
+                        authorID: user.uid,
+                        question: qID,
+                        hasImage: false,
+                        imageURL: "",
+                        upvotes: 0,
+                        created: firebase.firestore.Timestamp.now()
+                    }).then(function (docRef) {
+                        location.reload()
+                    }).catch((error) => {
+                        console.error("Error Adding Answer: ", error)
+                        //todo: delete newly created question
+                    })
+                }
             } else {
                 // No user is signed in.
                 document.getElementById("answerError").innerHTML = "Please sign in to answer this question"
@@ -141,13 +207,14 @@
     }
     //this function grabs the answers from firestore and adds them to the html
     function showAnswers() {
-        var answerQuery = db.collection("answers").where("question", "==", qID).get().then((querySnapshot) => {
+        var answerQuery = db.collection("answers").where("question", "==", qID).orderBy("upvotes", "desc").get().then((querySnapshot) => {
             querySnapshot.forEach((answerDoc) => {
                 //grabbed answers for this question from firebase
                 //add answers to the html
                 var answerTextDiv = document.createElement("div")
                 answerTextDiv.setAttribute("class", "answerTextDiv")
                 var answerContainer = document.createElement("p")
+                answerContainer.setAttribute("style", "width: 650px;margin-left:auto;margin-right:auto;")
                 var answerBody = document.createTextNode(answerDoc.data().answer)
                 answerContainer.appendChild(answerBody)
                 answerTextDiv.appendChild(answerContainer)
@@ -186,6 +253,14 @@
                 var answerDiv = document.createElement("div")
                 answerDiv.setAttribute("class", "answer")
                 answerDiv.appendChild(answerTextDiv)
+                //check to see if answer has an image
+                if (answerDoc.data().hasImage == true) {
+                    // there is an image, add image to div
+                    var image = document.createElement("img")
+                    image.setAttribute("src", answerDoc.data().imageURL)
+                    image.setAttribute("style", "object-fit: cover;max-width:500px;")
+                    answerDiv.appendChild(image)
+                }
                 answerDiv.appendChild(authorDiv)
                 answerDiv.appendChild(upvoteDiv)
 

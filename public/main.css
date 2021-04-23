@@ -4,6 +4,11 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+#websiteTitleLogo{
+    width: 275px; /* width of container */
+    height: 80px; /* height of container */
+    object-fit: cover;
+}
 
 /* Add a black background color to the top navigation */
 
@@ -13,8 +18,11 @@
     padding: 0px;
 }
 .centerContent{
-    margin-left: auto;
-    margin-right: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
 }
 
 /* Style the links inside the navigation bar */
@@ -96,12 +104,21 @@ span.websiteTitle {
     font-weight: bold;
     font-size: 25px;
     color: white;
-    -webkit-text-stroke-width: 0.6px;
+    -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
 }
 
 .upvoteContainer {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.footerDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .upvoteButton {
@@ -123,9 +140,9 @@ span.websiteTitle {
     color: black;
     border: 2px solid rgb(0, 166, 255);;
     transition-duration: 0.4s;
-    height: 25px;
-    width: 70px;
-    font-size: 15;
+    height: 35px;
+    border-radius: 0.3rem;
+    font-size: 20px;
     font-weight: bold;
 }
 
@@ -159,6 +176,7 @@ span.websiteTitle {
     width: 150px;
     font-size: 15;
     font-weight: bold;
+    border-radius: 0.3rem;
 }
 
 .signOutButton:hover {
@@ -202,16 +220,29 @@ span.websiteTitle {
     margin-bottom: 10px;
 }
 
-.questionPreviewDiv {
-    outline: 2px solid rgb(0, 166, 255);;
+.questionPreviewDiv{
+    background-color: (255, 255, 255);
+    margin: 3px;
+    padding: 1px;
+}
+
+.questionPreviewUpvotes{
+    font-weight: bold;
+    font-size: 15px;
+    color: black;
+}
+
+.questionPreviewDiv:hover {
+    background-color: rgb(220, 245, 252);
 }
 
 .questionPreviewTitle {
-    color: rgb(0, 166, 255);;
+    color: rgb(0, 166, 255);
 }
 
 .questionPreviewDescription {
     font-weight: normal;
+    color:black
 }
 
 .questionPreviewA {
@@ -223,7 +254,7 @@ div.welcomeBanner {
     position: relative;
     margin-left: -50vw;
     height: 100px;
-    margin-top: 100px;
+    margin-top: 50px;
     left: 50%;
 }
 
@@ -244,3 +275,100 @@ h1.welcomeBanner {
     font-size: 40px;
     text-align: center;
 }
+
+.parametersDiv{
+    margin-top: 15px;
+    font-weight: bold;
+}
+.parametersDiv select{
+    all: unset; 
+    padding-right: 15px;
+    border-bottom: 1.5px solid;
+    color: rgb(0, 166, 255);
+    font-weight: normal;
+    background: url("https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FblueDownArrow.png?alt=media&token=0c94df40-1252-4747-8f9d-5c33b4cd717c") no-repeat right;
+    background-size: 16px;
+}
+
+div.fourZeroFour{
+    display: flex;
+    left: 50%;
+    top: 40%;
+    position: fixed;
+    transform: translate(-50%, -50%)
+}
+
+div.fourZeroFour h3{
+    font-size: 20px;
+    width: 250px;
+    text-align: center;
+    
+}
+
+.mainSelect {
+    all: unset; 
+    padding-right: 15px;
+    border-bottom: 1.5px solid;
+    margin-bottom: 15px;
+    color: rgb(0, 166, 255);
+    font-size: 17.5px;
+    font-weight: 500;
+    background: url("https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FblueDownArrow.png?alt=media&token=0c94df40-1252-4747-8f9d-5c33b4cd717c") no-repeat right;
+    background-size: 16px;
+}
+
+.largeInput {
+    all: unset;
+    border-bottom: 1.5px solid;
+    color: black;
+    font-size: 20px;
+    width: 350px;
+}
+
+.middleContent {
+    margin-bottom: 45px;
+}
+
+.imageSelectLabel{
+    display: inline-block;
+    background-color: rgb(0, 166, 255);
+    color: white;
+    padding: 0.5rem;
+    font-family: sans-serif;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .footer{
+    margin-top: 35px;
+    border-top: 1px solid black;
+    column-count: 3;
+  }
+  .footer .center {
+      color: black;
+      height: 300px;
+  }
+  .footer .center {
+      font-weight: 500;
+  }
+  .footer .center *{
+    display: flex;
+    justify-content: center;
+  }
+  .footer .center a {
+      color: black;
+      text-decoration: none;
+    }
+
+  .column {
+    float: left;
+    width: 50%;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
