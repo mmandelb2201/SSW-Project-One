@@ -1,0 +1,75 @@
+<link rel="stylesheet" type="text/css" href="/messenger.css">
+
+<div id="messenger-page">
+    <header id="messenger-top">
+
+    </header>
+    <div id="message-area">
+        <div id="room">
+
+        </div>
+        <div id="message-box">
+            <button type="button" id="message-submit">+</button>
+            <input type="text" id="message-input">
+        </div>
+    </div>
+    <footer id="messenger-bottom">
+
+    </footer>
+</div>
+<script>
+    let db = firebase.firestore()
+
+    testroom = "demoRoom"
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("message-submit").addEventListener("click", () => {
+            message = document.getElementById("message-input").value
+            storeMessage(testroom, "John Doe", message)
+            displayMessage({username: "John Doe", mssg: message})
+            document.getElementById("message-input").value = ""
+        })
+    })
+
+    function storeMessage(room, username, mssg) {
+        db.collection("rooms").doc(room).collection("messages").add({ 
+            username, 
+            mssg,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(messageRef => {
+            console.log("Message ID is ", messageRef)             
+        })
+        .catch(err => {
+            console.log("Error adding document: ", err)
+        })
+    }
+
+    function displayMessage(data) {
+       let room = document.getElementById("room");
+       let messageBoxElement = `<p class="message-container">${data.username}: ${data.mssg}</p>` 
+       room.innerHTML += messageBoxElement
+    }
+
+    function displayMessages(room) {
+        db.collection("rooms").doc(room).collection("messages").orderBy("timestamp")
+        .get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                displayMessage(doc.data())
+            })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    function test() {
+        displayMessages("demoRoom")
+    }
+
+    
+
+    // Testing
+    test()
+</script>
