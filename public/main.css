@@ -3,6 +3,10 @@
 * {
     font-family: Arial, Helvetica, sans-serif;
 }
+.mainContent {
+    min-height: 100%;
+    max-width: 98%;
+}
 
 #websiteTitleLogo{
     width: 275px; /* width of container */
@@ -218,6 +222,10 @@ span.websiteTitle {
     margin-left: 5px;
 }
 
+.answer {
+    margin-bottom: 10px;
+}
+
 .acceptAnswerButton:hover {
     background-color: rgb(0, 166, 255);;
     color: white;
@@ -249,6 +257,7 @@ span.websiteTitle {
     width: 200px;
     font-size: 13;
     font-weight: bold;
+    border-radius: 0.3rem;
 }
 
 .switchSignUpAndIn:hover {
@@ -397,7 +406,8 @@ div.fourZeroFour h3{
   }
 
   .footer{
-    margin-top: 35px;
+    bottom: 0;
+    max-width: 98%;
     border-top: 1px solid black;
     column-count: 3;
   }

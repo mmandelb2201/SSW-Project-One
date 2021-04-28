@@ -15,7 +15,7 @@
         <textarea id="answer" placeholder="Answer"
             style="height: 150px;  width: 500px;  resize: none;  font-size: 17px; font-family: Arial, Helvetica, sans-serif;"></textarea>
         <h4>Add An Image To Show Extra Work or Details</h4>
-        <input type="file" id="imageUpload" class="file-select" accept="image/*" hidden/>
+        <input type="file" id="imageUpload" class="file-select" accept="image/*" hidden />
         <label for="imageUpload" class="imageSelectLabel" style="margin-bottom:10px">Choose file</label>
         <span id="file-chosen">No file chosen</span>
         <div style="margin-top: 5px;">
@@ -25,8 +25,6 @@
     </div>
     <div id="acceptedAnswer">
         <h3 id="acceptedAnswerTitle"></h3>
-        <p id="acceptedAnswerBody"></p>
-        <h4 id="acceptedAnswerAuthor" class="authorText"></h4>
     </div>
     <div id="answers">
         <h3>Other Answers</h3>
@@ -45,13 +43,40 @@
     //show which file the user has selected if they have chosen a file
     const actualBtn = document.getElementById('imageUpload');
     const fileChosen = document.getElementById('file-chosen');
-    actualBtn.addEventListener('change', function(){
+    actualBtn.addEventListener('change', function () {
         //grab file name and change span text to show file name
         fileChosen.textContent = this.files[0].name
     })
     //current user username
     var username = ""
+    var uid = ""
+    var questionAskerID = ""
+    var hasAcceptedAnswer = false
     var hasBeenUpvoted = false
+    var acceptedAnswerID = ""
+    //get current user, and then grab their username
+    function getUserInfo() {
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                //there is a user signed in, get the user document from firebase
+                db.collection("users").doc(user.uid).get().then((doc) => {
+                    if (doc.exists) {
+                        //user document found, save their usename 
+                        uid = user.uid
+                        username = doc.data().username
+                        //grab and show answers
+                        showAnswers()
+                    } else {
+                        //no user document found, treat as if no user signed in
+                        showAnswers()
+                    }
+                })
+            } else {
+                //no user signed in, grab and show answers
+                showAnswers()
+            }
+        })
+    }
     //add functionality to upvote question
     var upvoteQuestionButton = document.getElementById("upvoteQuestion")
     var questionUpvotesText = document.getElementById("questionUpvotes")
@@ -100,8 +125,19 @@
             showQuestionData(doc.data().question, doc.data().description, doc.data().subject, doc.data().upvotes, doc.data().hasImage, doc.data().imageURL)
             //Get the username for the asker
             getAskerUsername(doc.data().author)
-            //get the answers
-            showAnswers()
+            //Save author id to check if user should see accept answer button
+            questionAskerID = doc.data().author
+            //check to see if question has an accepted answer or not
+            if (doc.data().acceptedAnswer == "") {
+                //no accepted answer
+                hasAcceptedAnswer = false
+            } else {
+                //question has accepted answer, grab from firebase and display question
+                acceptedAnswerID = doc.data().acceptedAnswer
+                showAcceptedAnswer(doc.data().acceptedAnswer)
+            }
+            //get user information to add to answers 
+            getUserInfo()
         } else {
             //could not find question, redirect user
             console.log("No such document!")
@@ -207,64 +243,95 @@
     function showAnswers() {
         var answerQuery = db.collection("answers").where("question", "==", qID).orderBy("upvotes", "desc").get().then((querySnapshot) => {
             querySnapshot.forEach((answerDoc) => {
-                //grabbed answers for this question from firebase
-                //add answers to the html
-                var answerTextDiv = document.createElement("div")
-                answerTextDiv.setAttribute("class", "answerTextDiv")
-                var answerContainer = document.createElement("p")
-                answerContainer.setAttribute("style", "width: 650px;margin-left:auto;margin-right:auto;")
-                var answerBody = document.createTextNode(answerDoc.data().answer)
-                answerContainer.appendChild(answerBody)
-                answerTextDiv.appendChild(answerContainer)
+                //check to see if current answer is accepted answer, if it is, skip and go on to next answer
+                if (answerDoc.id != acceptedAnswerID) {
+                    //current answer is not accepted answer, add it to HTML
+                    //grabbed answers for this question from firebase
+                    //add answers to the html
+                    var answerTextDiv = document.createElement("div")
+                    answerTextDiv.setAttribute("class", "answerTextDiv")
+                    var answerContainer = document.createElement("p")
+                    answerContainer.setAttribute("style", "width: 650px;margin-left:auto;margin-right:auto;")
+                    var answerBody = document.createTextNode(answerDoc.data().answer)
+                    answerContainer.appendChild(answerBody)
+                    answerTextDiv.appendChild(answerContainer)
 
-                var upvoteDiv = document.createElement("div")
-                upvoteDiv.setAttribute("class", "upvoteContainer")
+                    var upvoteDiv = document.createElement("div")
+                    upvoteDiv.setAttribute("class", "upvoteContainer")
 
-                var upvoteContainer = document.createElement("h4")
-                var upvoteText = document.createTextNode(answerDoc.data().upvotes)
-                upvoteContainer.appendChild(upvoteText)
-                upvoteContainer.setAttribute("class", "upvoteText")
+                    var upvoteContainer = document.createElement("h4")
+                    var upvoteText = document.createTextNode(answerDoc.data().upvotes)
+                    upvoteContainer.appendChild(upvoteText)
+                    upvoteContainer.setAttribute("class", "upvoteText")
 
-                var authorDiv = document.createElement("div")
-                authorDiv.setAttribute("class", "authorDiv")
-                var authorContainer = document.createElement("h4")
-                var body = " By, " + answerDoc.data().author
-                var authorBody = document.createTextNode(body)
-                authorContainer.appendChild(authorBody)
-                authorContainer.setAttribute("class", "authorText")
-                authorDiv.appendChild(authorContainer)
+                    var authorDiv = document.createElement("div")
+                    authorDiv.setAttribute("class", "authorDiv")
+                    var authorContainer = document.createElement("h4")
+                    var body = " By, " + answerDoc.data().author
+                    var authorBody = document.createTextNode(body)
+                    authorContainer.appendChild(authorBody)
+                    authorContainer.setAttribute("class", "authorText")
+                    authorDiv.appendChild(authorContainer)
 
-                var upvoteButton = document.createElement("input")
-                upvoteButton.setAttribute("type", "image")
-                upvoteButton.setAttribute("class", "upvoteButton")
-                upvoteButton.setAttribute("src", whiteArrowUrl)
-                upvoteButton.setAttribute("height", "25px")
-                upvoteButton.setAttribute("width", "25px")
-                //todo: change button image to look like up arrow
-                upvoteButton.onclick = function () {
-                    upvoteQuestion(upvoteButton, answerDoc.id, upvoteContainer)
+                    var upvoteButton = document.createElement("input")
+                    upvoteButton.setAttribute("type", "image")
+                    upvoteButton.setAttribute("class", "upvoteButton")
+                    upvoteButton.setAttribute("src", whiteArrowUrl)
+                    upvoteButton.setAttribute("height", "25px")
+                    upvoteButton.setAttribute("width", "25px")
+                    //todo: change button image to look like up arrow
+                    upvoteButton.onclick = function () {
+                        upvoteQuestion(upvoteButton, answerDoc.id, upvoteContainer)
+                    }
+                    upvoteButton.innerHTML = "Upvote"
+                    //add upvote text and button to div
+                    upvoteDiv.appendChild(upvoteButton)
+                    upvoteDiv.appendChild(upvoteContainer)
+                    var answerDiv = document.createElement("div")
+                    answerDiv.setAttribute("class", "answer")
+                    answerDiv.appendChild(answerTextDiv)
+                    //check to see if answer has an image
+                    if (answerDoc.data().hasImage == true) {
+                        // there is an image, add image to div
+                        var image = document.createElement("img")
+                        image.setAttribute("src", answerDoc.data().imageURL)
+                        image.setAttribute("style", "object-fit: cover;max-width:500px;")
+                        answerDiv.appendChild(image)
+                    }
+
+                    answerDiv.appendChild(authorDiv)
+                    answerDiv.appendChild(upvoteDiv)
+
+                    //check to see if user is owner of question and has an correct answer selected
+                    if (uid == questionAskerID && hasAcceptedAnswer == false) {
+                        //user is author and has no accepted answer selected
+                        var acceptAnswerButton = document.createElement("button")
+                        acceptAnswerButton.setAttribute("type", "button")
+                        acceptAnswerButton.setAttribute("class", "submitButton")
+                        acceptAnswerButton.setAttribute("style", "margin-top: 5px;")
+                        var acceptAnswerButtonText = document.createTextNode("Accept Answer")
+                        acceptAnswerButton.appendChild(acceptAnswerButtonText)
+
+                        //add functionality to button that adds current answer as the accepted answer to the current question
+                        acceptAnswerButton.onclick = function () {
+                            //update the question document to add current answer as accepted answer
+                            db.collection("questions").doc(qID).update({
+                                acceptedAnswer: answerDoc.id
+                            }).then(function (docRef) {
+                                location.reload()
+                            }).catch((error) => {
+                                console.error("Error Adding Answer as accepted answer: ", error)
+                                //todo: delete newly created question
+                            })
+                        }
+
+                        answerDiv.appendChild(acceptAnswerButton)
+                    }
+
+                    var totalAnswerDiv = document.getElementById("answers")
+                    totalAnswerDiv.appendChild(answerDiv)
                 }
-                upvoteButton.innerHTML = "Upvote"
-                //add upvote text and button to div
-                upvoteDiv.appendChild(upvoteButton)
-                upvoteDiv.appendChild(upvoteContainer)
-                var answerDiv = document.createElement("div")
-                answerDiv.setAttribute("class", "answer")
-                answerDiv.appendChild(answerTextDiv)
-                //check to see if answer has an image
-                if (answerDoc.data().hasImage == true) {
-                    // there is an image, add image to div
-                    var image = document.createElement("img")
-                    image.setAttribute("src", answerDoc.data().imageURL)
-                    image.setAttribute("style", "object-fit: cover;max-width:500px;")
-                    answerDiv.appendChild(image)
-                }
-                answerDiv.appendChild(authorDiv)
-                answerDiv.appendChild(upvoteDiv)
 
-
-                var totalAnswerDiv = document.getElementById("answers")
-                totalAnswerDiv.appendChild(answerDiv)
             })
         }).catch((error) => {
             console.log("Error getting answers: ", error)
@@ -305,6 +372,71 @@
                     console.error("Error updating document: ", error)
                 })
         }
+    }
+    //grab accepted answer from firebase and add it to the HTML
+    function showAcceptedAnswer(answerID) {
+        db.collection("answers").doc(answerID).get().then((doc) => {
+            //add answers to the html
+            var answerTextDiv = document.createElement("div")
+            answerTextDiv.setAttribute("class", "answerTextDiv")
+            var answerContainer = document.createElement("p")
+            answerContainer.setAttribute("style", "width: 650px;margin-left:auto;margin-right:auto;")
+            var answerBody = document.createTextNode(doc.data().answer)
+            answerContainer.appendChild(answerBody)
+            answerTextDiv.appendChild(answerContainer)
+
+            var upvoteDiv = document.createElement("div")
+            upvoteDiv.setAttribute("class", "upvoteContainer")
+
+            var upvoteContainer = document.createElement("h4")
+            var upvoteText = document.createTextNode(doc.data().upvotes)
+            upvoteContainer.appendChild(upvoteText)
+            upvoteContainer.setAttribute("class", "upvoteText")
+
+            var authorDiv = document.createElement("div")
+            authorDiv.setAttribute("class", "authorDiv")
+            var authorContainer = document.createElement("h4")
+            var body = " By, " + doc.data().author
+            var authorBody = document.createTextNode(body)
+            authorContainer.appendChild(authorBody)
+            authorContainer.setAttribute("class", "authorText")
+            authorDiv.appendChild(authorContainer)
+
+            var upvoteButton = document.createElement("input")
+            upvoteButton.setAttribute("type", "image")
+            upvoteButton.setAttribute("class", "upvoteButton")
+            upvoteButton.setAttribute("src", whiteArrowUrl)
+            upvoteButton.setAttribute("height", "25px")
+            upvoteButton.setAttribute("width", "25px")
+            //todo: change button image to look like up arrow
+            upvoteButton.onclick = function () {
+                upvoteQuestion(upvoteButton, answerDoc.id, upvoteContainer)
+            }
+            upvoteButton.innerHTML = "Upvote"
+            //add upvote text and button to div
+            upvoteDiv.appendChild(upvoteButton)
+            upvoteDiv.appendChild(upvoteContainer)
+            var answerDiv = document.createElement("div")
+            answerDiv.setAttribute("class", "answer")
+            answerDiv.appendChild(answerTextDiv)
+            //check to see if answer has an image
+            if (doc.data().hasImage == true) {
+                // there is an image, add image to div
+                var image = document.createElement("img")
+                image.setAttribute("src", doc.data().imageURL)
+                image.setAttribute("style", "object-fit: cover;max-width:500px;")
+                answerDiv.appendChild(image)
+            }
+
+            answerDiv.appendChild(authorDiv)
+            answerDiv.appendChild(upvoteDiv)
+
+            var totalAnswerDiv = document.getElementById("acceptedAnswer")
+            totalAnswerDiv.appendChild(answerDiv)
+
+            document.getElementById("acceptedAnswer").setAttribute("style", "border-bottom: 1px solid gray;")
+            document.getElementById("acceptedAnswerTitle").innerHTML = "Accepted Answer"
+        })
     }
 
 </script>
