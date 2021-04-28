@@ -10,18 +10,37 @@
         <h4 class="signTitle">Password</h4>
         <input type="password" id="password" placeholder="Password" />
     </div>
-    <div class="signFormDiv">
-        <button type="button" class="submitButton" id="submit">Submit</button>
-    </div>
+
     <div class="signFormDiv">
         <h4 id="errorLabel">
             </h2>
     </div>
+    <div class="signFormDiv" id="imageUploadDiv" style="display: none;">
+        <input type="file" id="imageUpload" class="file-select" accept="image/*" hidden />
+        <label for="imageUpload" class="imageSelectLabel" style="margin-bottom:10px;">Choose file</label>
+        <span id="file-chosen">No file chosen</span>
+    </div>
+    <div class="signFormDiv" id="imagePreviewDiv" style="display: none;">
+        <img id="imagePreview" style="border-radius: 50%;" height="120px" width="120px">
+    </div>
     <div class="signFormDiv">
         <button class="switchSignUpAndIn" type="button" id="switchSignUpAndIn">Or Sign Up To Create An Account</button>
     </div>
+    <div class="signFormDiv">
+        <button type="button" class="submitButton" id="submit">Submit</button>
+    </div>
 </form>
 <script>
+    //show which file the user has selected if they have chosen a file
+    const actualBtn = document.getElementById('imageUpload');
+    const fileChosen = document.getElementById('file-chosen');
+    actualBtn.addEventListener('change', function () {
+        //grab file name and change span text to show file name
+        fileChosen.textContent = this.files[0].name
+        document.getElementById("imagePreview").src = URL.createObjectURL(this.files[0])
+        document.getElementById("imagePreviewDiv").setAttribute("style", "display: inherit")
+    })
+
     let db = firebase.firestore()
 
     //boolean to check if user is signing up or signing in
@@ -31,6 +50,8 @@
     var emailInput = document.getElementById("email")
     var submitButton = document.getElementById("submit")
     var errorLabel = document.getElementById("errorLabel")
+    var userImage = document.getElementById("imagePreview")
+    userImage.removeAttribute("src")
     submitButton.onclick = validateField
 
     //switch signIn bool when switch button is pressed
@@ -53,8 +74,14 @@
             if (usernameInput.value.length == 0 && passwordInput.value.length == 0 && emailInput.value.length == 0) {
                 showError("Please Enter All Fields")
             } else {
-                //if everything is ok, create account and redirect to account page
-                createUser(usernameInput.value, passwordInput.value, emailInput.value)
+                if (userImage.src == "") {
+                    showError("Please Upload a Profile Image")
+
+                } else {
+                    //if everything is ok, create account and redirect to account page
+                    createUser(usernameInput.value, passwordInput.value, emailInput.value)
+                }
+
             }
         }
 
@@ -93,16 +120,35 @@
         //add user data to firebase
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                db.collection("users").doc(user.uid).set({
-                    username: username,
-                    email: email,
-                    questions: []
-                }).then(() => {
-                    console.log("added user data correctly")
-                    window.location.href = "/account/show/" + user.uid
+                let image = document.getElementById("imageUpload").files[0]
+                //create storage reference to image
+                const ref = firebase.storage().ref().child("user_images/" + image.name)
+                //put the image into firestore
+                ref.put(image).then((snapshot) => {
+                    //get url for newly uploaded image
+                    snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        console.log('File available at', downloadURL);
+                        //url gotten successfully, add answer to firestore
+                        db.collection("users").doc(user.uid).set({
+                            email: email,
+                            username: username,
+                            questions: [],
+                            answers: [],
+                            imageURL: downloadURL,
+                            created: firebase.firestore.Timestamp.now()
+                        }).then(function (docRef) {
+                            window.location.href = "/account/show/" + user.uid
+                        }).catch((error) => {
+                            console.error("Error Adding Answer: ", error)
+                            //todo: delete newly created question
+                        })
+                    }).catch((error) => {
+                        //error uploading image display error to user
+                        document.getElementById("answerError").innerHTML("Error uploading image, please try again later or contact support")
+                    })
                 }).catch((error) => {
-                    console.error("Error Adding User Data: ", error)
-                    //todo: delete newly created user
+                    //error uploading image display error to user
+                    document.getElementById("answerError").innerHTML("Error uploading image, please try again later or contact support")
                 })
             } else {
                 //todo: delete newly created user
@@ -110,10 +156,14 @@
                 showError("Error Creating User")
             }
         })
-
     }
     function switchSignUpAndIn() {
         if (signIn == true) {
+            //make file upload div visible
+            document.getElementById("imageUploadDiv").setAttribute("style", "display: inherit;")
+            if (userImage.hasAttribute("src")) {
+                document.getElementById("imagePreviewDiv").setAttribute("style", "display: inherit;")
+            }
             //add username field to html
             var title = document.createElement("h4")
             var titleText = document.createTextNode("Username")
@@ -135,6 +185,9 @@
 
             signIn = false
         } else {
+            //make file upload div not visible
+            document.getElementById("imageUploadDiv").setAttribute("style", "display: none;")
+            document.getElementById("imagePreviewDiv").setAttribute("style", "display: none;")
             var title = document.getElementById("usernameTitle")
             var usernameInput = document.getElementById("username")
             title.remove()

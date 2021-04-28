@@ -43,11 +43,11 @@
 <body>
   <input type="image" height="145px" width="305px" id="websiteTitleLogo"
     src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FlogoVersionOne.png?alt=media&token=0174e326-4b37-4caa-8f1f-fe283082efda" />
-  <div class="topnav">
+  <div class="topnav" id="topnav">
     <a href="/">Home Page</a>
     <a href="/search/questions/home/none">Questions</a>
     <a href="/flashcards">Flashcard Generator</a>
-    <a id="accountTopNavButton">Account</a>
+    <a id="accountTopNavButton" href="/account/sign-in">Account</a>
   </div>
   {{!-- {{{body}}} is where the other handlebars pages will be loaded --}}
   {{{body}}}
@@ -86,24 +86,83 @@
     document.getElementById("websiteFooterLogo").onclick = function () {
       window.location.href = "/"
     }
+    //get user profile image to put into topnav
+    window.onload = function () {
+      firebase.auth().onAuthStateChanged(function (user) {
+        accountButton.removeAttribute("href")
+        if (user) {
+          //grab profile image
+          firebase.firestore().collection("users").doc(user.uid).get().then((doc) => {
+            if (doc.exists) {
+              //create div to hold everything for account dropdown menu
+              var dropdownMainDiv = document.createElement("div")
+              dropdownMainDiv.setAttribute("class", "dropdown")
+              //create div to hold username and profile image
+              var profileDiv = document.createElement("div")
+              profileDiv.setAttribute("id", "topnavAccount")
+              profileDiv.onclick = function () {
+                window.location.href = "/account/show/" + user.uid
+              }
+              var username = document.createElement("h4")
+              username.setAttribute("id", "topnavAccountText")
+              var usernameText = document.createTextNode("Welcome, " + doc.data().username)
+              username.appendChild(usernameText)
+              //could find user data, display user profile image
+              var profileImage = document.createElement("img")
+              profileImage.setAttribute("class", "profileImage")
+              profileImage.src = doc.data().imageURL
+              //add profile image and username to div
+              profileDiv.appendChild(username)
+              profileDiv.appendChild(profileImage)
+              //create dropdown menu
+              var dropdownDiv = document.createElement("div")
+              dropdownDiv.setAttribute("class", "dropdown-content")
+              //create dropdown menu options
+              var accountLinkA = document.createElement("a")
+              accountLinkA.href = "/account/show/" + user.uid
+              accountLinkText = document.createTextNode("Account")
+              accountLinkA.appendChild(accountLinkText)
+
+              var logoutLinkA = document.createElement("a")
+              logoutLinkA.onclick = function () {
+                firebase.auth().signOut().then(function () {
+                  //redirect user to sign in/sign up page
+                  window.location.href = "/account/sign-in"
+                }, function (error) {
+                  //display error signing out
+                  errorLabel.innerHTML = "Error Signing Out, Please Try Again Later or Contact Support"
+                })
+              }
+              logoutLinkText = document.createTextNode("Log Out")
+              logoutLinkA.appendChild(logoutLinkText)
+              
+              dropdownDiv.appendChild(accountLinkA)
+              dropdownDiv.appendChild(logoutLinkA)
+
+              dropdownMainDiv.appendChild(profileDiv)
+              dropdownMainDiv.appendChild(dropdownDiv)
+
+              //add to topnav
+              document.getElementById("topnav").appendChild(dropdownMainDiv)
+            } else {
+              //no user document found
+            }
+          })
+        } else {
+          // No user is signed in.
+
+        }
+      })
+    }
     //get account button to change its href
     let accountButton = document.getElementById("accountTopNavButton")
     //add function to account button to change on whether or not there"s a user
     document.getElementById("accountTopNavButton").onclick = accountButtonPressed
     //do a check to make sure user is signed in to change what account button does
     function accountButtonPressed() {
-      firebase.auth().onAuthStateChanged(function (user) {
-        accountButton.removeAttribute("href")
-        if (user) {
-          // User is signed in.
-          window.location.href = "/account/show/" + user.uid
-        } else {
-          // No user is signed in.
-          //go to sign up/sign in page
-          window.location.href = "/account/sign-in"
-        }
-      })
+      window.location.href = "/account/sign-in"
     }
+
   </script>
 </body>
 
