@@ -120,6 +120,7 @@
         //add user data to firebase
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
+<<<<<<< HEAD
                 let image = document.getElementById("imageUpload").files[0]
                 //create storage reference to image
                 const ref = firebase.storage().ref().child("user_images/" + image.name)
@@ -146,6 +147,16 @@
                         //error uploading image display error to user
                         document.getElementById("answerError").innerHTML("Error uploading image, please try again later or contact support")
                     })
+=======
+                db.collection("users").doc(user.uid).set({
+                    username: username,
+                    email: email,
+                    questions: [],
+                    created: firebase.firestore.Timestamp.now()
+                }).then(() => {
+                    console.log("added user data correctly")
+                    window.location.href = "/account/show/" + user.uid
+>>>>>>> master
                 }).catch((error) => {
                     //error uploading image display error to user
                     document.getElementById("answerError").innerHTML("Error uploading image, please try again later or contact support")
