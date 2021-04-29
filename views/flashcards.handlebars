@@ -53,16 +53,7 @@
 
                 //do a check to make sure user is signed in
                 firebase.auth().onAuthStateChanged(function (user) {
-                    if (user) {
                         //Save user id
-                        if userID == user.uid
-                            for (var clickButton of 
-                            document.getElementsByClassName("submitButton"))
-                            clickButton.addEventListener("click", alertMeessage);
-                            function alertMeessage() {
-                                alert("Submitted!");
-                            }
-                            continue
                         // User is signed in.
                         addQuestion(flashTitle, flashQuestion, flashAnswer, user.uid)
                     } else {
@@ -150,6 +141,3 @@
 <br>
 <br>
 </body>
-
-
-<script src="cards.js"></script>
