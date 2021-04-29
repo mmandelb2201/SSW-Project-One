@@ -49,11 +49,17 @@
             let flashAnswer = document.getElementById("flashAnswer").value
             if (flashTitle.length != 0 && flashQuestion.length != 0 && flashAnswer.length != 0) {
                 //all fields are filled so they can be added to firestore
+
                 //do a check to make sure user is signed in
                 firebase.auth().onAuthStateChanged(function (user) {
                     if (user) {
                         //Save user id
                         if userID == user.uid
+                            for document.getElementsByClassName("submitButton")
+                            clickButton.addEventListener("click", alertMeessage);
+                            function alertMeessage() {
+                                alert("Submitted!");
+                            }
                             continue
                         // User is signed in.
                         addQuestion(flashTitle, flashQuestion, flashAnswer, user.uid)
