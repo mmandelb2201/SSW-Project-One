@@ -58,13 +58,13 @@
             }).then(function (docRef) {
                 //add questionID to user information
                 db.collection("users").doc(userID).update({
-                    questions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                    flashQuestions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                 }).catch((error) => {
                     console.error("Error Adding Question: ", error)
                     //todo: delete newly created question
                 })
                 //link to question page
-                var newURL = "/flashcardsGen" + docRef.id
+                var newURL = "/flashcardsGen"
                 console.log(newURL)
                 window.location.href = newURL
             }).catch((error) => {
@@ -73,8 +73,7 @@
             })
         }
         //display error to user
-        f
-        unction showError(error) {
+        function showError(error) {
             errorLabel.innerHTML = error
         }
 
