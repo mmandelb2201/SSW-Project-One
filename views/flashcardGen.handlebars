@@ -1,0 +1,84 @@
+<link rel="stylesheet" type="text/css" href="/cards.css">
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{Flashcard Generator}}</title>
+    <link rel="stylesheet" type="text/css" href="/cards.css"> 
+</head>
+
+<body>
+<h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
+<h4 class="errorLabel" id="errorLabel"></h4>
+<h1 class="outlineTitle">Flashcard Generator</h2>
+    <div id="questions"></div>
+<script>
+    let id = "{{userID}}"
+
+    let db = firebase.firestore()
+    var errorLabel = document.getElementById("errorLabel")
+        var submitButton = document.getElementById("submit")
+
+        submitButton.onclick = validateField
+        //save user id
+        var userID = ""
+        //check to see all fields are filled
+        function validateField() {
+            let flashTitle = document.getElementById("flashTitle").value
+            let flashQuestion = document.getElementById("flashQuestion").value
+            let flashAnswer = document.getElementById("flashAnswer").value
+            if (flashTitle.length != 0 && flashQuestion.length != 0 && flashAnswer.length != 0) {
+                //all fields are filled so they can be added to firestore
+                //do a check to make sure user is signed in
+                firebase.auth().onAuthStateChanged(function (user) {
+                    if (user) {
+                        //Save user id
+                        userID = user.uid
+                        // User is signed in.
+                        addQuestion(flashTitle, flashQuestion, flashAnswer, user.uid)
+                    } else {
+                        // No user is signed in.
+                        showError("You must be signed in to make flashcards")
+                    }
+                })
+            } else {
+                //user needs to add all required information
+                showError("Please fill in all fields")
+            }
+        }
+        //add question to firestore
+        function addQuestion(flashTitle, flashQuestion, flashAnswer, uid) {
+            db.collection("flashQuestion").add({
+                flashTitle: flashTitle,
+                flashQuestion: flashQuestion,
+                flashAnswer: flashAnswer,
+                author: uid,
+            }).then(function (docRef) {
+                //add questionID to user information
+                db.collection("users").doc(userID).update({
+                    questions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                }).catch((error) => {
+                    console.error("Error Adding Question: ", error)
+                    //todo: delete newly created question
+                })
+                //link to question page
+                var newURL = "/flashQuestion/show/" + docRef.id
+                console.log(newURL)
+                window.location.href = newURL
+            }).catch((error) => {
+                console.error("Error Adding Question: ", error)
+                //todo: delete newly created question
+            })
+        }
+        //display error to user
+        f
+        unction showError(error) {
+            errorLabel.innerHTML = error
+        }
+
+    </script>
+</body>
+
+
+<script src="cards.js"></script>
