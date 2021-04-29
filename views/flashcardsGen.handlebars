@@ -34,7 +34,8 @@
                 firebase.auth().onAuthStateChanged(function (user) {
                     if (user) {
                         //Save user id
-                        userID = user.uid
+                        if userID == user.uid
+                            continue
                         // User is signed in.
                         addQuestion(flashTitle, flashQuestion, flashAnswer, user.uid)
                     } else {
