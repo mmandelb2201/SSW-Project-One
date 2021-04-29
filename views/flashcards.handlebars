@@ -55,7 +55,8 @@
                     if (user) {
                         //Save user id
                         if userID == user.uid
-                            for document.getElementsByClassName("submitButton")
+                            for (var clickButton of 
+                            document.getElementsByClassName("submitButton"))
                             clickButton.addEventListener("click", alertMeessage);
                             function alertMeessage() {
                                 alert("Submitted!");
