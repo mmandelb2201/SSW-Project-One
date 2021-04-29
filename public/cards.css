@@ -385,4 +385,13 @@ h2 {
     text-align: center;
 }
 
-button {}
+button {
+    background-color: transparent;
+    color: black;
+    border: 2px solid rgb(0, 166, 255);
+    transition-duration: 0.4s;
+    height: 25px;
+    width: 150px;
+    font-size: 15;
+    font-weight: bold;
+}
