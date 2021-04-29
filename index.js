@@ -70,6 +70,13 @@ app.get("/flashcards", (req, res) => {
         title: "Flashcard Generator"
     })
 })
+
+app.get("/messenger", (req, res) => {
+    res.render("messenger.handlebars", {
+        title: "Messenger"
+    })
+})
+
 app.get("/account/show/:id", (req, res) => {
         res.render("account.handlebars", {
             title: "Account",

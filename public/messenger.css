@@ -1,0 +1,25 @@
+.message-container {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#message-input {
+    padding:10px;
+    border:0;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    border-radius:10px;
+    width: 40%;
+    min-width: 300px;
+}
+
+#message-submit {
+    padding: 10px 15px;
+    font-size: large;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+#message-submit:active {
+    outline: none;
+}
