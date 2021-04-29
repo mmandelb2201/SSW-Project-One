@@ -59,7 +59,7 @@
                     } else {
                         // No user is signed in.
                         showError("You must be signed in to make flashcards")
-                    }
+                    
                 })
             } else {
                 //user needs to add all required information
@@ -82,7 +82,7 @@
                     //todo: delete newly created question
                 })
                 //link to question page
-                var newURL = "/flashcardsGen"
+                var newURL = "/flashcards"
                 console.log(newURL)
                 window.location.href = newURL
             }).catch((error) => {
