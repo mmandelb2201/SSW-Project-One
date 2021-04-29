@@ -11,7 +11,91 @@
 
 <body>
 <div>
+  <h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
+<h4 class="errorLabel" id="errorLabel"></h4>
+<h1 class="outlineTitle">Flashcard Generator</h1>
+    <div id="flashQuestion"></div>
+
+<div class="centerContent">
+    <h1 id="questionTitle" class="pageTitle">Welcome to Flashcard Generator</h1>
+    <h2>What is the title of this flashcard collection?</h2>
+    <input type="text" id="question" placeholder="flashTitle" />
+    <h2>What is the question?</h2>
+    <input type="text" id="question" placeholder="flashQuestion" />
+    <h2>What is the answer?</h2>
+    <textarea id="description" placeholder="flashAnswer"
+        style="height: 150px;  width: 500px;  resize: none;  font-size: 17px; font-family: Arial, Helvetica, sans-serif; "></textarea>
+    <button type="button" class="submitButton" id="submit">Submit</button>
+    <h2 id="errorLabel"></h2>
+
+
+<script>
+    let id = "{{userID}}"
+
+    let db = firebase.firestore()
+    var errorLabel = document.getElementById("errorLabel")
+        var submitButton = document.getElementById("submit")
+
+        submitButton.onclick = validateField
+        //save user id
+        var userID = ""
+        //check to see all fields are filled
+        function validateField() {
+            let flashTitle = document.getElementById("flashTitle").value
+            let flashQuestion = document.getElementById("flashQuestion").value
+            let flashAnswer = document.getElementById("flashAnswer").value
+            if (flashTitle.length != 0 && flashQuestion.length != 0 && flashAnswer.length != 0) {
+                //all fields are filled so they can be added to firestore
+                //do a check to make sure user is signed in
+                firebase.auth().onAuthStateChanged(function (user) {
+                    if (user) {
+                        //Save user id
+                        if userID == user.uid
+                            continue
+                        // User is signed in.
+                        addQuestion(flashTitle, flashQuestion, flashAnswer, user.uid)
+                    } else {
+                        // No user is signed in.
+                        showError("You must be signed in to make flashcards")
+                    }
+                })
+            } else {
+                //user needs to add all required information
+                showError("Please fill in all fields")
+            }
+        }
+        //add question to firestore
+        function addQuestion(flashTitle, flashQuestion, flashAnswer, uid) {
+            db.collection("flashQuestion").add({
+                flashTitle: flashTitle,
+                flashQuestion: flashQuestion,
+                flashAnswer: flashAnswer,
+                author: uid,
+            }).then(function (docRef) {
+                //add questionID to user information
+                db.collection("users").doc(userID).update({
+                    flashQuestions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                }).catch((error) => {
+                    console.error("Error Adding Question: ", error)
+                    //todo: delete newly created question
+                })
+                //link to question page
+                var newURL = "/flashcardsGen"
+                console.log(newURL)
+                window.location.href = newURL
+            }).catch((error) => {
+                console.error("Error Adding Question: ", error)
+                //todo: delete newly created question
+            })
+        }
+        //display error to user
+        function showError(error) {
+            errorLabel.innerHTML = error
+        }
+
+    </script>
 </div>
+
   <div class="card">
 
     <!-- FRONT TEXT -->
