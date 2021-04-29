@@ -146,13 +146,16 @@
 
               //add to topnav
               document.getElementById("topnav").appendChild(dropdownMainDiv)
+              //remove account button from topnav
+              document.getElementById("accountTopNavButton").setAttribute("style", "display: none")
             } else {
               //no user document found
             }
           })
         } else {
           // No user is signed in.
-
+          //make sure account button is visible
+          document.getElementById("accountTopNavButton").setAttribute("style", "display: inherit")
         }
       })
     }

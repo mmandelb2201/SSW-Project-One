@@ -21,6 +21,8 @@
     overflow: hidden;
     padding: 0px;
     overflow: visible;
+    width: 100%;
+    min-height: 48px;
 }
 .centerContent{
     flex-direction: column;
@@ -74,7 +76,7 @@
     position: relative;
     display: inline-block;
   }
-  
+
   /* Dropdown Content (Hidden by Default) */
   .dropdown-content {
     display: none;
@@ -90,11 +92,13 @@
     text-decoration: none;
     display: block;
     color: black;
+    background-color: white;
   }
   
   /* Change color of dropdown links on hover */
   .dropdown-content a:hover {
       background-color: gray;
+      color:rgb(0, 166, 255);
 }
   
   /* Show the dropdown menu on hover */
