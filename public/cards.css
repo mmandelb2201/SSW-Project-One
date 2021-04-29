@@ -130,7 +130,7 @@ span.websiteTitle {
     border: 2px solid rgb(0, 166, 255);
     ;
     transition-duration: 0.4s;
-    height: 25px;
+    height: 40px;
     width: 70px;
     font-size: 15;
     font-weight: bold;
@@ -411,4 +411,8 @@ button {
     margin-left: auto;
     margin-right: auto;
     align-content: center;
+}
+
+.h2Exception {
+    text-align: left;
 }
