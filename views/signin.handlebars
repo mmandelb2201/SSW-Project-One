@@ -40,12 +40,9 @@
         document.getElementById("imagePreview").src = URL.createObjectURL(this.files[0])
         document.getElementById("imagePreviewDiv").setAttribute("style", "display: inherit")
     })
-
     let db = firebase.firestore()
-
     //boolean to check if user is signing up or signing in
     var signIn = true
-
     var passwordInput = document.getElementById("password")
     var emailInput = document.getElementById("email")
     var submitButton = document.getElementById("submit")
@@ -53,10 +50,8 @@
     var userImage = document.getElementById("imagePreview")
     userImage.removeAttribute("src")
     submitButton.onclick = validateField
-
     //switch signIn bool when switch button is pressed
     document.getElementById("switchSignUpAndIn").onclick = switchSignUpAndIn
-
     function validateField() {
         if (signIn == true) {
             //user is trying to sign in
@@ -76,15 +71,12 @@
             } else {
                 if (userImage.src == "") {
                     showError("Please Upload a Profile Image")
-
                 } else {
                     //if everything is ok, create account and redirect to account page
                     createUser(usernameInput.value, passwordInput.value, emailInput.value)
                 }
-
             }
         }
-
     }
     function showError(error) {
         errorLabel.innerHTML = error
@@ -120,7 +112,6 @@
         //add user data to firebase
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-<<<<<<< HEAD
                 let image = document.getElementById("imageUpload").files[0]
                 //create storage reference to image
                 const ref = firebase.storage().ref().child("user_images/" + image.name)
@@ -147,16 +138,6 @@
                         //error uploading image display error to user
                         document.getElementById("answerError").innerHTML("Error uploading image, please try again later or contact support")
                     })
-=======
-                db.collection("users").doc(user.uid).set({
-                    username: username,
-                    email: email,
-                    questions: [],
-                    created: firebase.firestore.Timestamp.now()
-                }).then(() => {
-                    console.log("added user data correctly")
-                    window.location.href = "/account/show/" + user.uid
->>>>>>> master
                 }).catch((error) => {
                     //error uploading image display error to user
                     document.getElementById("answerError").innerHTML("Error uploading image, please try again later or contact support")
@@ -181,19 +162,15 @@
             title.setAttribute("class", "signTitle")
             title.setAttribute("id", "usernameTitle")
             title.appendChild(titleText)
-
             var usernameInput = document.createElement("input")
             usernameInput.setAttribute("type", "text")
             usernameInput.setAttribute("id", "username")
             usernameInput.setAttribute("placeholder", "Username")
-
             var form = document.getElementById("usernameDiv")
             form.appendChild(title)
             form.appendChild(usernameInput)
-
             document.getElementById("switchSignUpAndIn").innerHTML = "Or Sign In"
             document.getElementById("signUpOrSignIn").innerHTML = "Sign Up"
-
             signIn = false
         } else {
             //make file upload div not visible
@@ -203,10 +180,8 @@
             var usernameInput = document.getElementById("username")
             title.remove()
             usernameInput.remove()
-
             document.getElementById("switchSignUpAndIn").innerHTML = "Or Sign Up To Create An Account"
             document.getElementById("signUpOrSignIn").innerHTML = "Sign In"
-
             signIn = true
         }
     }

@@ -45,18 +45,15 @@
     src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FlogoVersionOne.png?alt=media&token=0174e326-4b37-4caa-8f1f-fe283082efda" />
   <div class="topnav" id="topnav">
     <a href="/">Home Page</a>
+    <a href="/messenger">Messenger</a>
     <a href="/search/questions/home/none">Questions</a>
     <a href="/flashcards">Flashcard Generator</a>
     <a id="accountTopNavButton" href="/account/sign-in">Account</a>
-    <a href="/messenger">Messenger</a>
-    <a id="accountTopNavButton">Account</a>
   </div>
   {{!-- {{{body}}} is where the other handlebars pages will be loaded --}}
   <div class="mainContent">
   {{{body}}}
   </div>
-  <div>
-    
   <div class="footer">
     <div class="center">
       <input type="image" height="67.5px" id="websiteFooterLogo" width="180px"
@@ -79,8 +76,8 @@
       <h4>Study Buddy Products and Services</h4>
       <a href="/search/questions/home/none">Questions and Answers</a>
       <a href="/flashcards">Flashcards</a>
-      <a href="">Messenger</a>
       <a href="https://www.linkedin.com/">Study Buddy Careers</a>
+      <a href="/messenger">Messenger</a>
       <a href="/inter-ships">Internships</a>
     </div>
   </div>
@@ -128,7 +125,6 @@
               accountLinkA.href = "/account/show/" + user.uid
               accountLinkText = document.createTextNode("Account")
               accountLinkA.appendChild(accountLinkText)
-
               var logoutLinkA = document.createElement("a")
               logoutLinkA.onclick = function () {
                 firebase.auth().signOut().then(function () {
@@ -144,13 +140,11 @@
               
               dropdownDiv.appendChild(accountLinkA)
               dropdownDiv.appendChild(logoutLinkA)
-
               dropdownMainDiv.appendChild(profileDiv)
               dropdownMainDiv.appendChild(dropdownDiv)
-
               //add to topnav
               document.getElementById("topnav").appendChild(dropdownMainDiv)
-              //remove account button from topnav
+              //make account button invisible
               document.getElementById("accountTopNavButton").setAttribute("style", "display: none")
             } else {
               //no user document found
@@ -158,8 +152,6 @@
           })
         } else {
           // No user is signed in.
-          //make sure account button is visible
-          document.getElementById("accountTopNavButton").setAttribute("style", "display: inherit")
         }
       })
     }
@@ -171,7 +163,8 @@
     function accountButtonPressed() {
       window.location.href = "/account/sign-in"
     }
-
+    //make sure account button is shown
+    document.getElementById("accountTopNavButton").setAttribute("style", "display: inherit")
   </script>
 </body>
 
