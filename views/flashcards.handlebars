@@ -15,7 +15,7 @@
     <h2>What is the question?</h2>
     <input type="text" id="flashQuestion" class="inputCen" placeholder="Type Here!" />
     <h2>What is the answer?</h2>
-    <textarea id="flashAnswer" placeholder="Type Here!"
+    <textarea id="flashAnswer" placeholder="Type Here!" />
 
 <div id="inputCen">
     <h2 id="h2Exception">What is the title of this flashcard collection?</h2>
@@ -54,15 +54,14 @@
 
                 //do a check to make sure user is signed in
                 firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
                         //Save user id
-                        userID == user.uid
-
                         // User is signed in.
                         addQuestion(flashTitle, flashQuestion, flashAnswer, user.uid)
                     } else {
                         // No user is signed in.
                         showError("You must be signed in to make flashcards")
-                    
+                    }
                 })
             } else {
                 //user needs to add all required information
@@ -99,50 +98,3 @@
         }
 
     </script>
-</div>
-
-  <div class="card">
-
-    <!-- FRONT TEXT -->
-    <!--FLASHTITLE-->
-      <h2>BASIC GERMAN</h2>
-
-    <div class="cardInner">
-      
-      <div class="cardFrontFace">
-        <!-- FRONT TEXT FLASHANSWER-->
-        <h2>German word for hunter</h2>
-      </div>
-
-      <div class="cardBackFace">
-        <div class="cardContent"></div>
-        <div class="cardHeader">
-          <!--<img src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2Fhunter.png?alt=media&token=21fb751e-6f2b-42f5-bce9-b0beeb56321a" class="pp" >-->
-          <!-- FOR TEXT ON BACK  FLASHANSWER-->
-          <h2>jäger</h2>
-
-
-    <div class="card" >
-      <div class="cardInner">
-
-        <div class="cardFrontFace">
-        
-        </div>
-
-      
-        <div class="cardBody">
-          <h3>NICENAME</h3>
-          <p>wahwahweewaa</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <script src="cards.js"></script>  
-  <br>
-<br>
-<br>
-<br>
-</body>
-
-
