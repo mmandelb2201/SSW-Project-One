@@ -1,24 +1,21 @@
 <link rel="stylesheet" type="text/css" href="/cards.css">
-<!doctype html>
-
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>{{Flashcard}}</title>
-    <link rel="stylesheet" type="text/css" href="/cards.css"> 
-
-</head>
 
 <body>
 <div>
   <h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
 <h4 class="errorLabel" id="errorLabel"></h4>
 <h1 class="outlineTitle">Flashcard Generator</h1>
-    <div id="flashQuestion"></div>
 
 <div class="centerContent">
     <h1 id="questionTitle" class="pageTitle">Welcome to Flashcard Generator</h1>
 </div id="genPrompt">
+<div style="align-items: center;">
+    <h2>What is the title of this flashcard collection?</h2>
+    <input type="text" id="flashTitle" placeholder="Password" />
+    <h2>What is the question?</h2>
+    <input type="text" id="flashQuestion" class="inputCen" placeholder="Type Here!" />
+    <h2>What is the answer?</h2>
+    <textarea id="flashAnswer" placeholder="Type Here!"
 
 <div id="inputCen">
     <h2 id="h2Exception">What is the title of this flashcard collection?</h2>
@@ -48,12 +45,21 @@
             let flashTitle = document.getElementById("flashTitle").value
             let flashQuestion = document.getElementById("flashQuestion").value
             let flashAnswer = document.getElementById("flashAnswer").value
-            if (flashTitle.length != 0 && flashQuestion.length != 0 && flashAnswer.length != 0) {
+
+            console.log("title: " + flashTitle)
+            console.log("answer: " + flashAnswer)
+            console.log("question: " + flashQuestions)
+            if (flashTitle.length != 0) {
                 //all fields are filled so they can be added to firestore
 
                 //do a check to make sure user is signed in
                 firebase.auth().onAuthStateChanged(function (user) {
                         //Save user id
+<<<<<<< HEAD
+                        userID == user.uid
+
+=======
+>>>>>>> 213b973946d004e6b52a42440b4247f429389843
                         // User is signed in.
                         addQuestion(flashTitle, flashQuestion, flashAnswer, user.uid)
                     } else {
@@ -141,3 +147,8 @@
 <br>
 <br>
 </body>
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 213b973946d004e6b52a42440b4247f429389843
