@@ -55,11 +55,8 @@
                 //do a check to make sure user is signed in
                 firebase.auth().onAuthStateChanged(function (user) {
                         //Save user id
-<<<<<<< HEAD
                         userID == user.uid
 
-=======
->>>>>>> 213b973946d004e6b52a42440b4247f429389843
                         // User is signed in.
                         addQuestion(flashTitle, flashQuestion, flashAnswer, user.uid)
                     } else {
