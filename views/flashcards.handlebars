@@ -71,7 +71,7 @@
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
-                Title: flasshTitle,
+                Title: flashTitle,
                 Question: flashQuestion,
                 Answer: flashAnswer,
                 Author: uid,
