@@ -76,14 +76,6 @@
             }
             }
 
-        function noButton() {
-            if (document.getElementById('search1').value === "New York") {
-                console.log("Loading weather for New York...");
-            } else {
-                console.log("City name isn't valid. Try again");
-            }
-            }
-
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
