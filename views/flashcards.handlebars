@@ -71,10 +71,10 @@
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
-                flashTitle: Title,
-                flashQ: Question,
-                flashAnswer: Answer,
-                author: uid,
+                Title: flasshTitle,
+                Question: flashQuestion,
+                Answer: flashAnswer,
+                Author: uid,
             }).then(function (docRef) {
                 //add questionID to user information
                 db.collection("users").doc(userID).update({
