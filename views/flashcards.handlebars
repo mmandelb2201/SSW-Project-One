@@ -70,15 +70,15 @@
 
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
-            db.collection("flashQ").add({
-                flashTitle: flashTitle,
-                flashQ: flashQ,
-                flashAnswer: flashAnswer,
+            db.collection("flashcard").add({
+                flashTitle: Title,
+                flashQ: Question,
+                flashAnswer: Answer,
                 author: uid,
             }).then(function (docRef) {
                 //add questionID to user information
                 db.collection("users").doc(userID).update({
-                    flashQ: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                    flashcard: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                 }).catch((error) => {
                     console.error("Error Adding Question: ", error)
                     //todo: delete newly created question
