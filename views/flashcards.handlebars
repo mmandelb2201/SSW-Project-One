@@ -18,8 +18,8 @@
     <h2>What is the answer?</h2>
     <input type="text" id="flashAnswer" placeholder="Type Here!" />
     <h2>Would you like to add another question to this collection?</h2>
-    <button type="button" class="submitButton" id="search" onclick="yesButton()">Yes</button>
-    <button type="button" class="submitButton" id="search1" onclick="noButon()">No</button>
+    <button type="button" class="submitButton" id="search" onclick="butt()">Yes</button>
+    <button type="button" class="submitButton" id="search1" onclick="butt()">No</button>
     
     <br><br>
     <button type="button" class="submitButton" id="submit">Submit</button>
@@ -68,7 +68,14 @@
             }
         }
         //button functions for array
-
+        function butt()  {
+            if (document.getElementById("search").value == "Yes") {
+                console.log("Loading weather for New York..."); 
+            } //ELSE NO
+            else if document.getElementById("search").value == "No"){
+                console.log("City name isn't valid. Try again");
+            }
+            }
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
