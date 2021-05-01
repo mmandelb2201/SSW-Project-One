@@ -8,17 +8,23 @@
 
 <div class="centerContent">
     <h1 id="questionTitle" class="pageTitle">Welcome to Flashcard Generator</h1>
-</div id="genPrompt">
+</div>
+
 <div style="align-items: center;">
     <h2>What is the title of this flashcard collection?</h2>
     <input type="text" id="flashTitle" placeholder="Type Here!" />
     <h2>What is the question?</h2>
-    <input type="text" id="flashQuestion" placeholder="Type Here!" />
+    <input type="text" id="flashQ" placeholder="Type Here!" />
     <h2>What is the answer?</h2>
-    <input type="type" id="flashAnswer" placeholder="Type Here!" />
+    <input type="text" id="flashAnswer" placeholder="Type Here!" />
 
 <br>
     <button type="button" class="submitButton" id="submit">Submit</button>
+    <br>
+    <h2>Would you like to add another question to this collection?</h2>
+    <button type="button" class="submitButton" id="YesButton">Yes</button>
+    <button type="button" class="submitButton" id="noButton">No</button>
+
 
 <script>
     let id = "{{userID}}"
@@ -33,12 +39,12 @@
         //check to see all fields are filled
         function validateField() {
             let flashTitle = document.getElementById("flashTitle").value
-            let flashQuestion = document.getElementById("flashQuestion").value
+            let flashQ = document.getElementById("flashQ").value
             let flashAnswer = document.getElementById("flashAnswer").value
 
             console.log("title: " + flashTitle)
             console.log("answer: " + flashAnswer)
-            console.log("question: " + flashQuestion)
+            console.log("question: " + flashQ)
             if (flashTitle.length != 0) {
                 //all fields are filled so they can be added to firestore
 
@@ -47,7 +53,7 @@
                 if (user) {
                         //Save user id
                         // User is signed in.
-                        addQuestion(flashTitle, flashQuestion, flashAnswer, user.uid)
+                        addQuestion(flashTitle, flashQ, flashAnswer, user.uid)
                     } else {
                         // No user is signed in.
                         showError("You must be signed in to make flashcards")
@@ -59,24 +65,21 @@
             }
         }
         //add question to firestore
-        function addQuestion(flashTitle, flashQuestion, flashAnswer, uid) {
-            db.collection("flashQuestion").add({
+        function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
+            db.collection("flashQ").add({
                 flashTitle: flashTitle,
-                flashQuestion: flashQuestion,
+                flashQ: flashQ,
                 flashAnswer: flashAnswer,
                 author: uid,
             }).then(function (docRef) {
                 //add questionID to user information
                 db.collection("users").doc(userID).update({
-                    flashQuestion: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                    flashQ: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                 }).catch((error) => {
                     console.error("Error Adding Question: ", error)
                     //todo: delete newly created question
                 })
-                //link to question page
-                var newURL = "/flashcards"
-                console.log(newURL)
-                window.location.href = newURL
+
             }).catch((error) => {
                 console.error("Error Adding Question: ", error)
                 //todo: delete newly created question
