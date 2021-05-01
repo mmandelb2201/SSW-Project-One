@@ -39,7 +39,7 @@
 
             console.log("title: " + flashTitle)
             console.log("answer: " + flashAnswer)
-            console.log("question: " + flashQuestions)
+            console.log("question: " + flashQuestion)
             if (flashTitle.length != 0) {
                 //all fields are filled so they can be added to firestore
 
@@ -69,7 +69,7 @@
             }).then(function (docRef) {
                 //add questionID to user information
                 db.collection("users").doc(userID).update({
-                    flashQuestions: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                    flashQuestion: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                 }).catch((error) => {
                     console.error("Error Adding Question: ", error)
                     //todo: delete newly created question
