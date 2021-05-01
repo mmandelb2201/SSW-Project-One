@@ -17,13 +17,13 @@
     <input type="text" id="flashQ" placeholder="Type Here!" />
     <h2>What is the answer?</h2>
     <input type="text" id="flashAnswer" placeholder="Type Here!" />
-
-<br>
-    <button type="button" class="submitButton" id="submit">Submit</button>
-    <br><br>
     <h2>Would you like to add another question to this collection?</h2>
-    <button type="button" class="submitButton" id="YesButton">Yes</button>
-    <button type="button" class="submitButton" id="noButton">No</button>
+    <button type="button" class="submitButton" id="search" onclick="yesButton()">Yes</button>
+    <button type="button" class="submitButton" id="search1" onclick="noButon()">No</button>
+    
+    <br><br>
+    <button type="button" class="submitButton" id="submit">Submit</button>
+   
 
 
 <script>
@@ -67,6 +67,22 @@
                 showError("Please fill in all fields")
             }
         }
+        //button functions for array
+        function yesButton() {
+            if (document.getElementById('search').value === "Yes") {
+                console.log("Loading weather for New York...");
+            } else {
+                console.log("City name isn't valid. Try again");
+            }
+            }
+
+        function noButton() {
+            if (document.getElementById('search1').value === "New York") {
+                console.log("Loading weather for New York...");
+            } else {
+                console.log("City name isn't valid. Try again");
+            }
+            }
 
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
