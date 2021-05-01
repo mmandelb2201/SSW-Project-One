@@ -72,7 +72,7 @@
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
                 Title: flashTitle,
-                Question: flashQuestion,
+                Question: flashQ,
                 Answer: flashAnswer,
                 Author: uid,
             }).then(function (docRef) {
