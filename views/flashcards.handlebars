@@ -89,12 +89,7 @@
                 console.error("Error Adding Question: ", error)
                 //todo: delete newly created question
             })
-            //link to question page
         
-        }
-        //display error to user
-        function showError(error) {
-            errorLabel.innerHTML = error
         }
         
         function alertYes(){
@@ -107,4 +102,10 @@
             console.log("Your flashcard was submitted!")
         }
 
+        //display error to user
+        function showError(error) {
+            errorLabel.innerHTML = error
+        }
+        
+        
     </script>
