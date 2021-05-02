@@ -19,7 +19,7 @@
     <input type="text" id="flashAnswer" placeholder="Type Here!" />
     <h2>Would you like to add another question to this collection?</h2>
     <button type="button" class="submitButton" id="submit" onclick="alertYes()">Yes</button>
-    <button type="button" class="submitButton" id="submit" onclick="alertNo()">No</button>
+    <button type="button" class="submitButton" id="submit1" onclick="alertNo()">No</button>
     
 
 <script>
@@ -84,12 +84,16 @@
                 console.error("Error Adding Question: ", error)
                 //todo: delete newly created question
             })
+            //link to question page
+                var newURL = "/question/show/" + docRef.id
+                console.log(newURL)
+                window.location.href = newURL
         }
         //display error to user
         function showError(error) {
             errorLabel.innerHTML = error
         }
-
+        
         function alertYes(){
             alert("Your flashcard was submitted! To add to a set keep the title the same.")
         }
