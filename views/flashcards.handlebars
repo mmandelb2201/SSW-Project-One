@@ -67,14 +67,7 @@
                 showError("Please fill in all fields")
             }
         }
-        //button functions for array
-        function butt()  {
-                //doesnt change, belongs to one set
-                cardT = flashTitle
-                cardQ = []
-                cardA = []
-                cardSet = [cardT,cardQ,cardA]
-            }
+
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
@@ -100,5 +93,25 @@
         function showError(error) {
             errorLabel.innerHTML = error
         }
+
+        //button functions for array
+        function yesButt()  {
+                //doesnt change, belongs to one set
+            let flashTitle = document.getElementById("flashTitle").value
+            let flashQ = document.getElementById("flashQ").value
+            let flashAnswer = document.getElementById("flashAnswer").value
+            
+                cardT = flashTitle
+                cardQ = []
+                cardA = []
+                cardSet = [cardT,cardQ,cardA]
+
+            while (yes == true)
+                cardQ = cardQ.push(flashQ)
+                cardA = cardQ.push(flashAnswer)
+
+                console.log(cardSet)
+                
+            }
 
     </script>
