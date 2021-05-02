@@ -18,10 +18,9 @@
     <h2>What is the answer?</h2>
     <input type="text" id="flashAnswer" placeholder="Type Here!" />
     <h2>Would you like to add another question to this collection?</h2>
-    <button type="button" class="submitButton" id="search" onclick="butt()">Yes</button>
-    <button type="button" class="submitButton" id="submit">No</button>
+    <button type="button" class="submitButton" id="submit" onclick="alertYes()">Yes</button>
+    <button type="button" class="submitButton" id="submit" onclick="alertNo()">No</button>
     
-
 
 <script>
     let id = "{{userID}}"
@@ -64,14 +63,7 @@
                 showError("Please fill in all fields")
             }
         }
-        //button functions for array
-        function butt()  {
-                //doesnt change, belongs to one set
-                cardT = flashTitle
-                cardQ = []
-                cardA = []
-                cardSet = [cardT,cardQ,cardA]
-            }
+        
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
@@ -96,6 +88,14 @@
         //display error to user
         function showError(error) {
             errorLabel.innerHTML = error
+        }
+
+        function alertYes(){
+            alert("Your flashcard was submitted! To add to a set keep the title the same.")
+        }
+
+        function alertNo(){
+            alert("Your flashcard was submitted! If desired, to add to a set keep the title the same.")
         }
 
     </script>
