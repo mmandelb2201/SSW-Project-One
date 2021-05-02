@@ -97,18 +97,18 @@
         //button functions for array
         function yesButt()  {
                 //doesnt change, belongs to one set
-            let flashTitle = document.getElementById("flashTitle").value
-            let flashQ = document.getElementById("flashQ").value
-            let flashA = document.getElementById("flashAnswer").value
+            let genTitle = document.getElementById("flashTitle").value
+            let genQ = document.getElementById("flashQ").value
+            let genA = document.getElementById("flashAnswer").value
             
-                cardT = flashTitle
+                cardT = genTitle
                 cardQ = []
                 cardA = []
                 cardSet = [cardT,cardQ,cardA]
 
             while (yes == true)
-                cardQ = cardQ.push(flashQ)
-                cardA = cardQ.push(flashA)
+                cardQ = cardQ.push(genQ)
+                cardA = cardQ.push(genA)
 
                 console.log(cardSet)
                 
