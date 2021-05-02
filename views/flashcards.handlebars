@@ -18,8 +18,8 @@
     <h2>What is the answer?</h2>
     <input type="text" id="flashAnswer" placeholder="Type Here!" />
     <h2>Would you like to add another question to this collection?</h2>
-    <button type="button" class="submitButton" id="search" onclick="butt()">Yes</button>
-    <button type="button" class="submitButton" id="search1" onclick="butt()">No</button>
+    <button type="button" class="submitButton" id="search" onclick="yesButt()">Yes</button>
+    <button type="button" class="submitButton" id="search1" onclick="yesButt()">No</button>
     
     <br><br>
     <button type="button" class="submitButton" id="submit">Submit</button>
@@ -93,7 +93,7 @@
         function showError(error) {
             errorLabel.innerHTML = error
         }
-
+        
         //button functions for array
         function yesButt()  {
                 //doesnt change, belongs to one set
@@ -106,12 +106,13 @@
                 cardA = []
                 cardSet = [cardT,cardQ,cardA]
 
-            while (yes == true)
                 cardQ = cardQ.push(genQ)
                 cardA = cardQ.push(genA)
 
                 console.log(cardSet)
-                
-            }
+                console.log("Successful")
+                    }
+
+                }
 
     </script>
