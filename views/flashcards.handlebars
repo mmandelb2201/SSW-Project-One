@@ -18,34 +18,9 @@
     <h2>What is the answer?</h2>
     <input type="text" id="flashAnswer" placeholder="Type Here!" />
     <h2>Would you like to add another question to this collection?</h2>
-
-    <script>   //button functions for array
-        function yesButt() {
-                //doesnt change, belongs to one set
-            let genTitle = document.getElementById("flashTitle").value
-            let genQ = document.getElementById("flashQ").value
-            let genA = document.getElementById("flashAnswer").value
-            
-                cardT = genTitle
-                cardQ = []
-                cardA = []
-                cardSet = [cardT,cardQ,cardA]
-
-                cardQ = cardQ.push(genQ)
-                cardA = cardQ.push(genA)
-
-                console.log(cardSet)
-                console.log("Successful")
-                    
-
-                }
-    </script>
-    <button type="button" class="submitButton" id="search" onclick="yesButt()">Yes</button>
-    <button type="button" class="submitButton" id="search1" onclick="yesButt()">No</button>
+    <button type="button" class="submitButton" id="search" onclick="butt()">Yes</button>
+    <button type="button" class="submitButton" id="submit">No</button>
     
-    <br><br>
-    <button type="button" class="submitButton" id="submit">Submit</button>
-   
 
 
 <script>
@@ -89,7 +64,14 @@
                 showError("Please fill in all fields")
             }
         }
-
+        //button functions for array
+        function butt()  {
+                //doesnt change, belongs to one set
+                cardT = flashTitle
+                cardQ = []
+                cardA = []
+                cardSet = [cardT,cardQ,cardA]
+            }
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
@@ -115,6 +97,5 @@
         function showError(error) {
             errorLabel.innerHTML = error
         }
-        
 
     </script>
