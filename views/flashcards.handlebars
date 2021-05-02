@@ -73,7 +73,7 @@
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
                 Title: flashTitle,
-                Question: flashQ,
+                Question: flashQ,s
                 Answer: flashAnswer,
                 Author: uid,
             }).then(function (docRef) {
@@ -91,7 +91,7 @@
             })
         
         }
-        
+
         function alertYes(){
             alert("Your flashcard was submitted! To add to a set keep the title the same.")
             console.log("Your flashcard was submitted!")
