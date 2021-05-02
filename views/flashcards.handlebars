@@ -10,16 +10,20 @@
     <h1 id="questionTitle" class="pageTitle">Welcome to Flashcard Generator</h1>
 </div>
 
-<div style="align-items: center;">
+<div style=align-items:"center;">
+
     <h2>What is the title of this flashcard collection?</h2>
     <input type="text" id="flashTitle" placeholder="Type Here!" />
+
     <h2>What is the question?</h2>
     <input type="text" id="flashQ" placeholder="Type Here!" />
+
     <h2>What is the answer?</h2>
     <input type="text" id="flashAnswer" placeholder="Type Here!" />
+
     <h2>Would you like to add another question to this collection?</h2>
     <button type="button" class="submitButton" id="submit" onclick="alertYes()">Yes</button>
-    <button type="button" class="submitButton" id="submit1" onclick="alertNo()">No</button>
+    <button type="button" class="submitButton" id="submit" onclick="alertNo()">No</button>
     
 
 <script>
@@ -41,6 +45,7 @@
             console.log("title: " + flashTitle)
             console.log("answer: " + flashAnswer)
             console.log("question: " + flashQ)
+
             if (flashTitle.length != 0) {
                 //all fields are filled so they can be added to firestore
 
@@ -94,10 +99,12 @@
         
         function alertYes(){
             alert("Your flashcard was submitted! To add to a set keep the title the same.")
+            console.log("Your flashcard was submitted!")
         }
 
         function alertNo(){
             alert("Your flashcard was submitted! If desired, to add to a set keep the title the same.")
+            console.log("Your flashcard was submitted!")
         }
 
     </script>
