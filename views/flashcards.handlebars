@@ -110,13 +110,14 @@
         }
         
         var retrieveFlash = db.collection("flashcard").where("title", "==", title)
-        retrieveFlash.orderBy("title").limit(5).get().then((querySnapshot) => {
+        retrieveFlash.orderBy("title").get().then((querySnapshot) => {
             querySnapshot.forEach(doc) => {
                 addQuestion(doc.data().title, doc.data().question), doc.data().answer)
             }
         }
         
         function displayFlashcards(question, description, questionID, upvoteCount) {
+
             //create a to allow user to click to question
             var questionA = document.createElement("a")
             questionA.setAttribute("class", "questionPreviewA")
