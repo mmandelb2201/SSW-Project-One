@@ -23,12 +23,15 @@
     <input type="text" id="flashAnswer" placeholder="Type Here!" />
 
     <h2>Would you like to add another question to this collection?</h2>
+    <br>
+</div>
+<div>
     <button type="button" class="submitButton" id="submit" onclick="alertYes()">Yes</button>
     <button type="button" class="submitButton" id="submit" onclick="alertNo()">No</button>
     
 </div>
 <script>
-    let id = "{{flashcards}}"
+    let id= "{{flashcards}}"
     let id = "{{title}}"
 
     let db = firebase.firestore()
@@ -154,5 +157,7 @@
             questionA.appendChild(questionDiv)
             //add div to div already in html
             document.getElementById("flashcards").appendChild(questionA)
+
+            //was flashcards, let id = "{{flashcards}}"
         }
 </script>
