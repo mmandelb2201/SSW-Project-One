@@ -10,8 +10,9 @@
     <h1 id="questionTitle" class="pageTitle">Welcome to Flashcard Generator</h1>
 </div>
 
-<div style=align-items:"center;">
-
+<div  class="centerContent" style="background-color: rgb(0, 166, 255);" style="text-align: left;">
+    <br>
+    <br>
     <h2>What is the title of this flashcard collection?</h2>
     <input type="text" id="flashTitle" placeholder="Type Here!" />
 
@@ -22,12 +23,20 @@
     <input type="text" id="flashAnswer" placeholder="Type Here!" />
 
     <h2>Would you like to add another question to this collection?</h2>
+    <br>
+</div>
+<div>
     <button type="button" class="submitButton" id="submit" onclick="alertYes()">Yes</button>
     <button type="button" class="submitButton" id="submit" onclick="alertNo()">No</button>
     
-
+</div>
 <script>
+<<<<<<< HEAD
     let id = "{{flashcards}}"
+=======
+    let id= "{{flashcards}}"
+    let id = "{{title}}"
+>>>>>>> 92e6bff0c40bd3baa8c064b9ba0f3cf18838fb8b
 
     let db = firebase.firestore()
     var errorLabel = document.getElementById("errorLabel")
@@ -145,5 +154,7 @@
             questionA.appendChild(questionDiv)
             //add div to div already in html
             document.getElementById("flashcards").appendChild(questionA)
+
+            //was flashcards, let id = "{{flashcards}}"
         }
 </script>

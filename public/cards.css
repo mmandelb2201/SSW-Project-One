@@ -1,493 +1,483 @@
-/*change font for all text on study buddy */
-
-* {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-
-/* Add a black background color to the top navigation */
-
-.topnav {
-    background-color: rgb(0, 166, 255);
-    overflow: hidden;
-    padding: 0px;
-}
-
-.centerContent {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
-/* Style the links inside the navigation bar */
-
-.topnav a {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    margin: 0px;
-    text-decoration: none;
-    font-size: 17px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-}
-
-
-/* Change the color of links on hover */
-
-.topnav a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-
-/* Add a color to the active/current link */
-
-.topnav a.active {
-    background-color: #4CAF50;
-    color: white;
-}
-
-#errorLabel {
-    color: red;
-}
-
-.errorLabel {
-    color: red;
-}
-
-h1.websiteTitle {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 60px;
-    color: white;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-    letter-spacing: -2px;
-    margin-bottom: 2px;
-}
-
-span.websiteTitle {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 60px;
-    color: rgb(0, 166, 255);
-    ;
-    -webkit-text-stroke-width: 0px;
-}
-
-.outlineTitle {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    color: white;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-    letter-spacing: 0px;
-    margin-bottom: 2px;
-}
-
-.pageTitle {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 35px;
-    color: rgb(0, 166, 255);
-    ;
-}
-
-.secondaryTitle {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 25px;
-    color: white;
-    -webkit-text-stroke-width: 0.6px;
-    -webkit-text-stroke-color: black;
-}
-
-.upvoteContainer {
-    display: flex;
-}
-
-.upvoteButton {
-    margin-top: 0px;
-}
-
-.upvoteText {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 15px;
-}
-
-.authorText {
-    color: rgb(0, 166, 255);
-    ;
-}
-
-.submitButton {
-    background-color: transparent;
-    color: black;
-    border: 2px solid rgb(0, 166, 255);
-    ;
-    transition-duration: 0.4s;
-    height: 40px;
-    width: 70px;
-    font-size: 15;
-    font-weight: bold;
-    align-content: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.submitButton:hover {
-    background-color: rgb(0, 166, 255);
-    ;
-    color: white;
-}
-
-.acceptAnswerButton {
-    background-color: transparent;
-    color: black;
-    border: 2px solid rgb(0, 166, 255);
-    ;
-    transition-duration: 0.4s;
-    height: 25px;
-    font-size: 15;
-    font-weight: bold;
-    margin-left: 5px;
-}
-
-.acceptAnswerButton:hover {
-    background-color: rgb(0, 166, 255);
-    ;
-    color: white;
-}
-
-.signOutButton {
-    background-color: transparent;
-    color: black;
-    border: 2px solid rgb(0, 166, 255);
-    ;
-    transition-duration: 0.4s;
-    height: 25px;
-    width: 150px;
-    font-size: 15;
-    font-weight: bold;
-}
-
-.signOutButton:hover {
-    background-color: rgb(0, 166, 255);
-    ;
-    color: white;
-}
-
-.switchSignUpAndIn {
-    background-color: transparent;
-    color: black;
-    border: 2px solid black;
-    transition-duration: 0.4s;
-    height: 45px;
-    width: 200px;
-    font-size: 13;
-    font-weight: bold;
-}
-
-.switchSignUpAndIn:hover {
-    background-color: black;
-    color: white;
-}
-
-.signTitle {
-    font-weight: bold;
-    font-size: 20px;
-}
-
-#userInput {
-    justify-content: center;
-    margin: 0 auto;
-    width: 300px;
-    border: 2px solid rgb(0, 166, 255);
-    ;
-}
-
-.signFormDiv {
-    text-align: center;
-    display: table;
-    margin: 0 auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.questionPreviewDiv {
-    outline: 2px solid rgb(0, 166, 255);
-    ;
-}
-
-.questionPreviewTitle {
-    color: rgb(0, 166, 255);
-    ;
-}
-
-.questionPreviewDescription {
-    font-weight: normal;
-}
-
-.questionPreviewA {
-    text-decoration: none;
-}
-
-div.welcomeBanner {
-    width: 100vw;
-    position: relative;
-    margin-left: -50vw;
-    height: 100px;
-    margin-top: 100px;
-    left: 50%;
-}
-
-h1.welcomeBanner {
-    text-align: center;
-    color: rgb(0, 166, 255);
-    font-size: 45px;
-}
-
-.questionWelcomeBanner {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    color: white;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-    letter-spacing: 0px;
-    margin-bottom: 2px;
-    font-size: 40px;
-    text-align: center;
-}
-
-body {
-    width: 100%
-}
-
-.card {
-    margin: 100px auto 0;
-    width: 400px;
-    height: 500px;
-    perspective: 1000px;
-}
-
-.cardInner {
-    width: 100%;
-    height: 100%;
-    transition: transform 1s;
-    transform-style: preserve-3d;
-    cursor: pointer;
-    position: relative;
-}
-
-.cardInner.isFlipped {
-    transform: rotateY(180deg);
-}
-
-.cardFrontFace {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    overflow: hidden;
-    border-radius: 16px;
-    box-shadow: 0px 3px 18px 3px rgba(0, 0, 0, 0.2);
-    background-image: linear-gradient(to bottom right, #00a6ff, white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cardFrontFace h2 {
-    color: white;
-    font-size: 32px;
-}
-
-.cardBackFace {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    overflow: hidden;
-    border-radius: 16px;
-    box-shadow: 0px 3px 18px 3px rgba(0, 0, 0, 0.2);
-    background-color: #00a6ff;
-    transform: rotateY(180deg);
-}
-
-.cardContent {
-    width: 100%;
-    height: 100%;
-}
-
-.cardHeader {
-    position: relative;
-    padding: 30px 30px 40px;
-    content: '';
-    display: block;
-    position: absolute;
-    text-align: center;
-    top: 2;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    border-radius: 0 0 50% 0;
-    background-image: linear-gradient(to bottom left, #00a6ff 10%, white 115%)
-}
-
-.pp {
-    display: block;
-    width: 128px;
-    height: 128px;
-    margin: 0 auto 30px;
-    border-radius: 50%;
-    background-color: #00a6ff;
-    border: 5px white;
-}
-
-.cardHeader h2 {
-    margin-bottom: 15px;
-    color: white;
-    font-size: 32px;
-    font-weight: 900;
-    text-align: center;
-    position: center;
-}
-
-.cardBody {
-    padding: 30px;
-}
-
-.cardBody h3 {
-    color: white;
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-.cardBody p {
-    text-align: center;
-    color: white;
-    font-size: 25px;
-    line-height: 3;
-}
-
-h2 {
-    text-align: center;
-}
-
-button {
-    background-color: rgb(0, 166, 255);
-    color: black;
-    border: 2px solid rgb(0, 166, 255);
-    transition-duration: 0.4s;
-    height: 35px;
-    width: 150px;
-    font-size: 15;
-    font-weight: bold;
-    margin-left: auto;
-    margin-right: auto;
-    align-self: center;
-    align-content: center;
-}
-
-.genPrompt {
-    color: black;
-    font-size: 15;
-    font-weight: bold;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.inputCen {
-    align-self: center;
-    margin-left: auto;
-    margin-right: auto;
-    align-content: center;
-}
-
-.h2Exception {
-    text-align: left;
-}
-
-.sidenav {
-    height: 100%;
-    /* 100% Full-height */
-    width: 0;
-    /* 0 width - change this with JavaScript */
-    position: fixed;
-    /* Stay in place */
-    z-index: 1;
-    /* Stay on top */
-    top: 0;
-    /* Stay at the top */
-    left: 0;
-    background-color: #111;
-    /* Black*/
-    overflow-x: hidden;
-    /* Disable horizontal scroll */
-    padding-top: 60px;
-    /* Place content 60px from the top */
-    transition: 0.5s;
-    /* 0.5 second transition effect to slide in the sidenav */
-}
-
-
-/* The navigation menu links */
-
-.sidenav a {
-    align-self: right;
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: black;
-    display: block;
-    font-color transition: 0.3s;
-    background-color: rgb(0, 166, 255);
-}
-
-
-/* When you mouse over the navigation links, change their color */
-
-.sidenav a:hover {
-    color: #818181;
-}
-
-
-/* Position and style the close button (top right corner) */
-
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-    background-color: rgb(0, 166, 255);
-}
-
-
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-
-#main {
-    transition: margin-right .5s;
-    padding: 20;
-    align-self: right;
-}
-
-
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-
-@media screen and (max-height: 450px) {
-    .sidenav {
-        padding-top: 40px;
-    }
-    .sidenav a {
-        font-size: 18px;
-    }
-}
+            /*change font for all text on study buddy */
+            
+            * {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            /* Add a black background color to the top navigation */
+            
+            .topnav {
+                background-color: rgb(0, 166, 255);
+                overflow: hidden;
+                padding: 0px;
+            }
+            
+            .centerContent {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            /* Style the links inside the navigation bar */
+            
+            .topnav a {
+                float: left;
+                color: #f2f2f2;
+                text-align: center;
+                padding: 14px 16px;
+                margin: 0px;
+                text-decoration: none;
+                font-size: 17px;
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+            }
+            /* Change the color of links on hover */
+            
+            .topnav a:hover {
+                background-color: #ddd;
+                color: black;
+            }
+            /* Add a color to the active/current link */
+            
+            .topnav a.active {
+                background-color: #4CAF50;
+                color: white;
+            }
+            
+            #errorLabel {
+                color: red;
+            }
+            
+            .errorLabel {
+                color: red;
+            }
+            
+            h1.websiteTitle {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                font-size: 60px;
+                color: white;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
+                letter-spacing: -2px;
+                margin-bottom: 2px;
+            }
+            
+            span.websiteTitle {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                font-size: 60px;
+                color: rgb(0, 166, 255);
+                ;
+                -webkit-text-stroke-width: 0px;
+            }
+            
+            .outlineTitle {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                color: white;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
+                letter-spacing: 0px;
+                margin-bottom: 2px;
+            }
+            
+            .pageTitle {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                font-size: 35px;
+                color: rgb(0, 166, 255);
+                ;
+            }
+            
+            .secondaryTitle {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                font-size: 25px;
+                color: white;
+                -webkit-text-stroke-width: 0.6px;
+                -webkit-text-stroke-color: black;
+            }
+            
+            .upvoteContainer {
+                display: flex;
+            }
+            
+            .upvoteButton {
+                margin-top: 0px;
+            }
+            
+            .upvoteText {
+                margin-top: 5px;
+                margin-bottom: 5px;
+                font-size: 15px;
+            }
+            
+            .authorText {
+                color: rgb(0, 166, 255);
+                ;
+            }
+            
+            .submitButton {
+                background-color: transparent;
+                color: black;
+                border: 2px solid rgb(0, 166, 255);
+                ;
+                transition-duration: 0.4s;
+                height: 40px;
+                width: 70px;
+                font-size: 15;
+                font-weight: bold;
+                align-content: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .submitButton:hover {
+                background-color: rgb(0, 166, 255);
+                ;
+                color: white;
+            }
+            
+            .acceptAnswerButton {
+                background-color: transparent;
+                color: black;
+                border: 2px solid rgb(0, 166, 255);
+                ;
+                transition-duration: 0.4s;
+                height: 25px;
+                font-size: 15;
+                font-weight: bold;
+                margin-left: 5px;
+            }
+            
+            .acceptAnswerButton:hover {
+                background-color: rgb(0, 166, 255);
+                ;
+                color: white;
+            }
+            
+            .signOutButton {
+                background-color: transparent;
+                color: black;
+                border: 2px solid rgb(0, 166, 255);
+                ;
+                transition-duration: 0.4s;
+                height: 25px;
+                width: 150px;
+                font-size: 15;
+                font-weight: bold;
+            }
+            
+            .signOutButton:hover {
+                background-color: rgb(0, 166, 255);
+                ;
+                color: white;
+            }
+            
+            .switchSignUpAndIn {
+                background-color: transparent;
+                color: black;
+                border: 2px solid black;
+                transition-duration: 0.4s;
+                height: 45px;
+                width: 200px;
+                font-size: 13;
+                font-weight: bold;
+            }
+            
+            .switchSignUpAndIn:hover {
+                background-color: black;
+                color: white;
+            }
+            
+            .signTitle {
+                font-weight: bold;
+                font-size: 20px;
+            }
+            
+            #userInput {
+                justify-content: center;
+                margin: 0 auto;
+                width: 300px;
+                border: 2px solid rgb(0, 166, 255);
+                ;
+            }
+            
+            .signFormDiv {
+                text-align: center;
+                display: table;
+                margin: 0 auto;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .questionPreviewDiv {
+                outline: 2px solid rgb(0, 166, 255);
+                ;
+            }
+            
+            .questionPreviewTitle {
+                color: rgb(0, 166, 255);
+                ;
+            }
+            
+            .questionPreviewDescription {
+                font-weight: normal;
+            }
+            
+            .questionPreviewA {
+                text-decoration: none;
+            }
+            
+            div.welcomeBanner {
+                width: 100vw;
+                position: relative;
+                margin-left: -50vw;
+                height: 100px;
+                margin-top: 100px;
+                left: 50%;
+            }
+            
+            h1.welcomeBanner {
+                text-align: center;
+                color: rgb(0, 166, 255);
+                font-size: 45px;
+            }
+            
+            .questionWelcomeBanner {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                color: white;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
+                letter-spacing: 0px;
+                margin-bottom: 2px;
+                font-size: 40px;
+                text-align: center;
+            }
+            
+            body {
+                width: 100%
+            }
+            
+            .card {
+                margin: 100px auto 0;
+                width: 400px;
+                height: 500px;
+                perspective: 1000px;
+            }
+            
+            .cardInner {
+                width: 100%;
+                height: 100%;
+                transition: transform 1s;
+                transform-style: preserve-3d;
+                cursor: pointer;
+                position: relative;
+            }
+            
+            .cardInner.isFlipped {
+                transform: rotateY(180deg);
+            }
+            
+            .cardFrontFace {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+                overflow: hidden;
+                border-radius: 16px;
+                box-shadow: 0px 3px 18px 3px rgba(0, 0, 0, 0.2);
+                background-image: linear-gradient(to bottom right, #00a6ff, white);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .cardFrontFace h2 {
+                color: white;
+                font-size: 32px;
+            }
+            
+            .cardBackFace {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                align-items: center;
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+                overflow: hidden;
+                border-radius: 16px;
+                box-shadow: 0px 3px 18px 3px rgba(0, 0, 0, 0.2);
+                background-color: #00a6ff;
+                transform: rotateY(180deg);
+            }
+            
+            .cardContent {
+                width: 100%;
+                height: 100%;
+            }
+            
+            .cardHeader {
+                position: relative;
+                padding: 30px 30px 40px;
+                content: '';
+                display: block;
+                position: absolute;
+                text-align: center;
+                top: 2;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: -1;
+                border-radius: 0 0 50% 0;
+                background-image: linear-gradient(to bottom left, #00a6ff 10%, white 115%)
+            }
+            
+            .pp {
+                display: block;
+                width: 128px;
+                height: 128px;
+                margin: 0 auto 30px;
+                border-radius: 50%;
+                background-color: #00a6ff;
+                border: 5px white;
+            }
+            
+            .cardHeader h2 {
+                margin-bottom: 15px;
+                color: white;
+                font-size: 32px;
+                font-weight: 900;
+                text-align: center;
+                position: center;
+            }
+            
+            .cardBody {
+                padding: 30px;
+            }
+            
+            .cardBody h3 {
+                color: white;
+                font-size: 30px;
+                font-weight: 600;
+                margin-bottom: 15px;
+            }
+            
+            .cardBody p {
+                text-align: center;
+                color: white;
+                font-size: 25px;
+                line-height: 3;
+            }
+            
+            h2 {
+                text-align: center;
+            }
+            
+            button {
+                background-color: rgb(0, 166, 255);
+                color: black;
+                border: 2px solid rgb(0, 166, 255);
+                transition-duration: 0.4s;
+                height: 50px;
+                width: 150px;
+                font-size: 15;
+                font-weight: bold;
+                margin-left: auto;
+                margin-right: auto;
+                align-self: center;
+                align-content: center;
+            }
+            
+            .genPrompt {
+                color: black;
+                font-size: 15;
+                font-weight: bold;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .inputCen {
+                align-self: center;
+                margin-left: auto;
+                margin-right: auto;
+                align-content: center;
+            }
+            
+            .h2Exception {
+                text-align: left;
+            }
+            
+            .sidenav {
+                height: 100%;
+                /* 100% Full-height */
+                width: 0;
+                /* 0 width - change this with JavaScript */
+                position: fixed;
+                /* Stay in place */
+                z-index: 1;
+                /* Stay on top */
+                top: 0;
+                /* Stay at the top */
+                left: 0;
+                background-color: #111;
+                /* Black*/
+                overflow-x: hidden;
+                /* Disable horizontal scroll */
+                padding-top: 60px;
+                /* Place content 60px from the top */
+                transition: 0.5s;
+                /* 0.5 second transition effect to slide in the sidenav */
+            }
+            /* The navigation menu links */
+            
+            .sidenav a {
+                align-self: right;
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: black;
+                display: block;
+                transition: 0.3s;
+                background-color: rgb(0, 166, 255);
+            }
+            /* When you mouse over the navigation links, change their color */
+            
+            .sidenav a:hover {
+                color: #818181;
+            }
+            /* Position and style the close button (top right corner) */
+            
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+                background-color: rgb(0, 166, 255);
+            }
+            /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+            
+            #main {
+                transition: margin-right .5s;
+                padding: 20;
+                align-self: right;
+            }
+            /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+            
+            @media screen and (max-height: 450px) {
+                .sidenav {
+                    padding-top: 40px;
+                }
+                .sidenav a {
+                    font-size: 18px;
+                }
+            }
+            
+            .listButton {
+                align-content: center;
+                text-emphasis-color: white;
+                background-color: rgb(0, 166, 255);
+                border-radius: 2px;
+                height: 40px
+            }
