@@ -30,7 +30,7 @@
             }
         })
     })
-    db.collection("flashcards").orderBy("upvotes", "desc").limit(5).get().then((documents) => {
+    db.collection("flashcard").orderBy("upvotes", "desc").limit(5).get().then((documents) => {
         documents.forEach((doc) => {
             if (doc.exists) {
                 //got document successfully
