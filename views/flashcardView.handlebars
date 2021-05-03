@@ -1,13 +1,29 @@
 <link rel="stylesheet" type="text/css" href="/cards.css">
 
 <body>
-<div>
+<div id="flashcards">
   <h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
 <h4 class="errorLabel" id="errorLabel"></h4>
 <h1 class="outlineTitle">Flashcard Generator</h1>
 
 <div class="centerContent">
     <h1 id="questionTitle" class="pageTitle">Welcome To Flashcards</h1>
+</div>
+<!-- SIDE LIST -->
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Clients</a>
+  <a href="#">Contact</a>
+</div>
+
+<!-- Use any element to open the sidenav -->
+<span onclick="openNav()">open</span>
+
+<!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+<div id="main">
+  ...
 </div>
 
 <!-- FLASHCARD -->
@@ -59,13 +75,13 @@
     let db = firebase.firestore()
 
     var retrieveFlash = db.collection("flashcard").where("title", "==", flashcardSet)
-        retrieveFlash.get().then((querySnapshot) => {
+        retrieveFlash.orderBy(question).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
                 displayFlashcards(doc.data().title, doc.data().question, doc.data().answer)
             })
         })
 
-    function displayFlashcards(question, description, questionID, upvoteCount) {
+    function displayFlashcards(question, description, questionID,) {
 
             //create a to allow user to click to question
             var questionA = document.createElement("a")
@@ -81,24 +97,20 @@
             questionTitle.setAttribute("class", "questionPreviewTitle")
             var questionText = document.createTextNode(question)
             questionTitle.appendChild(questionText)
-
-            //create question upvotes text
-            var upvotes = document.createElement("h4")
-            upvotes.setAttribute("class", "questionPreviewUpvotes")
-            var upvotesText = document.createTextNode("Upvotes: " + upvoteCount)
-            upvotes.appendChild(upvotesText)
             
             //create question description
             var questionDescription = document.createElement("h4")
             questionDescription.setAttribute("class", "questionPreviewDescription")
             var questionDescriptionText = document.createTextNode(description)
             questionDescription.appendChild(questionDescriptionText)
+
             //add title and body to div
-            questionDiv.appesndChild(questionTitle)
+            questionDiv.appendChild(questionTitle)
             questionDiv.appendChild(questionDescription)
-            questionDiv.appendChild(upvotes)
+
             //add div to a
             questionA.appendChild(questionDiv)
+
             //add div to div already in html
             document.getElementById("flashcards").appendChild(questionA)
     }
