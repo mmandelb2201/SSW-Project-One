@@ -57,7 +57,14 @@
 <script>
     let flashcardSet = "{{flashcardView}}"
     let db = firebase.firestore()
-   
+    
+    var retrieveFlash = db.collection("flashcard").where("title", "==", title)
+        retrieveFlash.orderBy("title").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+                displayFlashcards(doc.data().title, doc.data().question), doc.data().answer)
+            })
+        })
+
     function displayFlashcards(question, description, questionID, upvoteCount) {
 
             //create a to allow user to click to question
