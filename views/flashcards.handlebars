@@ -27,7 +27,8 @@
     
 
 <script>
-    let id = "{{userID}}"
+    let id = "{{flashcards}}"
+    let id = "{{title}}"
 
     let db = firebase.firestore()
     var errorLabel = document.getElementById("errorLabel")
@@ -73,7 +74,7 @@
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
                 Title: flashTitle,
-                Question: flashQ,s
+                Question: flashQ,
                 Answer: flashAnswer,
                 Author: uid,
             }).then(function (docRef) {
@@ -106,6 +107,15 @@
         //display error to user
         function showError(error) {
             errorLabel.innerHTML = error
+        }
+
+
+        
+        var retrieveFlash = db.collection("flashcard").where("title", "==", title)
+        retrieveFlash.orderBy("title").limit(5).get().then((querySnapshot) => {
+            querySnapshot.forEach(doc) => {
+                addQuestion(doc.data().title, doc.data().question), doc.data().answer)
+            }
         }
         
         
