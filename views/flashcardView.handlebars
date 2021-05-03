@@ -9,22 +9,25 @@
 <div class="centerContent">
     <h1 id="questionTitle" class="pageTitle">Welcome To Flashcards</h1>
 </div>
-<!-- SIDE LIST -->
+
+ <!-- SIDE LIST -->
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <a href="#">About</a>
   <a href="#">Services</a>
   <a href="#">Clients</a>
   <a href="#">Contact</a>
+  <a href="#">Contact</a>
+  <a href="#">Contact</a>
 </div>
 
 <!-- Use any element to open the sidenav -->
-<span onclick="openNav()">open</span>
+<button onclick="openNav()" style="align-items: right;">More Flashcard Sets</button>
 
-<!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+<!-- Add all page content inside thiss div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
 <div id="main">
-  ...
-</div>
+
+
 
 <!-- FLASHCARD -->
 <div class="card">
@@ -62,9 +65,15 @@
 
     </div>
   </div>
+  </div>
+
   <script src="cards.js"></script>  
   <br>
   <br>
+  </div>
+
+ 
+
 
 
 </body>
@@ -75,9 +84,9 @@
     let db = firebase.firestore()
 
     var retrieveFlash = db.collection("flashcard").where("title", "==", flashcardSet)
-        retrieveFlash.orderBy(question).get().then((querySnapshot) => {
+        retrieveFlash.orderBy(flashQ).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-                displayFlashcards(doc.data().title, doc.data().question, doc.data().answer)
+                displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer)
             })
         })
 
@@ -114,4 +123,15 @@
             //add div to div already in html
             document.getElementById("flashcards").appendChild(questionA)
     }
+
+    /* Set the width of the side navigation to 250px */
+function openNav() {
+  document.getElementById("mySidenav").style.width = "150px";
+  document.getElementById("mySidenav").style.lineHeight = "30px"
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
 </script>

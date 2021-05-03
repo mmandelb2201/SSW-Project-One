@@ -69,7 +69,8 @@
                 showError("Please fill in all fields")
             }
         }
-        
+      
+  
         //add question to firestore
         function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
             db.collection("flashcard").add({
@@ -112,11 +113,11 @@
         var retrieveFlash = db.collection("flashcard").where("title", "==", title)
         retrieveFlash.orderBy("title").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                addQuestion(doc.data().title, doc.data().question, doc.data().answer)
+                addQuestion(doc.data().title, doc.data().flashQ, doc.data().answer)
             })
         })
-        
-        function displayFlashcards(question, description, questionID, upvoteCount) {
+    
+        function displayFlashcards(flashQ, description, questionID, upvoteCount) {
 
             //create a to allow user to click to question
             var questionA = document.createElement("a")
@@ -130,7 +131,7 @@
             //create question title
             var questionTitle = document.createElement("h2")
             questionTitle.setAttribute("class", "questionPreviewTitle")
-            var questionText = document.createTextNode(question)
+            var questionText = document.createTextNode(flashQ)
             questionTitle.appendChild(questionText)
 
             //create question upvotes text
@@ -152,4 +153,5 @@
             questionA.appendChild(questionDiv)
             //add div to div already in html
             document.getElementById("flashcards").appendChild(questionA)
+        }
 </script>
