@@ -53,7 +53,7 @@
   </div>
   </div>
 
-  <script src="cards.js"></script>  
+  <script src="/cards.js"></script>  
   <br>
   <br>
   </div>
@@ -83,22 +83,27 @@
 
 
 <script>
+    //array to hold flashcard meta data
+    var flashcards = []
+
     let flashcardSet = "{{flashcardView}}"
     let db = firebase.firestore()
 
-    var retrieveFlash = db.collection("flashcard").where("title", "==", flashcardSet)
-        retrieveFlash.orderBy(flashQ).get().then((querySnapshot) => {
+    db.collection("flashcard").where("title", "==", flashcardSet).orderBy("question").get().then((querySnapshot) => {
+        var x = 0
         querySnapshot.forEach((doc) => {
-                displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer)
+                flashcards[x] = //create flashcard object with question and answer
+                displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
+                x = x + 1
             })
         })
 
-    function displayFlashcards(question, description, questionID,) {
+    function displayFlashcards(question, description, questionID, index) {
 
             //create a to allow user to click to question
             var questionA = document.createElement("a")
             questionA.setAttribute("class", "questionPreviewA")
-            questionA.setAttribute("href", "/question/show/" + questionID)
+            questionA.setAttribute("onclick", showFlashcard(index))
 
             //create question div
             var questionDiv = document.createElement("div")
@@ -127,6 +132,12 @@
             document.getElementById("flashcards").appendChild(questionA)
     }
 
+    function showFlashcard(index){
+        //do a check to make sure index exists in the array
+        document.getElementById("question").innerHTML = flashcards[index].question
+        document.getElementById("answer").innerHTML = flashcards[index].answer
+    }
+
     /* Set the width of the side navigation to 250px */
 function openNav() {
   document.getElementById("mySidenav").style.width = "150px";
@@ -137,8 +148,18 @@ function openNav() {
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
+<<<<<<< HEAD
 </script>
 <script>
 
   
+=======
+
+class flashcard {
+  constructor(question, answer) {
+    this.question = question
+    this.answer = answer
+  }
+}
+>>>>>>> e6a4329042f836f46f561ed8a110c3816b71c46e
 </script>

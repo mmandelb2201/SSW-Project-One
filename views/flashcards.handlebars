@@ -31,8 +31,12 @@
     
 </div>
 <script>
+<<<<<<< HEAD
+    let id = "{{flashcards}}"
+=======
     let id= "{{flashcards}}"
     let id = "{{title}}"
+>>>>>>> 92e6bff0c40bd3baa8c064b9ba0f3cf18838fb8b
 
     let db = firebase.firestore()
     var errorLabel = document.getElementById("errorLabel")
@@ -85,7 +89,7 @@
             }).then(function (docRef) {
                 //add questionID to user information
                 db.collection("users").doc(userID).update({
-                    flashcard: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                    flashcards: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                 }).catch((error) => {
                     console.error("Error Adding Question: ", error)
                     //todo: delete newly created question
@@ -113,13 +117,6 @@
         function showError(error) {
             errorLabel.innerHTML = error
         }
-        
-        var retrieveFlash = db.collection("flashcard").where("title", "==", title)
-        retrieveFlash.orderBy("title").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                addQuestion(doc.data().title, doc.data().flashQ, doc.data().answer)
-            })
-        })
     
         function displayFlashcards(flashQ, description, questionID, upvoteCount) {
 
