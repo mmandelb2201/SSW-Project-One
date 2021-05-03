@@ -62,7 +62,7 @@
     var retrieveFlash = db.collection("flashcard").where("title", "==", title)
         retrieveFlash.orderBy("title").get().then((querySnapshot) => {
             querySnapshot.forEach(doc) => {
-                addQuestion(doc.data().title, doc.data().question), doc.data().answer)
+                displayFlashcards(doc.data().title, doc.data().question), doc.data().answer)
             }
         }
 
