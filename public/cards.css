@@ -448,7 +448,7 @@ button {
     font-size: 25px;
     color: black;
     display: block;
-    font-color transition: 0.3s;
+    transition: 0.3s;
     background-color: rgb(0, 166, 255);
 }
 
