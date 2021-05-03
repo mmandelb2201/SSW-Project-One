@@ -57,11 +57,11 @@
 <script>
     let flashcardSet = "{{flashcardView}}"
     let db = firebase.firestore()
-    
-    var retrieveFlash = db.collection("flashcard").where("title", "==", title)
-        retrieveFlash.orderBy("title").get().then((querySnapshot) => {
+
+    var retrieveFlash = db.collection("flashcard").where("title", "==", flashcardSet)
+        retrieveFlash.get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-                displayFlashcards(doc.data().title, doc.data().question), doc.data().answer)
+                displayFlashcards(doc.data().title, doc.data().question, doc.data().answer)
             })
         })
 
