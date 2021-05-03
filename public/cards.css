@@ -491,3 +491,11 @@ button {
         font-size: 18px;
     }
 }
+
+.listButton {
+    align-content: center;
+    text-emphasis-color: white;
+    background-color: rgb(0, 166, 255);
+    border-radius: 2px;
+    height: 40px
+}
