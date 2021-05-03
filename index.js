@@ -84,7 +84,7 @@ app.get("/flashcards/sets/:id", (req, res) => {
     })
 })
 
-app.get("/flashcardView", (req, res) => {
+app.get("/flashcardView/:id", (req, res) => {
     res.render("flashcardView.handlebars", {
         title: "Practice with Flashcards",
         flashcardView: req.params.id
