@@ -17,12 +17,12 @@ var favicon = require('serve-favicon');
 
 //set handlebars as view engine
 app.engine("handlebars", handlebars(({
-    //set main as the header and footer for the site
-    defaultLayout: "main",
-    //set view/layouts as our static page files
-    layoutsDir: path.join(__dirname, "views/layouts")
-})))
-//set website favicon
+        //set main as the header and footer for the site
+        defaultLayout: "main",
+        //set view/layouts as our static page files
+        layoutsDir: path.join(__dirname, "views/layouts")
+    })))
+    //set website favicon
 app.use(favicon(__dirname + '/public/images/studyBuddyFaviconSmall.png'));
 app.set("view engine", "handlebars")
     //set /scripts as our folder for javascript files
@@ -70,6 +70,27 @@ app.get("/flashcards", (req, res) => {
         title: "Flashcard Generator"
     })
 })
+app.get("/flashcards/show/:id", (req, res) => {
+    res.render("flashcards.handlebars", {
+        title: "Your Flashcards",
+        flashcards: req.params.id
+    })
+})
+
+app.get("/flashcards/sets/:id", (req, res) => {
+    res.render("flashcards.handlebars", {
+        title: "Your Flashcards",
+        title: req.params.id
+    })
+})
+
+app.get("/flashcardView/:id", (req, res) => {
+    res.render("flashcardView.handlebars", {
+        title: "Practice with Flashcards",
+        flashcardView: req.params.id
+    })
+})
+
 app.get("/account/show/:id", (req, res) => {
         res.render("account.handlebars", {
             title: "Account",
