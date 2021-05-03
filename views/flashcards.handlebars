@@ -108,8 +108,6 @@
         function showError(error) {
             errorLabel.innerHTML = error
         }
-
-
         
         var retrieveFlash = db.collection("flashcard").where("title", "==", title)
         retrieveFlash.orderBy("title").limit(5).get().then((querySnapshot) => {
@@ -118,5 +116,39 @@
             }
         }
         
-        
+        function displayFlashcards(question, description, questionID, upvoteCount) {
+            //create a to allow user to click to question
+            var questionA = document.createElement("a")
+            questionA.setAttribute("class", "questionPreviewA")
+            questionA.setAttribute("href", "/question/show/" + questionID)
+
+            //create question div
+            var questionDiv = document.createElement("div")
+            questionDiv.setAttribute("class", "questionPreviewDiv")
+
+            //create question title
+            var questionTitle = document.createElement("h2")
+            questionTitle.setAttribute("class", "questionPreviewTitle")
+            var questionText = document.createTextNode(question)
+            questionTitle.appendChild(questionText)
+
+            //create question upvotes text
+            var upvotes = document.createElement("h4")
+            upvotes.setAttribute("class", "questionPreviewUpvotes")
+            var upvotesText = document.createTextNode("Upvotes: " + upvoteCount)
+            upvotes.appendChild(upvotesText)
+            
+            //create question description
+            var questionDescription = document.createElement("h4")
+            questionDescription.setAttribute("class", "questionPreviewDescription")
+            var questionDescriptionText = document.createTextNode(description)
+            questionDescription.appendChild(questionDescriptionText)
+            //add title and body to div
+            questionDiv.appendChild(questionTitle)
+            questionDiv.appendChild(questionDescription)
+            questionDiv.appendChild(upvotes)
+            //add div to a
+            questionA.appendChild(questionDiv)
+            //add div to div already in html
+            document.getElementById("flashcards").appendChild(questionA)
     </script>
