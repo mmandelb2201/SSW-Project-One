@@ -56,9 +56,7 @@
 
 <script>
     let flashcardSet = "{{flashcardView}}"
-
     let db = firebase.firestore()
-
     var retrieveFlash = db.collection("flashcard").where("title", "==", title)
         retrieveFlash.orderBy("title").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
