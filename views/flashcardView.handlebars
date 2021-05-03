@@ -64,7 +64,7 @@
         querySnapshot.forEach((doc) => {
                 displayFlashcards(doc.data().title, doc.data().question), doc.data().answer)
             })
-        })
+        }
 
     function displayFlashcards(question, description, questionID, upvoteCount) {
 
