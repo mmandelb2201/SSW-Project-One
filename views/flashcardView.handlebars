@@ -31,7 +31,6 @@
         <div class="cardBackFace">
           <div class="cardContent"></div>
             <div class="cardHeader">
-              <h2>Honolulu</h2>
 
             </div>
             <div class="cardBody">
@@ -56,7 +55,17 @@
 
 
 <script>
-    
+    let flashcardSet = "{{flashcardView}}"
+
+    let db = firebase.firestore()
+
+    var retrieveFlash = db.collection("flashcard").where("title", "==", title)
+        retrieveFlash.orderBy("title").get().then((querySnapshot) => {
+            querySnapshot.forEach(doc) => {
+                addQuestion(doc.data().title, doc.data().question), doc.data().answer)
+            }
+        }
+
     function displayFlashcards(question, description, questionID, upvoteCount) {
 
             //create a to allow user to click to question
