@@ -111,10 +111,10 @@
         
         var retrieveFlash = db.collection("flashcard").where("title", "==", title)
         retrieveFlash.orderBy("title").get().then((querySnapshot) => {
-            querySnapshot.forEach(doc) => {
-                addQuestion(doc.data().title, doc.data().question), doc.data().answer)
-            }
-        }
+            querySnapshot.forEach((doc) => {
+                addQuestion(doc.data().title, doc.data().question, doc.data().answer)
+            })
+        })
         
         function displayFlashcards(question, description, questionID, upvoteCount) {
 
@@ -152,4 +152,4 @@
             questionA.appendChild(questionDiv)
             //add div to div already in html
             document.getElementById("flashcards").appendChild(questionA)
-    </script>
+</script>
