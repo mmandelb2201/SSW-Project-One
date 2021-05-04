@@ -1,75 +1,43 @@
-<link rel="stylesheet" type="text/css" href="/messenger.css">
-
+<link rel="stylesheet" type="text/css" href="css/messenger.css">
+<link rel="stylesheet" type="text/css" href="css/messenger-left-pane.css">
+<link rel="stylesheet" type="text/css" href="css/messenger-sides.css">
+<script src="../scripts/firestore.js"></script>
+<script src="../scripts/display.js"></script>
+<script src="../scripts/message.js"></script>
 <div id="messenger-page">
-    <header id="messenger-top">
-
-    </header>
-    <div id="message-area">
-        <div id="room">
-
+    <header id="messenger-top"></header>
+    <div id="message-bottom">
+        <div id="message-side-area-left">
+            <nav id="rooms-nav">
+                <div id="my-room-pane">
+                    <button id="room-button">+</button>
+                    <input type="text" id="room-name-input">
+                    <p>My rooms</p>
+                </div>
+            </nav>
         </div>
-        <div id="message-box">
-            <button type="button" id="message-submit">+</button>
-            <input type="text" id="message-input">
+        <div id="message-center">
+            <div id="message-area">
+                <div id="message-room"></div>
+                <div id="message-box">
+                    <button type="button" id="message-submit">Submit</button>
+                    <input type="text" id="message-input">
+                </div>
+            </div>
         </div>
+        <div id="message-side-area-right"></div>
     </div>
-    <footer id="messenger-bottom">
-
-    </footer>
 </div>
 <script>
-    let db = firebase.firestore()
 
-    testroom = "demoRoom"
-
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("message-submit").addEventListener("click", () => {
-            message = document.getElementById("message-input").value
-            storeMessage(testroom, "John Doe", message)
-            displayMessage({username: "John Doe", mssg: message})
-            document.getElementById("message-input").value = ""
-        })
+    document.getElementById("message-submit").addEventListener("click", () => {
+        getMessageFromInput("message-input")
     })
-
-    function storeMessage(room, username, mssg) {
-        db.collection("rooms").doc(room).collection("messages").add({ 
-            username, 
-            mssg,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then(messageRef => {
-            console.log("Message ID is ", messageRef)             
-        })
-        .catch(err => {
-            console.log("Error adding document: ", err)
-        })
-    }
-
-    function displayMessage(data) {
-       let room = document.getElementById("room");
-       let messageBoxElement = `<p class="message-container">${data.username}: ${data.mssg}</p>` 
-       room.innerHTML += messageBoxElement
-    }
-
-    function displayMessages(room) {
-        db.collection("rooms").doc(room).collection("messages").orderBy("timestamp")
-        .get()
-        .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                displayMessage(doc.data())
-            })
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
-
-    function test() {
-        displayMessages("demoRoom")
-    }
 
     
 
-    // Testing
-    test()
+    // student@school.com
+    // 11111
+
 </script>
+
