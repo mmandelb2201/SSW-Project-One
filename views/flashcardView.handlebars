@@ -50,6 +50,7 @@
       </div>
 
     </div>
+ 
   </div>
   </div>
 
@@ -75,6 +76,10 @@
 <button onclick="openNav()" id="listButton">More Flashcard Sets</button>
 </div>
 </div>
+   <div>
+      <button type="button" class="submitButton" style="width: 100px;" id="nextFlashCard">Next Flashcard</button>
+      <button type="button" class="submitButton" style="width: 100px;" id="previousFlashCard">Previous Flashcard</button>
+    </div>
 </div>
 
 
@@ -87,28 +92,25 @@
     var flashcards = []
     //index to hold which flashcard the user is viewing
     var flashcardIndex = 0
+    //add functionality to next flashcard and previous flashcard buttons
+    document.getElementById("nextFlashCard").onclick = showNext
+    document.getElementById("previousFlashCard").onclick = showPrevious
     let flashcardSet = "{{flashcardView}}"
     let db = firebase.firestore()
-
+    //check to see if flashcard set title has a dash in it, if it does remove it and add a space
+    if (flashcardSet.includes("-")) {
+      var temp = flashcardSet.replace("-", " ")
+      flashcardSet = temp
+    }
     db.collection("flashcard").where("title", "==", flashcardSet).orderBy("question").get().then((querySnapshot) => {
         var x = 0
         querySnapshot.forEach((doc) => {
-<<<<<<< HEAD
                 flashcards[x] = new flashcard(doc.data().question, doc.data().answer)
                 displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
                 x = x + 1
                 if (x == querySnapshot.size) {
                   showFlashcard(0)
                 }
-=======
-                flashcards[x] = new flashcard(doc.data().question,doc.data().answer)
-                displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
-                x = x + 1
-                if (x==querySnapshot.size){
-                  showFlashcard(0)
-                }
-
->>>>>>> e5a488cea28d4304dfc02d120256d8d3ec0da538
             })
         })
 
@@ -161,13 +163,18 @@ function openNav() {
 function showNext() {
   if (flashcardIndex + 1 < flashcards.length) {
     flashcardIndex += 1
+
     showFlashcard(flashcardIndex)
   }
 }
 
 function showPrevious() {
-  if (flashcardIndex - 1 > 0) {
+  if (flashcardIndex - 1 >= 0) {
     flashcardIndex += -1
+
+    if (flashcardIndex == 0){
+    }
+
     showFlashcard(flashcardIndex)
   }
 }
@@ -175,10 +182,6 @@ function showPrevious() {
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> e5a488cea28d4304dfc02d120256d8d3ec0da538
 
 class flashcard {
   constructor(question, answer) {

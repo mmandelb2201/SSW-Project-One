@@ -1,160 +1,132 @@
-<link rel="stylesheet" type="text/css" href="/cards.css">
-
 <body>
-<div>
-  <h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
-<h4 class="errorLabel" id="errorLabel"></h4>
-<h1 class="outlineTitle">Flashcard Generator</h1>
+    <div>
+        <h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
+        <h4 class="errorLabel" id="errorLabel"></h4>
 
-<div class="centerContent">
-    <h1 id="questionTitle" class="pageTitle">Welcome to Flashcard Generator</h1>
-</div>
+        <div class="centerContent">
+            <h1 id="questionTitle" class="pageTitle">Welcome to Flashcard Generator</h1>
+        </div>
 
-<div  class="centerContent" style="background-color: rgb(0, 166, 255);" style="text-align: left;">
-    <br>
-    <br>
-    <h2>What is the title of this flashcard collection?</h2>
-    <input type="text" id="flashTitle" placeholder="Type Here!" />
+        <div class="centerContent">
+            <h2>What is the title of this flashcard collection?</h2>
+            <input type="text" id="flashTitle" placeholder="Type Here!" />
+            <h2>What is the question?</h2>
+            <input type="text" id="flashQ" placeholder="Type Here!" />
+            <h2>What is the answer?</h2>
+            <input type="text" id="flashAnswer" placeholder="Type Here!" />
+            <h2>Would you like to add another question to this collection?</h2>
 
-    <h2>What is the question?</h2>
-    <input type="text" id="flashQ" placeholder="Type Here!" />
+            <button type="button" style="height: 55px; width: 100px;" class="submitButton" id="add">Add Another
+                Document</button>
+            <button type="button" style="height: 55px; width: 100px;" class="submitButton" id="submit">Submit
+                Collection</button>
 
-    <h2>What is the answer?</h2>
-    <input type="text" id="flashAnswer" placeholder="Type Here!" />
+        </div>
 
-    <h2>Would you like to add another question to this collection?</h2>
-    <br>
-</div>
-<div>
-    <button type="button" class="submitButton" id="submit" onclick="alertYes()">Yes</button>
-    <button type="button" class="submitButton" id="submit" onclick="alertNo()">No</button>
-    
-</div>
-<script>
-<<<<<<< HEAD
-    let id = "{{flashcards}}"
-=======
-    let id= "{{flashcards}}"
-    let id = "{{title}}"
->>>>>>> 92e6bff0c40bd3baa8c064b9ba0f3cf18838fb8b
+        <script>
+            let id = "{{flashcards}}"
 
-    let db = firebase.firestore()
-    var errorLabel = document.getElementById("errorLabel")
-        var submitButton = document.getElementById("submit")
+            var flashcards = []
 
-        submitButton.onclick = validateField
-        //save user id
-        var userID = ""
-        //check to see all fields are filled
-        function validateField() {
-            let flashTitle = document.getElementById("flashTitle").value
-            let flashQ = document.getElementById("flashQ").value
-            let flashAnswer = document.getElementById("flashAnswer").value
+            let db = firebase.firestore()
+            var errorLabel = document.getElementById("errorLabel")
+            var submitButton = document.getElementById("submit")
+            var next = document.getElementById("add")
 
-            console.log("title: " + flashTitle)
-            console.log("answer: " + flashAnswer)
-            console.log("question: " + flashQ)
+            submitButton.onclick = validateField
+            next.onclick = addAnother
 
-            if (flashTitle.length != 0) {
-                //all fields are filled so they can be added to firestore
+            //save user id
+            var userID = ""
+            //check to see all fields are filled
+            function validateField() {
+                let flashTitle = document.getElementById("flashTitle").value
+                let flashQ = document.getElementById("flashQ").value
+                let flashAnswer = document.getElementById("flashAnswer").value
 
-                //do a check to make sure user is signed in
-                firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                        //Save user id
-                        // User is signed in.
-                        //all the boys valid and accounted for
-                        userID = user.uid
-                        addQuestion(flashTitle, flashQ, flashAnswer, user.uid)
+                if (flashTitle.length != 0) {
+                    //all fields are filled so they can be added to firestore
 
-                    } else {
-                        // No user is signed in.
-                        showError("You must be signed in to make flashcards")
+                    //do a check to make sure user is signed in
+                    firebase.auth().onAuthStateChanged(function (user) {
+                        if (user) {
+                            //Save user id
+                            // User is signed in.
+                            //all the boys valid and accounted for
+                            userID = user.uid
+                            flashcards.push(new flashcard(flashQ, flashAnswer))
+                            addFlashcards(flashTitle, userID)
+
+                        } else {
+                            // No user is signed in.
+                            showError("You must be signed in to make flashcards")
+                        }
+                    })
+                } else {
+                    //user needs to add all required information
+                    showError("Please fill in all fields")
+                }
+            }
+
+            function addAnother() {
+                let question = document.getElementById("flashQ").value
+                let answer = document.getElementById("flashAnswer").value
+
+                if (question.length != 0 && answer.length != 0) {
+                    flashcards.push(new flashcard(question, answer))
+
+                    document.getElementById("flashQ").value = ""
+                    document.getElementById("flashAnswer").value = ""
+                } else {
+                    showError("Please enter all fields")
+                }
+
+
+            }
+
+            //add question to firestore
+            function addFlashcards(title, id) {
+                
+                x = 0
+
+                flashcards.forEach((card) => {
+                   db.collection("flashcard").add({
+                        title: title,
+                        question: card.question,
+                        answer: card.answer,
+                        author: id,
+                    }).then(function (docRef) {
+                        //add questionID to user information
+                        db.collection("users").doc(userID).update({
+                            flashcards: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                        }).catch((error) => {
+                            console.error("Error Adding Question: ", error)
+                            //todo: delete newly created question
+                        })
+
+                    }).catch((error) => {
+                        console.error("Error Adding Question: ", error)
+                        //todo: delete newly created question
+                    })
+
+                    x += 1
+                    if(x == flashcards.length) {
+                        window.location.href = "/flashcardView/" + title
                     }
                 })
-            } else {
-                //user needs to add all required information
-                showError("Please fill in all fields")
+
             }
+
+            //display error to user
+            function showError(error) {
+                errorLabel.innerHTML = error
+            }
+
+class flashcard {
+    constructor(question, answer) {
+        this.question = question
+        this.answer = answer
         }
-      
-  
-        //add question to firestore
-        function addQuestion(flashTitle, flashQ, flashAnswer, uid) {
-            db.collection("flashcard").add({
-                title: flashTitle,
-                question: flashQ,
-                answer: flashAnswer,
-                author: uid,
-            }).then(function (docRef) {
-                //add questionID to user information
-                db.collection("users").doc(userID).update({
-                    flashcards: firebase.firestore.FieldValue.arrayUnion(docRef.id)
-                }).catch((error) => {
-                    console.error("Error Adding Question: ", error)
-                    //todo: delete newly created question
-                })
+    }
 
-            }).catch((error) => {
-                console.error("Error Adding Question: ", error)
-                //todo: delete newly created question
-            })
-        
-        }
-
-        function alertYes(){
-            alert("Your flashcard was submitted! To add to a set keep the title the same.")
-            console.log("Your flashcard was submitted!")
-        }
-
-        function alertNo(){
-            alert("Your flashcard was submitted! If desired, to add to a set keep the title the same.")
-            console.log("Your flashcard was submitted!")
-        }
-
-
-        //display error to user
-        function showError(error) {
-            errorLabel.innerHTML = error
-        }
-    
-        function displayFlashcards(flashQ, description, questionID, upvoteCount) {
-
-            //create a to allow user to click to question
-            var questionA = document.createElement("a")
-            questionA.setAttribute("class", "questionPreviewA")
-            questionA.setAttribute("href", "/question/show/" + questionID)
-
-            //create question div
-            var questionDiv = document.createElement("div")
-            questionDiv.setAttribute("class", "questionPreviewDiv")
-
-            //create question title
-            var questionTitle = document.createElement("h2")
-            questionTitle.setAttribute("class", "questionPreviewTitle")
-            var questionText = document.createTextNode(flashQ)
-            questionTitle.appendChild(questionText)
-
-            //create question upvotes text
-            var upvotes = document.createElement("h4")
-            upvotes.setAttribute("class", "questionPreviewUpvotes")
-            var upvotesText = document.createTextNode("Upvotes: " + upvoteCount)
-            upvotes.appendChild(upvotesText)
-            
-            //create question description
-            var questionDescription = document.createElement("h4")
-            questionDescription.setAttribute("class", "questionPreviewDescription")
-            var questionDescriptionText = document.createTextNode(description)
-            questionDescription.appendChild(questionDescriptionText)
-            //add title and body to div
-            questionDiv.appendChild(questionTitle)
-            questionDiv.appendChild(questionDescription)
-            questionDiv.appendChild(upvotes)
-            //add div to a
-            questionA.appendChild(questionDiv)
-            //add div to div already in html
-            document.getElementById("flashcards").appendChild(questionA)
-
-            //was flashcards, let id = "{{flashcards}}"
-        }
-</script>
+        </script>
