@@ -1,0 +1,22 @@
+#rooms-nav {
+    display: flex;
+    flex-direction: column;  
+}
+
+.room-topic {
+    padding: 10px;
+    background-color: rgb(189, 189, 189);
+}
+
+.room-topic a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+
+.room-topic:hover {
+    background-color: rgb(223, 223, 223);
+}
+
+#my-room-pane {
+    display: flex;
+}
