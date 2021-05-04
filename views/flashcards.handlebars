@@ -1,26 +1,23 @@
 <body>
     <div>
-        <h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
-        <h4 class="errorLabel" id="errorLabel"></h4>
-
         <div class="centerContent">
             <h1 id="questionTitle" class="pageTitle">Welcome to Flashcard Generator</h1>
-        </div>
 
-        <div class="centerContent">
             <h2>What is the title of this flashcard collection?</h2>
-            <input type="text" id="flashTitle" placeholder="Type Here!" />
+            <input type="text" id="flashTitle" class="largeInput" placeholder="Title" />
             <h2>What is the question?</h2>
-            <input type="text" id="flashQ" placeholder="Type Here!" />
+            <input type="text" id="flashQ" class="largeInput" placeholder="Question" />
             <h2>What is the answer?</h2>
-            <input type="text" id="flashAnswer" placeholder="Type Here!" />
+            <input type="text" id="flashAnswer" class="largeInput" placeholder="Answer" />
             <h2>Would you like to add another question to this collection?</h2>
 
-            <button type="button" style="height: 55px; width: 100px;" class="submitButton" id="add">Add Another
+            <button type="button" style="height: 55px; width: 100px;font-size: small;" class="submitButton" id="add">Add
+                Another
                 Document</button>
-            <button type="button" style="height: 55px; width: 100px;" class="submitButton" id="submit">Submit
+            <button type="button" style="height: 55px; width: 100px;font-size: small;" class="submitButton"
+                id="submit">Submit
                 Collection</button>
-
+            <h4 class="errorLabel" id="errorLabel"></h4>
         </div>
 
         <script>
@@ -86,11 +83,9 @@
 
             //add question to firestore
             function addFlashcards(title, id) {
-                
                 x = 0
-
                 flashcards.forEach((card) => {
-                   db.collection("flashcard").add({
+                    db.collection("flashcard").add({
                         title: title,
                         question: card.question,
                         answer: card.answer,
@@ -99,6 +94,23 @@
                         //add questionID to user information
                         db.collection("users").doc(userID).update({
                             flashcards: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                        }).then(function () {
+                            x += 1
+                            if (x == flashcards.length) {
+                                if (title.includes(" ") == true) {
+                                    while (title.includes(" ") == true) {
+                                        var temp = title.replace(" ", "-")
+                                        title = temp
+                                        if (title.includes(" ") == false) {
+                                            window.location.href = "/flashcardView/" + title
+                                        }
+                                    }
+                                }else{
+                                    window.location.href = "/flashcardView/" + title
+                                }
+
+
+                            }
                         }).catch((error) => {
                             console.error("Error Adding Question: ", error)
                             //todo: delete newly created question
@@ -109,10 +121,7 @@
                         //todo: delete newly created question
                     })
 
-                    x += 1
-                    if(x == flashcards.length) {
-                        window.location.href = "/flashcardView/" + title
-                    }
+
                 })
 
             }
@@ -122,11 +131,11 @@
                 errorLabel.innerHTML = error
             }
 
-class flashcard {
-    constructor(question, answer) {
-        this.question = question
-        this.answer = answer
-        }
-    }
+            class flashcard {
+                constructor(question, answer) {
+                    this.question = question
+                    this.answer = answer
+                }
+            }
 
         </script>

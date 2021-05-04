@@ -2,14 +2,8 @@
 
 <body>
 <div id="flashcards">
-  <h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
 <h4 class="errorLabel" id="errorLabel"></h4>
-<h1 class="outlineTitle">Flashcard Generator</h1>
-
-<div class="centerContent">
-    <h1 id="questionTitle" class="pageTitle">Welcome To Flashcards</h1>
-</div>
-
+<h1 class="outlineTitle" id="setTitle">Flashcard Generator</h1>
 
 <!-- Add all page content inside thiss div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
 <div id="main">
@@ -65,13 +59,12 @@
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <a href="#"></a>
-  <a href="#">Celebrity Heights</a>
-  <a href="#">Hardware of PC</a>
-  <a href="#">U.S States</a>
-  <a href="#">Cool Colors</a>
-  <a href="#">Anatomy</a>
+  <a href="/flashcardView/Celebrity-Heights">Celebrity Heights</a>
+  <a href="/flashcardView/Hardware-of-PC">Hardware of PC</a>
+  <a href="/flashcardView/State-Capitals">State Capitals</a>
+
 </div>
-<div>
+<div style="margin-bottom: 10px;">
 <!-- Use any element to open the sidenav -->
 <button onclick="openNav()" id="listButton">More Flashcard Sets</button>
 </div>
@@ -99,54 +92,26 @@
     let db = firebase.firestore()
     //check to see if flashcard set title has a dash in it, if it does remove it and add a space
     if (flashcardSet.includes("-")) {
-      var temp = flashcardSet.replace("-", " ")
-      flashcardSet = temp
+      while (flashcardSet.includes("-") == true){
+        var temp = flashcardSet.replace("-", " ")
+        flashcardSet = temp
+      }
+      document.getElementById("setTitle").innerHTML = flashcardSet
+      document.getElementById("title").innerHTML = flashcardSet
+    }else{
+      document.getElementById("setTitle").innerHTML = flashcardSet
+      document.getElementById("title").innerHTML = flashcardSet
     }
     db.collection("flashcard").where("title", "==", flashcardSet).orderBy("question").get().then((querySnapshot) => {
         var x = 0
         querySnapshot.forEach((doc) => {
                 flashcards[x] = new flashcard(doc.data().question, doc.data().answer)
-                displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
                 x = x + 1
                 if (x == querySnapshot.size) {
                   showFlashcard(0)
                 }
             })
         })
-
-    function displayFlashcards(question, description, questionID, index) {
-
-            //create a to allow user to click to question
-            var questionA = document.createElement("a")
-            questionA.setAttribute("class", "questionPreviewA")
-            questionA.setAttribute("onclick", showFlashcard(index))
-
-            //create question div
-            var questionDiv = document.createElement("div")
-            questionDiv.setAttribute("class", "questionPreviewDiv")
-
-            //create question title
-            var questionTitle = document.createElement("h2")
-            questionTitle.setAttribute("class", "questionPreviewTitle")
-            var questionText = document.createTextNode(question)
-            questionTitle.appendChild(questionText)
-            
-            //create question description
-            var questionDescription = document.createElement("h4")
-            questionDescription.setAttribute("class", "questionPreviewDescription")
-            var questionDescriptionText = document.createTextNode(description)
-            questionDescription.appendChild(questionDescriptionText)
-
-            //add title and body to div
-            questionDiv.appendChild(questionTitle)
-            questionDiv.appendChild(questionDescription)
-
-            //add div to a
-            questionA.appendChild(questionDiv)
-
-            //add div to div already in html
-            document.getElementById("flashcards").appendChild(questionA)
-    }
 
     function showFlashcard(index){
         //do a check to make sure index exists in the array
