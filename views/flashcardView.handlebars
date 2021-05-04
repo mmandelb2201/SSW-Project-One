@@ -39,11 +39,7 @@
         </div>
         <div class="cardBody">
           <!-- ANSWER -->
-<<<<<<< HEAD
-          <h3 id="answer">Honolulu</h3>
-=======
           <h3 id="answer">NICENAME</h3>
->>>>>>> 5cf9fcca8b992a4a8c94659393f0c5e54687b6a1
         </div>
       </div>
 
@@ -107,6 +103,7 @@
       document.getElementById("setTitle").innerHTML = flashcardSet
       document.getElementById("title").innerHTML = flashcardSet
     }
+
     db.collection("flashcard").where("title", "==", flashcardSet).orderBy("question").get().then((querySnapshot) => {
         var x = 0
         querySnapshot.forEach((doc) => {
@@ -115,16 +112,12 @@
                 if (x == querySnapshot.size) {
                   showFlashcard(0)
                 }
-<<<<<<< HEAD
                 flashcards[x] = new flashcard(doc.data().question,doc.data().answer)
-                displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
                 x = x + 1
                 if (x==querySnapshot.size){
                   showFlashcard(0)
                 }
 
-=======
->>>>>>> 5cf9fcca8b992a4a8c94659393f0c5e54687b6a1
             })
         })
 
@@ -143,10 +136,6 @@ function openNav() {
 function showNext() {
   if (flashcardIndex + 1 < flashcards.length) {
     flashcardIndex += 1
-<<<<<<< HEAD
-
-=======
->>>>>>> 5cf9fcca8b992a4a8c94659393f0c5e54687b6a1
     showFlashcard(flashcardIndex)
   }
 }
@@ -166,10 +155,6 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 5cf9fcca8b992a4a8c94659393f0c5e54687b6a1
 class flashcard {
   constructor(question, answer) {
     this.question = question
