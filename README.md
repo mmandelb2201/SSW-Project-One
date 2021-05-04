@@ -1,6 +1,6 @@
 # Study Buddy
 ### Description
-###### Study Buddy is a web platform designed to help students of all ages and learning styles learn and understand the subjects that they struggle with. Study Buddy provides students with many different tools to help them learn. Some of these tools include, online flashcards, a study group finder, Todo lists, and a place to ask specific questions. 
+###### Study Buddy is a web platform designed to help students of all ages and learning styles learn and understand the subjects that they struggle with. Study Buddy provides students with many different tools to help them learn. Some of these tools include, online flashcards, a study group messenger, and a place to ask specific questions. 
 ### Installation
 1. Download and install Node JS
 2. Open project in prefferred Node JS IDE
