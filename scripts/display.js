@@ -56,7 +56,7 @@ function changeRooms(newRoom) {
     console.log(newRoom)
     let messageRoom = document.getElementById("message-room")
     messageRoom.innerHTML = ""
-    currentRoom = messageRoom
+    currentRoom = newRoom
     displayMessages(newRoom)
 }
 
@@ -69,12 +69,28 @@ function createRoom(roomName) {
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }
 
-    db.collection("rooms").doc(roomName).collection("messages").add(welcomeMessageInfo)
-    db.collection("rooms").doc(roomName).update({ chatters: [] })
+    db.collection("rooms").doc(roomName).set({ chatters: ["0"] }).then(() => {
+        db.collection("rooms").doc(roomName).collection("messages").add(welcomeMessageInfo)
+    })
+    .catch(error => {
+        console.log(error)
+    })
+    
     db.collection("users").where("email", "==", currentUser.email).get().then(querySnapshot => {
         querySnapshot.forEach((doc) => {
             doc.ref.update({rooms: firebase.firestore.FieldValue.arrayUnion(roomName)})
             document.getElementById("rooms-nav").innerHTML += `<div class="room-topic">${roomName}</div>`
         })
-    })   
+
+        document.querySelectorAll(".room-topic").forEach(topic => {
+            topic.addEventListener("click", (event) => {
+    
+                changeRooms(event.target.innerHTML)
+            })
+        })
+    })  
+    
+    currentRoom = roomName
+
+    
 }

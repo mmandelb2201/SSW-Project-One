@@ -20,3 +20,7 @@
 #my-room-pane {
     display: flex;
 }
+
+#my-room-pane p {
+    margin: auto;
+}
