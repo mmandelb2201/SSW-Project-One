@@ -21,7 +21,7 @@
 
       <div class="cardFrontFace">
         <!-- QUESTION -->
-        <h2>What is the capital of Hawaii?</h2>
+        <h2 id="question">What is the capital of Hawaii?</h2>
       </div>
 
       <div class="cardBackFace">
@@ -45,7 +45,7 @@
         </div>
         <div class="cardBody">
           <!-- ANSWER -->
-          <h3>NICENAME</h3>
+          <h3 id="answer">NICENAME</h3>
         </div>
       </div>
 
@@ -92,9 +92,13 @@
     db.collection("flashcard").where("title", "==", flashcardSet).orderBy("question").get().then((querySnapshot) => {
         var x = 0
         querySnapshot.forEach((doc) => {
-                flashcards[x] = //create flashcard object with question and answer
+                flashcards[x] = new flashcard(doc.data().question,doc.data().answer)
                 displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
                 x = x + 1
+                if (x==querySnapshot.size){
+                  showFlashcard(0)
+                }
+
             })
         })
 
