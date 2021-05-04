@@ -81,8 +81,21 @@
     function showError(error) {
         errorLabel.innerHTML = error
     }
-    function signInUser(email, password) {
-        firebase.auth().signInWithEmailAndPassword(email, password)
+    async function signInUser(email, password) {
+        try {
+            let persistenceData = await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            let userCredential = await firebase.auth().signInWithEmailAndPassword(email, password)
+            let user = userCredential.user
+            window.location.href = "/account/show/" + user.uid
+
+        } catch (error) {
+            let errorCode = error.code
+            let errorMessage = error.message
+            showError(errorMessage)
+        }
+        
+            
+        /*firebase.auth().signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed in, go to account page
                 var user = userCredential.user
@@ -92,7 +105,7 @@
                 var errorCode = error.code
                 var errorMessage = error.message
                 showError(errorMessage)
-            })
+            })*/
     }
     function createUser(username, password, email) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
