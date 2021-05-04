@@ -1,62 +1,132 @@
-<link rel="stylesheet" type="text/css" href="/cards.css">
-<!doctype html>
-
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>{{Flashcard }}</title>
-    <link rel="stylesheet" type="text/css" href="/cards.css"> 
-
-</head>
-
 <body>
+    <div>
+        <h1 class="pageTitle" id="accountTitle" style="border-bottom: 1px solid gray;">Welcome, </h1>
+        <h4 class="errorLabel" id="errorLabel"></h4>
 
-  <div class="card">
-    <div class="cardInner">
-
-      <div class="cardFrontFace">
-        <h2>What is the capital of Hawaii?</h2>
-      </div>
-
-      <div class="cardBackFace">
-        <div class="cardContent"></div>
-        <div class="cardHeader">
-          <img src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2FrafaelNadal.jpg?alt=media&token=d6e49b71-d228-4c5d-aa93-ec30293f36ed" class="pp" >
-          <h2>NAME</h2>
-
-
-    <div class="card" >
-      <div class="cardInner">
-
-        <div class="cardFrontFace">
-          <h2>What is the capital of Hawaii?</h2>
+        <div class="centerContent">
+            <h1 id="questionTitle" class="pageTitle">Welcome to Flashcard Generator</h1>
         </div>
 
-        <div class="cardBackFace">
-          <!-- FOR TEXT ON BACK-->
-          <div class="cardContent"></div>
-            <div class="cardHeader">
-              <img></img>
-              <h2>Honolulu</h2>
+        <div class="centerContent">
+            <h2>What is the title of this flashcard collection?</h2>
+            <input type="text" id="flashTitle" placeholder="Type Here!" />
+            <h2>What is the question?</h2>
+            <input type="text" id="flashQ" placeholder="Type Here!" />
+            <h2>What is the answer?</h2>
+            <input type="text" id="flashAnswer" placeholder="Type Here!" />
+            <h2>Would you like to add another question to this collection?</h2>
 
-            </div>
-            <div class="cardBody">
-            
-            </div>
-            
-          <img src="https://firebasestorage.googleapis.com/v0/b/ssw-project-one.appspot.com/o/images%2Fhawaii.jpg?alt=media&token=bc63c2a0-a6d0-4548-b71b-ea03fe6b1a27" class="pp" >
-          <h2>Honolulu</h2>
+            <button type="button" style="height: 55px; width: 100px;" class="submitButton" id="add">Add Another
+                Document</button>
+            <button type="button" style="height: 55px; width: 100px;" class="submitButton" id="submit">Submit
+                Collection</button>
 
         </div>
-        <div class="cardBody">
-          <h3>NICENAME</h3>
-          <p>wahwahweewaa</p>
-        </div>
-      </div>
 
-    </div>
-  </div>
-  <script src="cards.js"></script>  
-</body>
+        <script>
+            let id = "{{flashcards}}"
 
-<script src="cards.js"></script>
+            var flashcards = []
+
+            let db = firebase.firestore()
+            var errorLabel = document.getElementById("errorLabel")
+            var submitButton = document.getElementById("submit")
+            var next = document.getElementById("add")
+
+            submitButton.onclick = validateField
+            next.onclick = addAnother
+
+            //save user id
+            var userID = ""
+            //check to see all fields are filled
+            function validateField() {
+                let flashTitle = document.getElementById("flashTitle").value
+                let flashQ = document.getElementById("flashQ").value
+                let flashAnswer = document.getElementById("flashAnswer").value
+
+                if (flashTitle.length != 0) {
+                    //all fields are filled so they can be added to firestore
+
+                    //do a check to make sure user is signed in
+                    firebase.auth().onAuthStateChanged(function (user) {
+                        if (user) {
+                            //Save user id
+                            // User is signed in.
+                            //all the boys valid and accounted for
+                            userID = user.uid
+                            flashcards.push(new flashcard(flashQ, flashAnswer))
+                            addFlashcards(flashTitle, userID)
+
+                        } else {
+                            // No user is signed in.
+                            showError("You must be signed in to make flashcards")
+                        }
+                    })
+                } else {
+                    //user needs to add all required information
+                    showError("Please fill in all fields")
+                }
+            }
+
+            function addAnother() {
+                let question = document.getElementById("flashQ").value
+                let answer = document.getElementById("flashAnswer").value
+
+                if (question.length != 0 && answer.length != 0) {
+                    flashcards.push(new flashcard(question, answer))
+
+                    document.getElementById("flashQ").value = ""
+                    document.getElementById("flashAnswer").value = ""
+                } else {
+                    showError("Please enter all fields")
+                }
+
+
+            }
+
+            //add question to firestore
+            function addFlashcards(title, id) {
+                
+                x = 0
+
+                flashcards.forEach((card) => {
+                   db.collection("flashcard").add({
+                        title: title,
+                        question: card.question,
+                        answer: card.answer,
+                        author: id,
+                    }).then(function (docRef) {
+                        //add questionID to user information
+                        db.collection("users").doc(userID).update({
+                            flashcards: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                        }).catch((error) => {
+                            console.error("Error Adding Question: ", error)
+                            //todo: delete newly created question
+                        })
+
+                    }).catch((error) => {
+                        console.error("Error Adding Question: ", error)
+                        //todo: delete newly created question
+                    })
+
+                    x += 1
+                    if(x == flashcards.length) {
+                        window.location.href = "/flashcardView/" + title
+                    }
+                })
+
+            }
+
+            //display error to user
+            function showError(error) {
+                errorLabel.innerHTML = error
+            }
+
+class flashcard {
+    constructor(question, answer) {
+        this.question = question
+        this.answer = answer
+        }
+    }
+
+        </script>

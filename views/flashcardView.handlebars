@@ -50,6 +50,10 @@
       </div>
 
     </div>
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> mikayla
   </div>
   </div>
 
@@ -64,17 +68,32 @@
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <a href="#"></a>
+<<<<<<< HEAD
   <a href="#">Services</a>
   <a href="#">Clients</a>
   <a href="#">Contact</a>
   <a href="#">Contact</a>
   <a href="#">Contact</a>
+=======
+  <a href="#">Celebrity Heights</a>
+  <a href="#">Hardware of PC</a>
+  <a href="#">U.S States</a>
+  <a href="#">Cool Colors</a>
+  <a href="#">Anatomy</a>
+>>>>>>> mikayla
 </div>
 <div>
 <!-- Use any element to open the sidenav -->
 <button onclick="openNav()" id="listButton">More Flashcard Sets</button>
 </div>
 </div>
+<<<<<<< HEAD
+=======
+   <div>
+      <button type="button" class="submitButton" style="width: 100px;" id="nextFlashCard">Next Flashcard</button>
+      <button type="button" class="submitButton" style="width: 100px;" id="previousFlashCard">Previous Flashcard</button>
+    </div>
+>>>>>>> mikayla
 </div>
 
 
@@ -87,9 +106,22 @@
     var flashcards = []
     //index to hold which flashcard the user is viewing
     var flashcardIndex = 0
+<<<<<<< HEAD
     let flashcardSet = "{{flashcardView}}"
     let db = firebase.firestore()
 
+=======
+    //add functionality to next flashcard and previous flashcard buttons
+    document.getElementById("nextFlashCard").onclick = showNext
+    document.getElementById("previousFlashCard").onclick = showPrevious
+    let flashcardSet = "{{flashcardView}}"
+    let db = firebase.firestore()
+    //check to see if flashcard set title has a dash in it, if it does remove it and add a space
+    if (flashcardSet.includes("-")) {
+      var temp = flashcardSet.replace("-", " ")
+      flashcardSet = temp
+    }
+>>>>>>> mikayla
     db.collection("flashcard").where("title", "==", flashcardSet).orderBy("question").get().then((querySnapshot) => {
         var x = 0
         querySnapshot.forEach((doc) => {
@@ -151,13 +183,26 @@ function openNav() {
 function showNext() {
   if (flashcardIndex + 1 < flashcards.length) {
     flashcardIndex += 1
+<<<<<<< HEAD
+=======
+
+>>>>>>> mikayla
     showFlashcard(flashcardIndex)
   }
 }
 
 function showPrevious() {
+<<<<<<< HEAD
   if (flashcardIndex - 1 > 0) {
     flashcardIndex += -1
+=======
+  if (flashcardIndex - 1 >= 0) {
+    flashcardIndex += -1
+
+    if (flashcardIndex == 0){
+    }
+
+>>>>>>> mikayla
     showFlashcard(flashcardIndex)
   }
 }
@@ -165,6 +210,13 @@ function showPrevious() {
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> f613e515953b5a91c9a04d20db02f1d029790a49
+>>>>>>> mikayla
 
 class flashcard {
   constructor(question, answer) {
