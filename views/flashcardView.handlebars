@@ -63,7 +63,7 @@
    <!-- SIDE LIST -->
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="#">About</a>
+  <a href="#"></a>
   <a href="#">Services</a>
   <a href="#">Clients</a>
   <a href="#">Contact</a>
@@ -93,12 +93,22 @@
     db.collection("flashcard").where("title", "==", flashcardSet).orderBy("question").get().then((querySnapshot) => {
         var x = 0
         querySnapshot.forEach((doc) => {
+<<<<<<< HEAD
                 flashcards[x] = new flashcard(doc.data().question, doc.data().answer)
                 displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
                 x = x + 1
                 if (x == querySnapshot.size) {
                   showFlashcard(0)
                 }
+=======
+                flashcards[x] = new flashcard(doc.data().question,doc.data().answer)
+                displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
+                x = x + 1
+                if (x==querySnapshot.size){
+                  showFlashcard(0)
+                }
+
+>>>>>>> e5a488cea28d4304dfc02d120256d8d3ec0da538
             })
         })
 
@@ -165,6 +175,10 @@ function showPrevious() {
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> e5a488cea28d4304dfc02d120256d8d3ec0da538
 
 class flashcard {
   constructor(question, answer) {
