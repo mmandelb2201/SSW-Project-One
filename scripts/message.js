@@ -18,6 +18,7 @@ async function processMessage(message) {
     try { 
         const messageRef = await storeMessage(currentRoom, currentUser.username, currentUser.imageURL, message)
         displayMessage({ username: currentUser.username, mssg: message, imageURL: currentUser.imageURL})
+        console.log("currentRoom", currentRoom)
         await db.collection("rooms").doc(currentRoom).update({
             chatters: firebase.firestore.FieldValue.arrayUnion(currentUser.email)
         })

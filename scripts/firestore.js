@@ -11,7 +11,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                 currentUser = doc.data()
                 console.log(currentUser)
                 currentRoom = currentUser.rooms[0]
-
+                console.log(currentRoom)
                 displayMessages(currentRoom)
                 displayRooms()
             })
