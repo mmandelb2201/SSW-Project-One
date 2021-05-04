@@ -85,13 +85,22 @@
 <script>
     //array to hold flashcard meta data
     var flashcards = []
-
+    //index to hold which flashcard the user is viewing
+    var flashcardIndex = 0
     let flashcardSet = "{{flashcardView}}"
     let db = firebase.firestore()
 
     db.collection("flashcard").where("title", "==", flashcardSet).orderBy("question").get().then((querySnapshot) => {
         var x = 0
         querySnapshot.forEach((doc) => {
+<<<<<<< HEAD
+                flashcards[x] = new flashcard(doc.data().question, doc.data().answer)
+                displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
+                x = x + 1
+                if (x == querySnapshot.size) {
+                  showFlashcard(0)
+                }
+=======
                 flashcards[x] = new flashcard(doc.data().question,doc.data().answer)
                 displayFlashcards(doc.data().title, doc.data().flashQ, doc.data().answer, x)
                 x = x + 1
@@ -99,6 +108,7 @@
                   showFlashcard(0)
                 }
 
+>>>>>>> e5a488cea28d4304dfc02d120256d8d3ec0da538
             })
         })
 
@@ -148,11 +158,27 @@ function openNav() {
   document.getElementById("mySidenav").style.lineHeight = "30px"
 }
 
+function showNext() {
+  if (flashcardIndex + 1 < flashcards.length) {
+    flashcardIndex += 1
+    showFlashcard(flashcardIndex)
+  }
+}
+
+function showPrevious() {
+  if (flashcardIndex - 1 > 0) {
+    flashcardIndex += -1
+    showFlashcard(flashcardIndex)
+  }
+}
 /* Set the width of the side navigation to 0 */
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> e5a488cea28d4304dfc02d120256d8d3ec0da538
 
 class flashcard {
   constructor(question, answer) {
