@@ -70,12 +70,6 @@ app.get("/flashcards", (req, res) => {
         title: "Flashcard Generator"
     })
 })
-<<<<<<< HEAD
-
-app.get("/messenger", (req, res) => {
-    res.render("messenger.handlebars", {
-        title: "Messenger"
-=======
 app.get("/flashcards/show/:id", (req, res) => {
     res.render("flashcards.handlebars", {
         title: "Your Flashcards",
@@ -94,7 +88,6 @@ app.get("/flashcardView/:id", (req, res) => {
     res.render("flashcardView.handlebars", {
         title: "Practice with Flashcards",
         flashcardView: req.params.id
->>>>>>> mikayla
     })
 })
 
