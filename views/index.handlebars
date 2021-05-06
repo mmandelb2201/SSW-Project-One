@@ -30,12 +30,17 @@
             }
         })
     })
-    db.collection("flashcard").orderBy("upvotes", "desc").limit(5).get().then((documents) => {
+    db.collection("flashcard").limit(5).get().then((documents) => {
+        var addedSets = []
         documents.forEach((doc) => {
             if (doc.exists) {
                 //got document successfully
                 //display question data
-                displayFlashcards(doc.data().subject, doc.data().description, doc.id, doc.data().upvotes)
+                if (addedSets.includes(doc.data().title) == false){
+                    displayFlashcards(doc.data().title, doc.id)
+                    addedSets.push(doc.data().title)
+                }
+                
             } else {
                 //could not find question, skip and go on to next one
                 if (amountOfQuestions == 0 && x + 1 == questions.length) {
@@ -78,38 +83,35 @@
         //add div to div already in html
         document.getElementById("questions").appendChild(questionA)
     }
-    //REMOVE AFTER PRESENTATION
-    function displayFlashcards(question, description, questionID, upvoteCount) {
+    function displayFlashcards(title, flashcardID) {
         //create a to allow user to click to question
-        var questionA = document.createElement("a")
-        questionA.setAttribute("class", "questionPreviewA")
-        questionA.setAttribute("href", "/question/show/" + questionID)
+        var flashcardA = document.createElement("a")
+        flashcardA.setAttribute("class", "questionPreviewA")
+        var flashcardSet = title
+        if (flashcardSet.includes(" ")) {
+            while (flashcardSet.includes(" ") == true) {
+                var temp = flashcardSet.replace(" ", "-")
+                flashcardSet = temp
+                if (flashcardSet.includes(" ") == false){
+                    flashcardA.setAttribute("href", "/flashcardView/" + flashcardSet)
+                }
+            }
+        } else {
+            flashcardA.setAttribute("href", "/flashcardView/" + flashcardSet)
+        }
         //create question div
         var questionDiv = document.createElement("div")
         questionDiv.setAttribute("class", "questionPreviewDiv")
         //create question title
         var questionTitle = document.createElement("h2")
         questionTitle.setAttribute("class", "questionPreviewTitle")
-        var questionText = document.createTextNode(question)
+        var questionText = document.createTextNode(title)
         questionTitle.appendChild(questionText)
-        //create question upvotes text
-        var upvotes = document.createElement("h4")
-        upvotes.setAttribute("class", "questionPreviewUpvotes")
-        var upvotesText = document.createTextNode("Upvotes: " + upvoteCount)
-        upvotes.appendChild(upvotesText)
-        //create question description
-        var questionDescription = document.createElement("h4")
-        questionDescription.setAttribute("class", "questionPreviewDescription")
-        var questionDescriptionText = document.createTextNode(description)
-        questionDescription.appendChild(questionDescriptionText)
-        //add title and body to div
+        //add titley to div
         questionDiv.appendChild(questionTitle)
-        questionDiv.appendChild(questionDescription)
-        questionDiv.appendChild(upvotes)
         //add div to a
-        questionA.appendChild(questionDiv)
+        flashcardA.appendChild(questionDiv)
         //add div to div already in html
-        document.getElementById("flashcards").appendChild(questionA)
+        document.getElementById("flashcards").appendChild(flashcardA)
     }
-    //REMOVE TO HERE 
 </script>
